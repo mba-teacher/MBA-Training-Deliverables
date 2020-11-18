@@ -2,21 +2,24 @@ package data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class DAO {
 
 	String user = "root";
 	String pass = "root";
 	String dbName = "MBoard";
-	String url = "jdbc:mysql://localhost/";
+	String url = "jdbc:mysql://localhost/mboard";
 	String ssl = "?autoReconnect=true&useSSL=false";
 	Connection conn = null;
 	Statement stmt = null;
+	PreparedStatement pst =null;
 
 	private void ConnectToDB(String dbName) throws SQLException {
 		try {
@@ -284,5 +287,151 @@ public class DAO {
 			return false;
 		}
 		return true;
+	}
+
+	//⑪ 掲示板に参加
+	public boolean JoinBoard(int userId,int boardId) {
+		boolean b;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			//st = cnct.createStatement();
+			String query = "insert into Board_Member_Info values(?,?)";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1, userId);
+			pst.setInt(2,boardId);
+			pst.executeUpdate();
+
+			b=true;
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
+	//㉑ユーザーの参加可能な掲示板を取得
+	public ArrayList<BoardPermissionInfoBean> GetPermissionInfo(int userId) {
+		ArrayList<BoardPermissionInfoBean> BoardPermissionInfoList=new ArrayList<BoardPermissionInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId+"'";
+
+			ResultSet rs =stmt.executeQuery(query);
+
+			while(rs.next()) {
+				BoardPermissionInfoBean b = new BoardPermissionInfoBean();
+				b.setBoardId(rs.getInt("Board_ID"));
+				b.setUserId(rs.getInt("User_ID"));
+				BoardPermissionInfoList.add(b);
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return BoardPermissionInfoList;
+	}
+
+	//㉒参加可能の掲示板情報の取得
+	public ArrayList<BoardInfoBean> GetBoards(ArrayList<BoardPermissionInfoBean> list) {
+		ArrayList<BoardInfoBean> BoardInfoList=new ArrayList<BoardInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			stmt = conn.createStatement();
+
+			for(int i=0;i<list.size();i++) {
+				String query = "SELECT * FROM Board_Info WHERE Board_ID = '"+list.get(i).getBoardId()+"'";
+				ResultSet rs = stmt.executeQuery(query);
+				rs.next();
+
+				BoardInfoBean b = new BoardInfoBean();
+				b.setBoardId(rs.getInt("Board_ID"));
+				b.setBoardCategory(rs.getString("Board_Category"));
+				b.setBoardColor(rs.getInt("Board_Color"));
+				b.setBoardImgPath(rs.getString("Board_Image"));
+				b.setBoardContents(rs.getString("Board_Contents"));
+				BoardInfoList.add(b);
+			}
+
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return BoardInfoList;
+	}
+
+	//⑫記事のコメント情報取得
+	public ArrayList<CommentInfoBean> GetBoards(int postId) {
+		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
+
+			ResultSet rs =  stmt.executeQuery(query);
+
+			while(rs.next()) {
+				CommentInfoBean b = new CommentInfoBean();
+				b.setCommentId(rs.getInt("Comment_ID"));
+				b.setCommentDate(rs.getString("Comment_Date"));
+				b.setCommentUserId(rs.getInt("Comment_User_ID"));
+				b.setCommentContents(rs.getString("Comment_Contents"));
+				b.setPostId(rs.getInt("Post_ID"));
+				b.setCommentChain(rs.getInt("Comment_Chain"));
+				CommentInfoList.add(b);
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return CommentInfoList;
+	}
+
+	//⑬複数のユーザー情報を取得
+	public ArrayList<UserInfoBean> SelectMembers(ArrayList<Integer> userId) {
+		ArrayList<UserInfoBean> UserInfoList=new ArrayList<UserInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			stmt = conn.createStatement();
+
+			for(int i=0;i<userId.size();i++) {
+				String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId.get(i)+"'";
+				ResultSet rs =  stmt.executeQuery(query);
+				rs.next();
+
+				UserInfoBean b = new UserInfoBean();
+				b.setUserID(rs.getInt("User_ID"));
+				b.setUserName(rs.getString("User_Name"));
+				b.setLoginID(rs.getString("Login_ID"));
+				b.setLoginPass(rs.getString("Login_Pass"));
+				b.setLoginLog(rs.getString("Login_Log"));
+				b.setEmailAdress(rs.getString("Email_Address"));
+				b.setLineWorksID(rs.getString("Line_Works_ID"));
+				b.setProfileImgPath(rs.getString("Profile_Image"));
+				b.setAdmin(rs.getBoolean("Profile_Image"));
+				UserInfoList.add(b);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return UserInfoList;
 	}
 }
