@@ -13,5 +13,5 @@ public class DefineDatabase {
 	public static final String TEMPLATE_INFO_TABLE = "Template_Info";
 	public static final String COMMENT_INFO_TABLE = "Comment_Info";
 	public static final String BOARD_MEMBER_INFO_TABLE = "Board_Member_Info";
-	public static final String BOARD_PERMISSION_INFO = "Borad_Permission_Info";
+	public static final String BOARD_PERMISSION_INFO = "Board_Permission_Info";
 }
