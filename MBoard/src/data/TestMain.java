@@ -8,6 +8,7 @@ public class TestMain {
 		for (int i = 0; i < pib.length; i++) {
 			System.out.println(pib[i].getPostTitle());
 		}
+
 		//update passメソッドtest
 //		dao.UpdatePassword("fabio@mba", "12345", "12345");
 		//loginメソッドtest
