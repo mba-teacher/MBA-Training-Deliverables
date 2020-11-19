@@ -3,6 +3,10 @@ package data;
 import java.io.Serializable;
 
 public class BoardMemberBean implements Serializable {
+
+	public static final String BOARD_ID_COLUMN = "Board_ID";
+	public static final String USER_ID_COLUMN = "User_ID";
+
 	private int boardId;
 	private int userId;
 
