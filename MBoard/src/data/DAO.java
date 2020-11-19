@@ -702,4 +702,153 @@ public class DAO {
 		}
 		return true;
 	}
+
+	//㉝
+		public BoardInfoBean[] GetAllBoards() {
+			if(conn == null) {
+				try {
+					ConnectToDB();
+				}
+				catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				Statement stmt = conn.createStatement();
+	        	String query = "SELECT * FROM Board_Info";
+	        	ResultSet rs = stmt.executeQuery(query);
+
+	        	ArrayList<BoardInfoBean> list = new ArrayList<BoardInfoBean>();
+	        	while(rs.next()) {
+	        		BoardInfoBean bib = new BoardInfoBean();
+	        		bib.setBoardId(rs.getInt("Board_ID"));
+	        		bib.setBoardCategory(rs.getString("Board_Category"));
+	        		bib.setBoardColor(rs.getInt("Board_Color"));
+	        		bib.setBoardImgPath(rs.getString("Board_Image"));
+	        		bib.setBoardContents(rs.getString("Board_Contents"));
+	        		list.add(bib);
+	        	}
+	        	BoardInfoBean[] Board_Info= new BoardInfoBean[list.size()];
+	        	for(int i=0;i<list.size();i++) {
+	        		Board_Info[i]= list.get(i);
+	        	}
+	        	return Board_Info;
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		//㉞
+		public BoardInfoBean DeleteBoard(int boardId) {
+			try {
+				Statement stmt = conn.createStatement();
+	        	String query = "DELETE FROM Board_Info WHERE Board_ID="+boardId;
+	        	ResultSet rs = stmt.executeQuery(query);
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		//㉟
+		public GroupInfoBean ChangeGroupName(int groupId, String groupName) {
+			try {
+				Statement stmt = conn.createStatement();
+	        	String query = "UPDATE Group_Info SET Group_Name="+groupName+"WHERE Group_ID="+groupId;
+				ResultSet rs = stmt.executeQuery(query);
+
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		//㊱
+		public GroupInfoBean CreateGroup(int groupId, String groupName, int userId) {
+			try {
+				Statement stmt = conn.createStatement();
+				String query = "INSERT INTO Group_Info VALUES("+groupId+","+groupName+","+userId+")";
+				ResultSet rs = stmt.executeQuery(query);
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		//㊲
+		public GroupInfoBean DeleteGroup(int groupId) {
+			try {
+				Statement stmt = conn.createStatement();
+	        	String query = "DELETE FROM Group_Info WHERE Group_ID="+groupId;
+	        	ResultSet rs = stmt.executeQuery(query);
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		//㊳
+		public UserInfoBean[] GetMembers(int userId[]) {
+			try {
+				Statement stmt = conn.createStatement();
+	        	String query = "SELECT * FROM User_Info";
+	        	ResultSet rs = stmt.executeQuery(query);
+	        	while(rs.next()) {
+	        		UserInfoBean uib = new UserInfoBean();
+	        		uib.setUserID(rs.getInt("User_ID"));
+	        		uib.setUserName(rs.getString("User_Name"));
+
+	        	}
+
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		//㊴
+		public GroupInfoBean[] GetMyGroups(int userId) {
+			try {
+				Statement stmt = conn.createStatement();
+	        	String query = "SELECT * FROM Grope_Info WHERE User_ID IN("+userId+")";
+	        	ResultSet rs = stmt.executeQuery(query);
+	        	GroupInfoBean[] gib = new GroupInfoBean[rs.getRow()];
+	        	for(int i=0;i<gib.length;i++) {
+	        		gib[i].setGroupId(rs.getInt("Group_ID"));
+	        	}
+
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		//㊵
+		public GroupInfoBean JoinGroup(int groupId, String groupName, int userId) {
+			return null;
+
+		}
+
+		//㊶
+		public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
+			return null;
+
+		}
+
+
+
+
 }
+
+
+
