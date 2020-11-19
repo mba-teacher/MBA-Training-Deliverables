@@ -15,7 +15,6 @@ public class DAO {
 	String user = "root";
 	String pass = "root";
 	String dbName = "MBoard";
-	//urlの内容だと url+dbName で使用できなくなってしまうのでコーディング統一した方がいいのでは？
 	String url = "jdbc:mysql://localhost/mboard";
 	String ssl = "?autoReconnect=true&useSSL=false";
 	Connection conn = null;
@@ -705,10 +704,10 @@ public class DAO {
 	}
 
 	/* ⑳ GetAllMembers  登録済みアカウント全員分の取得
-	 * 引数：ArrayList、戻り値：なし
-	 * 引数のArrayListに情報を入れているので戻り値は無しにしてあります
+	 * 引数：なし / 戻り値：ArrayList
 	 */
-	public void GetAllMembers(ArrayList<UserInfoBean> list) {
+	public ArrayList<UserInfoBean> GetAllMembers() {
+		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
 		UserInfoBean b;
 		try {
 			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE);
@@ -726,13 +725,15 @@ public class DAO {
 						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
 				list.add(b);
 			}
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	/* ㉓ GivePermission  参加権限を付与する
-	 * 引数：Board_ID、User_ID[]
+	 * 引数：Board_ID、User_ID[] / 戻り値：なし
 	 * トランザクションしてます
 	 */
 	public void GivePermission(int boardId, int[] userId) {
@@ -757,14 +758,13 @@ public class DAO {
 			}
 			conn.commit();
 			conn.setAutoCommit(true);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/* ㉔ CreateBoard  新規掲示板の情報をDBにINSERTする
-	 * 引数：BoardInfoBean、User_ID[]
+	 * 引数：BoardInfoBean、User_ID[] / 戻り値：なし
 	 * 中で㉓を呼んでいる
 	 * トランザクションにしたいが、UPDATEしないとBoard_IDを取得できない
 	 */
@@ -782,7 +782,7 @@ public class DAO {
 			String query = "insert into Board_Info "
 					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
 					+ "values (?,?,?,?)";
-			pst = con.prepareStatement(query);
+			pst = conn.prepareStatement(query);
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
 			pst.setString(3, b.getBoardImgPath());
@@ -792,21 +792,20 @@ public class DAO {
 			//ボードIDを取得する方法  もっといいのあるかも
 			String selQuery = "select Board_ID from Board_Info where Board_Category = ? and "
 					+ "Board_Color = ? and Board_Image = ? and Board_Contents = ?";
-			pst = con.prepareStatement(selQuery);
+			pst = conn.prepareStatement(selQuery);
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
 			pst.setString(3, b.getBoardImgPath());
 			pst.setString(4, b.getBoardContents());
-			rs = pst.executeQuery();
+			ResultSet rs = pst.executeQuery();
 
 			//アクセス制限でチェックした内容をDBに反映させる
 			if(rs.next()) {
 				b.setBoardId(rs.getInt(BoardInfoBean.BOARD_ID_COLUMN));
 				GivePermission(b.getBoardId(), userId);
+			} else {
+				System.out.println("insertが失敗している可能性があります。DBを確認してください。");
 			}
-
-		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
