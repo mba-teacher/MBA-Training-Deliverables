@@ -15,7 +15,7 @@ public class DAO {
 	String user = "root";
 	String pass = "root";
 	String dbName = "MBoard";
-	String url = "jdbc:mysql://localhost/mboard";
+	String url = "jdbc:mysql://localhost/";
 	String ssl = "?autoReconnect=true&useSSL=false";
 	Connection conn = null;
 	Statement stmt = null;
@@ -85,6 +85,7 @@ public class DAO {
 		System.out.println("password and confirmation doest match->pass:" + newPass + "/confirmation:" + newPassConfirmation);
 		return false;
 	}
+
 	//④
 	public PostInfoBean[] GetMyPosts(int userId) {
 		ResultSet result = SelectQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.POST_USER_ID_COLUMN}, new int[] {userId});
@@ -115,6 +116,7 @@ public class DAO {
 		}
 		return pib;
 	}
+
 	//⑤
 	public void UpdateMyUserInfo(UserInfoBean userInfoBean) {
 		if(conn == null) {
@@ -141,6 +143,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 	}
+
 	//⑥
 	public UserInfoBean SelectMember(int userId) {
 		UserInfoBean uib = new UserInfoBean();
@@ -162,6 +165,7 @@ public class DAO {
 		}
 		return uib;
 	}
+
 	//⑦
 	public BoardInfoBean[] GetMyBoards(int userId) {
 		ResultSet result = SelectQuery(DefineDatabase.BOARD_MEMBER_INFO_TABLE, new String[] {BoardMemberBean.USER_ID_COLUMN}, new int[] {userId});
@@ -202,6 +206,7 @@ public class DAO {
 		}
 		return bib;
 	}
+
 	//⑧
 	public PostInfoBean[] GetBoardPosts(int boardId) {
 		ResultSet result = SelectQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.BOARD_ID_COLUMN}, new int[] {boardId});
@@ -232,6 +237,7 @@ public class DAO {
 		}
 		return pib;
 	}
+
 	//⑨
 	public boolean LeaveBoard(int boardId, int userId) {
 		try {
@@ -244,26 +250,315 @@ public class DAO {
 			return false;
 		}
 	}
+
 	//⑩
-		public boolean MakePost(PostInfoBean postInfoBean) {
-			Object o = postInfoBean.getPostUserId();
-			String postUserId = o.toString();
-			o = postInfoBean.getBoardId();
-			String boardId = o.toString();
+	public boolean MakePost(PostInfoBean postInfoBean) {
+		Object o = postInfoBean.getPostUserId();
+		String postUserId = o.toString();
+		o = postInfoBean.getBoardId();
+		String boardId = o.toString();
+		try {
+			InsertQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.POST_DATE_COLUMN,
+					    PostInfoBean.POST_TITLE_COLUMN, PostInfoBean.POST_CONTENTS_COLUMN,
+					    PostInfoBean.POST_USER_ID_COLUMN, PostInfoBean.POST_CATEGORY_COLUMN,
+					    PostInfoBean.POST_IMAGE_COLUMN, PostInfoBean.BOARD_ID_COLUMN}, new String[] {
+					    postInfoBean.getPostDate(), postInfoBean.getPostTitle(), postInfoBean.getPostContents(),
+					    postUserId, postInfoBean.getPostCategory(), postInfoBean.getPostImgPath(), boardId});
+			stmt.close();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	//⑪ 掲示板に参加
+	public boolean JoinBoard(int userId,int boardId) {
+		boolean b;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			//st = cnct.createStatement();
+			String query = "insert into Board_Member_Info values(?,?)";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1, userId);
+			pst.setInt(2,boardId);
+			pst.executeUpdate();
+
+			b=true;
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
+	//⑫記事のコメント情報取得
+	public ArrayList<CommentInfoBean> GetBoards(int postId) {
+		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
+
+			ResultSet rs =  stmt.executeQuery(query);
+
+			while(rs.next()) {
+				CommentInfoBean b = new CommentInfoBean();
+				b.setCommentId(rs.getInt("Comment_ID"));
+				b.setCommentDate(rs.getString("Comment_Date"));
+				b.setCommentUserId(rs.getInt("Comment_User_ID"));
+				b.setCommentContents(rs.getString("Comment_Contents"));
+				b.setPostId(rs.getInt("Post_ID"));
+				b.setCommentChain(rs.getInt("Comment_Chain"));
+				CommentInfoList.add(b);
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return CommentInfoList;
+	}
+
+	//⑬複数のユーザー情報を取得
+	public ArrayList<UserInfoBean> SelectMembers(ArrayList<Integer> userId) {
+		ArrayList<UserInfoBean> UserInfoList=new ArrayList<UserInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			for(int i=0;i<userId.size();i++) {
+				String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId.get(i)+"'";
+				ResultSet rs =  stmt.executeQuery(query);
+				rs.next();
+
+				UserInfoBean b = new UserInfoBean();
+				b.setUserID(rs.getInt("User_ID"));
+				b.setUserName(rs.getString("User_Name"));
+				b.setLoginID(rs.getString("Login_ID"));
+				b.setLoginPass(rs.getString("Login_Pass"));
+				b.setLoginLog(rs.getString("Login_Log"));
+				b.setEmailAdress(rs.getString("Email_Address"));
+				b.setLineWorksID(rs.getString("Line_Works_ID"));
+				b.setProfileImgPath(rs.getString("Profile_Image"));
+				b.setAdmin(rs.getBoolean("Profile_Image"));
+				UserInfoList.add(b);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return UserInfoList;
+	}
+
+	//㉑ユーザーの参加可能な掲示板を取得
+	public ArrayList<BoardPermissionInfoBean> GetPermissionInfo(int userId) {
+		ArrayList<BoardPermissionInfoBean> BoardPermissionInfoList=new ArrayList<BoardPermissionInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId+"'";
+
+			ResultSet rs =stmt.executeQuery(query);
+
+			while(rs.next()) {
+				BoardPermissionInfoBean b = new BoardPermissionInfoBean();
+				b.setBoardId(rs.getInt("Board_ID"));
+				b.setUserId(rs.getInt("User_ID"));
+				BoardPermissionInfoList.add(b);
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return BoardPermissionInfoList;
+	}
+
+	//㉒参加可能の掲示板情報の取得
+	public ArrayList<BoardInfoBean> GetBoards(ArrayList<BoardPermissionInfoBean> list) {
+		ArrayList<BoardInfoBean> BoardInfoList=new ArrayList<BoardInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			for(int i=0;i<list.size();i++) {
+				String query = "SELECT * FROM Board_Info WHERE Board_ID = '"+list.get(i).getBoardId()+"'";
+				ResultSet rs = stmt.executeQuery(query);
+				rs.next();
+
+				BoardInfoBean b = new BoardInfoBean();
+				b.setBoardId(rs.getInt("Board_ID"));
+				b.setBoardCategory(rs.getString("Board_Category"));
+				b.setBoardColor(rs.getInt("Board_Color"));
+				b.setBoardImgPath(rs.getString("Board_Image"));
+				b.setBoardContents(rs.getString("Board_Contents"));
+				BoardInfoList.add(b);
+			}
+
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return BoardInfoList;
+	}
+
+	//㉝
+	public BoardInfoBean[] GetAllBoards() {
+		if(conn == null) {
 			try {
-				InsertQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.POST_DATE_COLUMN,
-						    PostInfoBean.POST_TITLE_COLUMN, PostInfoBean.POST_CONTENTS_COLUMN,
-						    PostInfoBean.POST_USER_ID_COLUMN, PostInfoBean.POST_CATEGORY_COLUMN,
-						    PostInfoBean.POST_IMAGE_COLUMN, PostInfoBean.BOARD_ID_COLUMN}, new String[] {
-						    postInfoBean.getPostDate(), postInfoBean.getPostTitle(), postInfoBean.getPostContents(),
-						    postUserId, postInfoBean.getPostCategory(), postInfoBean.getPostImgPath(), boardId});
-				stmt.close();
-				return true;
-			} catch (SQLException e) {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
 				e.printStackTrace();
-				return false;
 			}
 		}
+		try {
+			Statement stmt = conn.createStatement();
+        	String query = "SELECT * FROM Board_Info";
+        	ResultSet rs = stmt.executeQuery(query);
+
+        	ArrayList<BoardInfoBean> list = new ArrayList<BoardInfoBean>();
+        	while(rs.next()) {
+        		BoardInfoBean bib = new BoardInfoBean();
+        		bib.setBoardId(rs.getInt("Board_ID"));
+        		bib.setBoardCategory(rs.getString("Board_Category"));
+        		bib.setBoardColor(rs.getInt("Board_Color"));
+        		bib.setBoardImgPath(rs.getString("Board_Image"));
+        		bib.setBoardContents(rs.getString("Board_Contents"));
+        		list.add(bib);
+        	}
+        	BoardInfoBean[] Board_Info= new BoardInfoBean[list.size()];
+        	for(int i=0;i<list.size();i++) {
+        		Board_Info[i]= list.get(i);
+        	}
+        	return Board_Info;
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//㉞
+	public BoardInfoBean DeleteBoard(int boardId) {
+		try {
+			Statement stmt = conn.createStatement();
+        	String query = "DELETE FROM Board_Info WHERE Board_ID="+boardId;
+        	ResultSet rs = stmt.executeQuery(query);
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	//㉟
+	public GroupInfoBean ChangeGroupName(int groupId, String groupName) {
+		try {
+			Statement stmt = conn.createStatement();
+        	String query = "UPDATE Group_Info SET Group_Name="+groupName+"WHERE Group_ID="+groupId;
+			ResultSet rs = stmt.executeQuery(query);
+
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	//㊱
+	public GroupInfoBean CreateGroup(int groupId, String groupName, int userId) {
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "INSERT INTO Group_Info VALUES("+groupId+","+groupName+","+userId+")";
+			ResultSet rs = stmt.executeQuery(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	//㊲
+	public GroupInfoBean DeleteGroup(int groupId) {
+		try {
+			Statement stmt = conn.createStatement();
+        	String query = "DELETE FROM Group_Info WHERE Group_ID="+groupId;
+        	ResultSet rs = stmt.executeQuery(query);
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//㊳
+	public UserInfoBean[] GetMembers(int userId[]) {
+		try {
+			Statement stmt = conn.createStatement();
+        	String query = "SELECT * FROM User_Info";
+        	ResultSet rs = stmt.executeQuery(query);
+        	while(rs.next()) {
+        		UserInfoBean uib = new UserInfoBean();
+        		uib.setUserID(rs.getInt("User_ID"));
+        		uib.setUserName(rs.getString("User_Name"));
+
+        	}
+
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//㊴
+	public GroupInfoBean[] GetMyGroups(int userId) {
+		try {
+			Statement stmt = conn.createStatement();
+        	String query = "SELECT * FROM Group_Info WHERE User_ID IN("+userId+")";
+        	ResultSet rs = stmt.executeQuery(query);
+        	GroupInfoBean[] gib = new GroupInfoBean[rs.getRow()];
+        	for(int i=0;i<gib.length;i++) {
+        		gib[i].setGroupId(rs.getInt("Group_ID"));
+        	}
+
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//㊵
+	public GroupInfoBean JoinGroup(int groupId, String groupName, int userId) {
+		return null;
+
+	}
+
+	//㊶
+	public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
+		return null;
+
+	}
 	//条件なしオーバーロード
 	public ResultSet SelectQuery(String tablename) {
 		if(conn == null) {
@@ -302,7 +597,7 @@ public class DAO {
 
 		for (int i = 0; i < whereColumn.length; i++) {
 			if(i>0)query += "AND ";
-			query += whereColumn[i] + " = " + whereValue[i]+" ";
+			query += whereColumn[i] + " = '" + whereValue[i]+"' ";
 		}
 		query += ";";
 
@@ -463,151 +758,6 @@ public class DAO {
 		return true;
 	}
 
-	//⑪ 掲示板に参加
-	public boolean JoinBoard(int userId,int boardId) {
-		boolean b;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			//st = cnct.createStatement();
-			String query = "insert into Board_Member_Info values(?,?)";
-			pst = conn.prepareStatement(query);
-
-			pst.setInt(1, userId);
-			pst.setInt(2,boardId);
-			pst.executeUpdate();
-
-			b=true;
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			b=false;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			b=false;
-		}
-		return b;
-	}
-
-	//㉑ユーザーの参加可能な掲示板を取得
-	public ArrayList<BoardPermissionInfoBean> GetPermissionInfo(int userId) {
-		ArrayList<BoardPermissionInfoBean> BoardPermissionInfoList=new ArrayList<BoardPermissionInfoBean>();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			stmt = conn.createStatement();
-			String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId+"'";
-
-			ResultSet rs =stmt.executeQuery(query);
-
-			while(rs.next()) {
-				BoardPermissionInfoBean b = new BoardPermissionInfoBean();
-				b.setBoardId(rs.getInt("Board_ID"));
-				b.setUserId(rs.getInt("User_ID"));
-				BoardPermissionInfoList.add(b);
-			}
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return BoardPermissionInfoList;
-	}
-
-	//㉒参加可能の掲示板情報の取得
-	public ArrayList<BoardInfoBean> GetBoards(ArrayList<BoardPermissionInfoBean> list) {
-		ArrayList<BoardInfoBean> BoardInfoList=new ArrayList<BoardInfoBean>();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			stmt = conn.createStatement();
-
-			for(int i=0;i<list.size();i++) {
-				String query = "SELECT * FROM Board_Info WHERE Board_ID = '"+list.get(i).getBoardId()+"'";
-				ResultSet rs = stmt.executeQuery(query);
-				rs.next();
-
-				BoardInfoBean b = new BoardInfoBean();
-				b.setBoardId(rs.getInt("Board_ID"));
-				b.setBoardCategory(rs.getString("Board_Category"));
-				b.setBoardColor(rs.getInt("Board_Color"));
-				b.setBoardImgPath(rs.getString("Board_Image"));
-				b.setBoardContents(rs.getString("Board_Contents"));
-				BoardInfoList.add(b);
-			}
-
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return BoardInfoList;
-	}
-
-	//⑫記事のコメント情報取得
-	public ArrayList<CommentInfoBean> GetBoards(int postId) {
-		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			stmt = conn.createStatement();
-			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
-
-			ResultSet rs =  stmt.executeQuery(query);
-
-			while(rs.next()) {
-				CommentInfoBean b = new CommentInfoBean();
-				b.setCommentId(rs.getInt("Comment_ID"));
-				b.setCommentDate(rs.getString("Comment_Date"));
-				b.setCommentUserId(rs.getInt("Comment_User_ID"));
-				b.setCommentContents(rs.getString("Comment_Contents"));
-				b.setPostId(rs.getInt("Post_ID"));
-				b.setCommentChain(rs.getInt("Comment_Chain"));
-				CommentInfoList.add(b);
-			}
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return CommentInfoList;
-	}
-
-	//⑬複数のユーザー情報を取得
-	public ArrayList<UserInfoBean> SelectMembers(ArrayList<Integer> userId) {
-		ArrayList<UserInfoBean> UserInfoList=new ArrayList<UserInfoBean>();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			stmt = conn.createStatement();
-
-			for(int i=0;i<userId.size();i++) {
-				String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId.get(i)+"'";
-				ResultSet rs =  stmt.executeQuery(query);
-				rs.next();
-
-				UserInfoBean b = new UserInfoBean();
-				b.setUserID(rs.getInt("User_ID"));
-				b.setUserName(rs.getString("User_Name"));
-				b.setLoginID(rs.getString("Login_ID"));
-				b.setLoginPass(rs.getString("Login_Pass"));
-				b.setLoginLog(rs.getString("Login_Log"));
-				b.setEmailAdress(rs.getString("Email_Address"));
-				b.setLineWorksID(rs.getString("Line_Works_ID"));
-				b.setProfileImgPath(rs.getString("Profile_Image"));
-				b.setAdmin(rs.getBoolean("Profile_Image"));
-				UserInfoList.add(b);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return UserInfoList;
-	}
 	//条件はStringのオーバーロード
 	public boolean DeleteQuery(String tablename, String[] whereColumn, String[] whereValue) {
 		if(conn == null) {
@@ -702,152 +852,6 @@ public class DAO {
 		}
 		return true;
 	}
-
-	//㉝
-		public BoardInfoBean[] GetAllBoards() {
-			if(conn == null) {
-				try {
-					ConnectToDB();
-				}
-				catch(SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			try {
-				Statement stmt = conn.createStatement();
-	        	String query = "SELECT * FROM Board_Info";
-	        	ResultSet rs = stmt.executeQuery(query);
-
-	        	ArrayList<BoardInfoBean> list = new ArrayList<BoardInfoBean>();
-	        	while(rs.next()) {
-	        		BoardInfoBean bib = new BoardInfoBean();
-	        		bib.setBoardId(rs.getInt("Board_ID"));
-	        		bib.setBoardCategory(rs.getString("Board_Category"));
-	        		bib.setBoardColor(rs.getInt("Board_Color"));
-	        		bib.setBoardImgPath(rs.getString("Board_Image"));
-	        		bib.setBoardContents(rs.getString("Board_Contents"));
-	        		list.add(bib);
-	        	}
-	        	BoardInfoBean[] Board_Info= new BoardInfoBean[list.size()];
-	        	for(int i=0;i<list.size();i++) {
-	        		Board_Info[i]= list.get(i);
-	        	}
-	        	return Board_Info;
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		//㉞
-		public BoardInfoBean DeleteBoard(int boardId) {
-			try {
-				Statement stmt = conn.createStatement();
-	        	String query = "DELETE FROM Board_Info WHERE Board_ID="+boardId;
-	        	ResultSet rs = stmt.executeQuery(query);
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		//㉟
-		public GroupInfoBean ChangeGroupName(int groupId, String groupName) {
-			try {
-				Statement stmt = conn.createStatement();
-	        	String query = "UPDATE Group_Info SET Group_Name="+groupName+"WHERE Group_ID="+groupId;
-				ResultSet rs = stmt.executeQuery(query);
-
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		//㊱
-		public GroupInfoBean CreateGroup(int groupId, String groupName, int userId) {
-			try {
-				Statement stmt = conn.createStatement();
-				String query = "INSERT INTO Group_Info VALUES("+groupId+","+groupName+","+userId+")";
-				ResultSet rs = stmt.executeQuery(query);
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		//㊲
-		public GroupInfoBean DeleteGroup(int groupId) {
-			try {
-				Statement stmt = conn.createStatement();
-	        	String query = "DELETE FROM Group_Info WHERE Group_ID="+groupId;
-	        	ResultSet rs = stmt.executeQuery(query);
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		//㊳
-		public UserInfoBean[] GetMembers(int userId[]) {
-			try {
-				Statement stmt = conn.createStatement();
-	        	String query = "SELECT * FROM User_Info";
-	        	ResultSet rs = stmt.executeQuery(query);
-	        	while(rs.next()) {
-	        		UserInfoBean uib = new UserInfoBean();
-	        		uib.setUserID(rs.getInt("User_ID"));
-	        		uib.setUserName(rs.getString("User_Name"));
-
-	        	}
-
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		//㊴
-		public GroupInfoBean[] GetMyGroups(int userId) {
-			try {
-				Statement stmt = conn.createStatement();
-	        	String query = "SELECT * FROM Grope_Info WHERE User_ID IN("+userId+")";
-	        	ResultSet rs = stmt.executeQuery(query);
-	        	GroupInfoBean[] gib = new GroupInfoBean[rs.getRow()];
-	        	for(int i=0;i<gib.length;i++) {
-	        		gib[i].setGroupId(rs.getInt("Group_ID"));
-	        	}
-
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		//㊵
-		public GroupInfoBean JoinGroup(int groupId, String groupName, int userId) {
-			return null;
-
-		}
-
-		//㊶
-		public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
-			return null;
-
-		}
-
-
-
-
 }
 
 
