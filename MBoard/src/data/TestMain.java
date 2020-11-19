@@ -1,15 +1,13 @@
 package data;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class TestMain {
 	public static void main(String[] args) {
-		//⑩MakePost()のテスト
 		DAO dao = new DAO();
-		String now = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-		PostInfoBean pib = new PostInfoBean(333,now,"title","contents",333,"category","img",333);
-		dao.MakePost(pib);
+
+		//⑩MakePost()のテスト
+//		String now = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+//		PostInfoBean pib = new PostInfoBean(333,now,"title","contents",333,"category","img",333);
+//		dao.MakePost(pib);
 		//⑨LeaveBoard()のテスト
 //		dao.LeaveBoard(3,2);
 		//⑧GetBoardPosts()のテスト
@@ -56,7 +54,7 @@ public class TestMain {
 		//③UpdatePassword()のテスト
 //		dao.UpdatePassword("fabio@mba", "12345", "12345");
 		//①Login()のテスト
-//		UserInfoBean uib = dao.Login("fabio", "12345");
+//		UserInfoBean uib = dao.Login("fabio", "123");
 //		if(uib!=null) {
 //			System.out.println(uib.getLoginLog());
 //		}

@@ -299,10 +299,10 @@ public class DAO {
 
 		for (int i = 0; i < whereColumn.length; i++) {
 			if(i>0)query += "AND ";
-			query += whereColumn[i] + " = " + whereValue[i]+" ";
+			query += whereColumn[i] + " = '" + whereValue[i]+"' ";
 		}
 		query += ";";
-
+		System.out.println(query);
 		try {
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(query);
