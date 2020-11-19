@@ -1,0 +1,95 @@
+@charset "UTF-8";
+
+html {
+	height:100%;
+}
+
+body {
+	padding:0px;
+	margin:0px;
+	height:100%;
+	background-color:#dceaef;
+}
+
+.nav-area {
+	position:relative;
+	background-color:#ff9100;
+	width:80px;
+	height:100%;
+	text-align:center;
+}
+
+.logo-area {
+	background-color:#4f4f4f;
+	width:100%;
+	height:80px;
+	margin-bottom:10px;
+}
+
+.logo-area img{
+	width:70px;
+	padding-top:16px;
+}
+
+.nav-icon {
+	width:70px;
+}
+
+.nav-bottom {
+	position:absolute;
+	width:100%;
+	bottom:0px;
+}
+
+.popup-link{
+	display:none;
+}
+
+.popup-content{
+	position:absolute;
+	top:305px;
+	left:90px;
+	width:290px;
+	height:200px;
+	background-color:white;
+	border-radius:8px;
+	border:1px solid #999;
+}
+
+.popup-icon{
+	margin-top:5px;
+	margin-left:3px;
+}
+
+.popup-icon img{
+	width:90px;
+}
+
+.popup-bg {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100vw;
+	height:100vh;
+}
+
+.flex_container {
+	width:1000px;
+	display:-webkit-flex;
+	display:flex;
+}
+
+.nav-area {
+	position:sticky;
+	height:100vh;
+	margin-bottom:0;
+	top:0px;
+}
+
+.mypage_content{
+	width:calc(100vw - 80px);
+	height:3000px;
+	background-color:#ddd;
+	border-radius:0 0 0 0 ;
+	text-align:center;
+}

@@ -57,7 +57,7 @@ public class TestMain {
 		//③UpdatePassword()のテスト
 //		dao.UpdatePassword("fabio@mba-international.jp", "12345", "12345");
 		//①Login()のテスト
-//		UserInfoBean uib = dao.Login("fabio", "12345");
+//		UserInfoBean uib = dao.Login("fabio", "123");
 //		if(uib!=null) {
 //			System.out.println(uib.getLoginLog());
 //		}

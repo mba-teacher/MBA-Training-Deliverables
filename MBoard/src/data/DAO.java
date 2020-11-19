@@ -750,7 +750,7 @@ public class DAO {
 			query += whereColumn[i] + " = '" + whereValue[i]+"' ";
 		}
 		query += ";";
-
+		System.out.println(query);
 		try {
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(query);
