@@ -463,7 +463,7 @@ public class DAO {
 
 		try {
 			conn.setAutoCommit(false);
-			String query = "insert into Board_Member_Info values (?,?)";
+			String query = "insert into Board_Permission_Info values (?,?)";
 			pst = conn.prepareStatement(query);
 
 			for (int i = 0; i < userId.length; i++) {
@@ -532,12 +532,12 @@ public class DAO {
 	public ArrayList<Integer> GetPermissionMembers(int boardId) {
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		try {
-			String[] column = {BoardMemberBean.BOARD_ID_COLUMN};
+			String[] column = {BoardPermissionInfoBean.BOARD_ID_COLUMN};
 			int[] values = {boardId};
-			ResultSet rs = SelectQuery(DefineDatabase.BOARD_MEMBER_INFO_TABLE, column, values);
+			ResultSet rs = SelectQuery(DefineDatabase.BOARD_PERMISSION_INFO, column, values);
 
 			while(rs.next()) {
-				list.add(rs.getInt(BoardMemberBean.USER_ID_COLUMN));
+				list.add(rs.getInt(BoardPermissionInfoBean.USER_ID_COLUMN));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -564,7 +564,6 @@ public class DAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			b = null;
 		}
 		return b;
 	}
