@@ -15,6 +15,7 @@ public class DAO {
 	String user = "root";
 	String pass = "root";
 	String dbName = "MBoard";
+	//urlの内容だと url+dbName で使用できなくなってしまうのでコーディング統一した方がいいのでは？
 	String url = "jdbc:mysql://localhost/mboard";
 	String ssl = "?autoReconnect=true&useSSL=false";
 	Connection conn = null;
@@ -701,5 +702,113 @@ public class DAO {
 			return false;
 		}
 		return true;
+	}
+
+	/* ⑳ GetAllMembers  登録済みアカウント全員分の取得
+	 * 引数：ArrayList、戻り値：なし
+	 * 引数のArrayListに情報を入れているので戻り値は無しにしてあります
+	 */
+	public void GetAllMembers(ArrayList<UserInfoBean> list) {
+		UserInfoBean b;
+		try {
+			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE);
+
+			while(rs.next()) {
+				b = new UserInfoBean(
+						rs.getInt(UserInfoBean.USER_ID_COLUMN),
+						rs.getString(UserInfoBean.USER_NAME_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_ID_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_PASS_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_LOG_COLUMN),
+						rs.getString(UserInfoBean.EMAIL_ADRESS_COLUMN),
+						rs.getString(UserInfoBean.LINE_WORKS_ID_COLUMN),
+						rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN),
+						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
+				list.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉓ GivePermission  参加権限を付与する
+	 * 引数：Board_ID、User_ID[]
+	 * トランザクションしてます
+	 */
+	public void GivePermission(int boardId, int[] userId) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			conn.setAutoCommit(false);
+			String query = "insert into Board_Member_Info values (?,?)";
+			pst = conn.prepareStatement(query);
+
+			for (int i = 0; i < userId.length; i++) {
+				pst.setInt(1, boardId);
+				pst.setInt(2, userId[i]);
+				pst.executeUpdate();
+			}
+			conn.commit();
+			conn.setAutoCommit(true);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉔ CreateBoard  新規掲示板の情報をDBにINSERTする
+	 * 引数：BoardInfoBean、User_ID[]
+	 * 中で㉓を呼んでいる
+	 * トランザクションにしたいが、UPDATEしないとBoard_IDを取得できない
+	 */
+	public void CreateBoard(BoardInfoBean b, int[] userId) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			String query = "insert into Board_Info "
+					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
+					+ "values (?,?,?,?)";
+			pst = con.prepareStatement(query);
+			pst.setString(1, b.getBoardCategory());
+			pst.setInt(2, b.getBoardColor());
+			pst.setString(3, b.getBoardImgPath());
+			pst.setString(4, b.getBoardContents());
+			pst.executeUpdate();
+
+			//ボードIDを取得する方法  もっといいのあるかも
+			String selQuery = "select Board_ID from Board_Info where Board_Category = ? and "
+					+ "Board_Color = ? and Board_Image = ? and Board_Contents = ?";
+			pst = con.prepareStatement(selQuery);
+			pst.setString(1, b.getBoardCategory());
+			pst.setInt(2, b.getBoardColor());
+			pst.setString(3, b.getBoardImgPath());
+			pst.setString(4, b.getBoardContents());
+			rs = pst.executeQuery();
+
+			//アクセス制限でチェックした内容をDBに反映させる
+			if(rs.next()) {
+				b.setBoardId(rs.getInt(BoardInfoBean.BOARD_ID_COLUMN));
+				GivePermission(b.getBoardId(), userId);
+			}
+
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
