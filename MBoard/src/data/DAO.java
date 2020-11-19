@@ -418,6 +418,157 @@ public class DAO {
 		return BoardInfoList;
 	}
 
+	/* ⑳ GetAllMembers  登録済みアカウント全員分の取得
+	 * 引数：なし / 戻り値：ArrayList
+	 */
+	public ArrayList<UserInfoBean> GetAllMembers() {
+		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
+		UserInfoBean b;
+		try {
+			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE);
+
+			while(rs.next()) {
+				b = new UserInfoBean(
+						rs.getInt(UserInfoBean.USER_ID_COLUMN),
+						rs.getString(UserInfoBean.USER_NAME_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_ID_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_PASS_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_LOG_COLUMN),
+						rs.getString(UserInfoBean.EMAIL_ADRESS_COLUMN),
+						rs.getString(UserInfoBean.LINE_WORKS_ID_COLUMN),
+						rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN),
+						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
+				list.add(b);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/* ㉓ GivePermission  参加権限を付与する
+	 * 引数：Board_ID、User_ID[] / 戻り値：なし
+	 * トランザクションしてます
+	 */
+	public void GivePermission(int boardId, int[] userId) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			conn.setAutoCommit(false);
+			String query = "insert into Board_Member_Info values (?,?)";
+			pst = conn.prepareStatement(query);
+
+			for (int i = 0; i < userId.length; i++) {
+				pst.setInt(1, boardId);
+				pst.setInt(2, userId[i]);
+				pst.executeUpdate();
+			}
+			conn.commit();
+			conn.setAutoCommit(true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉔ CreateBoard  新規掲示板の情報をDBにINSERTする
+	 * 引数：BoardInfoBean、User_ID[] / 戻り値：なし
+	 * 中で㉓を呼んでいる
+	 */
+	public void CreateBoard(BoardInfoBean b, int[] userId) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			String query = "insert into Board_Info "
+					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
+					+ "values (?,?,?,?)";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, b.getBoardCategory());
+			pst.setInt(2, b.getBoardColor());
+			pst.setString(3, b.getBoardImgPath());
+			pst.setString(4, b.getBoardContents());
+			pst.executeUpdate();
+
+			//ボードIDを取得する  タイムスタンプのカラムがあれば短くなるかも
+			String selQuery = "select Board_ID from Board_Info where Board_Category = ? and "
+					+ "Board_Color = ? and Board_Image = ? and Board_Contents = ?";
+			pst = conn.prepareStatement(selQuery);
+			pst.setString(1, b.getBoardCategory());
+			pst.setInt(2, b.getBoardColor());
+			pst.setString(3, b.getBoardImgPath());
+			pst.setString(4, b.getBoardContents());
+			ResultSet rs = pst.executeQuery();
+
+			//アクセス制限でチェックした内容をDBに反映させる
+			if(rs.next()) {
+				b.setBoardId(rs.getInt(BoardInfoBean.BOARD_ID_COLUMN));
+				GivePermission(b.getBoardId(), userId);
+			} else {
+				//rs.next()がない場合（検索がヒットしてない）
+				System.out.println("insertが失敗している可能性があります。DBを確認してください。");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉕ GetPermissionMembers  掲示板のアクセスできるユーザー一覧を取得する
+	 * 引数：Board_ID / 戻り値：ArrayList<Integer>
+	 */
+	public ArrayList<Integer> GetPermissionMembers(int boardId) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		try {
+			String[] column = {BoardMemberBean.BOARD_ID_COLUMN};
+			int[] values = {boardId};
+			ResultSet rs = SelectQuery(DefineDatabase.BOARD_MEMBER_INFO_TABLE, column, values);
+
+			while(rs.next()) {
+				list.add(rs.getInt(BoardMemberBean.USER_ID_COLUMN));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	/* ㉖ GetBoardInfo  掲示板情報をDBから取得する
+	 * 引数：User_ID / 戻り値：BoardInfoBean
+	 */
+	public BoardInfoBean GetBoardInfo(int boardId) {
+		BoardInfoBean b = null;
+		try {
+			String[] column = {BoardInfoBean.BOARD_ID_COLUMN};
+			int[] values = {boardId};
+			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE, column, values);
+
+			if (rs.next()) {
+				b = new BoardInfoBean(
+						boardId, rs.getString(BoardInfoBean.BOARD_CATEGORY_COLUMN),
+						rs.getInt(BoardInfoBean.BOARD_COLOR_COLUMN),
+						rs.getString(BoardInfoBean.BOARD_IMAGE_COLUMN),
+						rs.getString(BoardInfoBean.BOARD_CONTENTS_COLUMN));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b = null;
+		}
+		return b;
+	}
+
 	//㉝
 	public BoardInfoBean[] GetAllBoards() {
 		if(conn == null) {
@@ -853,113 +1004,6 @@ public class DAO {
 		return true;
 	}
 
-	/* ⑳ GetAllMembers  登録済みアカウント全員分の取得
-	 * 引数：なし / 戻り値：ArrayList
-	 */
-	public ArrayList<UserInfoBean> GetAllMembers() {
-		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
-		UserInfoBean b;
-		try {
-			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE);
-
-			while(rs.next()) {
-				b = new UserInfoBean(
-						rs.getInt(UserInfoBean.USER_ID_COLUMN),
-						rs.getString(UserInfoBean.USER_NAME_COLUMN),
-						rs.getString(UserInfoBean.LOGIN_ID_COLUMN),
-						rs.getString(UserInfoBean.LOGIN_PASS_COLUMN),
-						rs.getString(UserInfoBean.LOGIN_LOG_COLUMN),
-						rs.getString(UserInfoBean.EMAIL_ADRESS_COLUMN),
-						rs.getString(UserInfoBean.LINE_WORKS_ID_COLUMN),
-						rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN),
-						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
-				list.add(b);
-			}
-			return list;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/* ㉓ GivePermission  参加権限を付与する
-	 * 引数：Board_ID、User_ID[] / 戻り値：なし
-	 * トランザクションしてます
-	 */
-	public void GivePermission(int boardId, int[] userId) {
-		if(conn == null) {
-			try {
-				ConnectToDB(dbName);
-			}
-			catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			conn.setAutoCommit(false);
-			String query = "insert into Board_Member_Info values (?,?)";
-			pst = conn.prepareStatement(query);
-
-			for (int i = 0; i < userId.length; i++) {
-				pst.setInt(1, boardId);
-				pst.setInt(2, userId[i]);
-				pst.executeUpdate();
-			}
-			conn.commit();
-			conn.setAutoCommit(true);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/* ㉔ CreateBoard  新規掲示板の情報をDBにINSERTする
-	 * 引数：BoardInfoBean、User_ID[] / 戻り値：なし
-	 * 中で㉓を呼んでいる
-	 * トランザクションにしたいが、UPDATEしないとBoard_IDを取得できない
-	 */
-	public void CreateBoard(BoardInfoBean b, int[] userId) {
-		if(conn == null) {
-			try {
-				ConnectToDB(dbName);
-			}
-			catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			String query = "insert into Board_Info "
-					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
-					+ "values (?,?,?,?)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, b.getBoardCategory());
-			pst.setInt(2, b.getBoardColor());
-			pst.setString(3, b.getBoardImgPath());
-			pst.setString(4, b.getBoardContents());
-			pst.executeUpdate();
-
-			//ボードIDを取得する方法  もっといいのあるかも
-			String selQuery = "select Board_ID from Board_Info where Board_Category = ? and "
-					+ "Board_Color = ? and Board_Image = ? and Board_Contents = ?";
-			pst = conn.prepareStatement(selQuery);
-			pst.setString(1, b.getBoardCategory());
-			pst.setInt(2, b.getBoardColor());
-			pst.setString(3, b.getBoardImgPath());
-			pst.setString(4, b.getBoardContents());
-			ResultSet rs = pst.executeQuery();
-
-			//アクセス制限でチェックした内容をDBに反映させる
-			if(rs.next()) {
-				b.setBoardId(rs.getInt(BoardInfoBean.BOARD_ID_COLUMN));
-				GivePermission(b.getBoardId(), userId);
-			} else {
-				System.out.println("insertが失敗している可能性があります。DBを確認してください。");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 }
 
 
