@@ -3,6 +3,13 @@ package data;
 import java.io.Serializable;
 
 public class TemplateInfoBean implements Serializable{
+
+	public static final String TEMPLATE_ID_COLUMN = "Template_ID";
+	public static final String TEMPLATE_USER_ID_COLUMN = "Template_User_ID";
+	public static final String TEMPLATE_NAME_COLUMN = "Template_Name";
+	public static final String TEMPLATE_TITLE_COLUMN = "Template_Title";
+	public static final String TEMPLATE_CONTENTS_COLUMN = "Template_Contents";
+
 	private int templateId;
 	private int templateUserId;
 	private String templateName;

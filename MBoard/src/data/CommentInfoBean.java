@@ -3,13 +3,20 @@ package data;
 import java.io.Serializable;
 
 public class CommentInfoBean implements Serializable {
+
+	public static final String COMMENT_ID_COLUMN = "Comment_ID";
+	public static final String COMMENT_DATE_COLUMN = "Comment_Date";
+	public static final String COMMENT_USER_ID_COLUMN = "Comment_User_ID";
+	public static final String COMMENT_CONTENTS_COLUMN = "Comment_Contents";
+	public static final String POST_ID_COLUMN = "Post_ID";
+	public static final String COMMENT_CHAIN_COLUMN = "Comment_Chain";
+
 	private int commentId;
 	private String commentDate;
 	private int commentUserId;
 	private String commentContents;
 	private int postId;
 	private int commentChain;
-
 
 	public CommentInfoBean() {}
 
