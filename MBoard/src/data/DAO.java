@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public class DAO {
 	String user = "root";
 	String pass = "root";
 	String dbName = "MBoard";
-	String url = "jdbc:mysql://localhost/mboard";
+	String url = "jdbc:mysql://localhost/";
 	String ssl = "?autoReconnect=true&useSSL=false";
 	Connection conn = null;
 	Statement stmt = null;
@@ -173,33 +175,33 @@ public class DAO {
 		return result;
 	}
 	//条件ありオーバーロードint条件
-		public ResultSet SelectQuery(String tablename, String[] whereColumn, int[] whereValue ) {
-			if(conn == null) {
-				try {
-					ConnectToDB(dbName);
-				}
-				catch(SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			String query = "SELECT * FROM " + tablename + " WHERE ";
-			stmt = null;
-			ResultSet result = null;
-
-			for (int i = 0; i < whereColumn.length; i++) {
-				if(i>0)query += "AND ";
-				query += whereColumn[i] + " = '" + whereValue[i]+"' ";
-			}
-			query += ";";
-
+	public ResultSet SelectQuery(String tablename, String[] whereColumn, int[] whereValue ) {
+		if(conn == null) {
 			try {
-				stmt = conn.createStatement();
-				result = stmt.executeQuery(query);
-			}catch(SQLException e) {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
 				e.printStackTrace();
 			}
-			return result;
 		}
+		String query = "SELECT * FROM " + tablename + " WHERE ";
+		stmt = null;
+		ResultSet result = null;
+
+		for (int i = 0; i < whereColumn.length; i++) {
+			if(i>0)query += "AND ";
+			query += whereColumn[i] + " = '" + whereValue[i]+"' ";
+		}
+		query += ";";
+
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeQuery(query);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	//新しい値がString条件がStringのオーバーロード
 	public boolean UpdateSetQuery( String tablename, String setColumn, String setValue, String whereColumn, String whereValue) {
 		if(conn == null) {
@@ -211,7 +213,7 @@ public class DAO {
 			}
 		}
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = '" + setValue
-				       + "' WHERE " + whereColumn + " = '" + whereValue + "';";
+				+ "' WHERE " + whereColumn + " = '" + whereValue + "';";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -233,7 +235,7 @@ public class DAO {
 			}
 		}
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = " + setValue
-				       + " WHERE " + whereColumn + " = " + whereValue + ";";
+				+ " WHERE " + whereColumn + " = " + whereValue + ";";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -255,7 +257,7 @@ public class DAO {
 			}
 		}
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = '" + setValue
-				       + "' WHERE " + whereColumn + " = " + whereValue + ";";
+				+ "' WHERE " + whereColumn + " = " + whereValue + ";";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -277,7 +279,7 @@ public class DAO {
 			}
 		}
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = " + setValue
-				       + " WHERE " + whereColumn + " = '" + whereValue + "';";
+				+ " WHERE " + whereColumn + " = '" + whereValue + "';";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -294,9 +296,8 @@ public class DAO {
 		boolean b;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			//st = cnct.createStatement();
-			String query = "insert into Board_Member_Info values(?,?)";
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "INSERT INTO Board_Member_Info values(?,?)";
 			pst = conn.prepareStatement(query);
 
 			pst.setInt(1, userId);
@@ -320,7 +321,7 @@ public class DAO {
 		ArrayList<BoardPermissionInfoBean> BoardPermissionInfoList=new ArrayList<BoardPermissionInfoBean>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
+			conn = DriverManager.getConnection(url+dbName, user, pass);
 			stmt = conn.createStatement();
 			String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId+"'";
 
@@ -346,7 +347,7 @@ public class DAO {
 		ArrayList<BoardInfoBean> BoardInfoList=new ArrayList<BoardInfoBean>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
+			conn = DriverManager.getConnection(url+dbName, user, pass);
 			stmt = conn.createStatement();
 
 			for(int i=0;i<list.size();i++) {
@@ -373,11 +374,11 @@ public class DAO {
 	}
 
 	//⑫記事のコメント情報取得
-	public ArrayList<CommentInfoBean> GetBoards(int postId) {
+	public ArrayList<CommentInfoBean> GetCommentInfo(int postId) {
 		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
+			conn = DriverManager.getConnection(url+dbName, user, pass);
 			stmt = conn.createStatement();
 			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
 
@@ -407,11 +408,11 @@ public class DAO {
 		ArrayList<UserInfoBean> UserInfoList=new ArrayList<UserInfoBean>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
+			conn = DriverManager.getConnection(url+dbName, user, pass);
 			stmt = conn.createStatement();
 
 			for(int i=0;i<userId.size();i++) {
-				String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId.get(i)+"'";
+				String query = "SELECT * FROM User_Info WHERE user_id = '"+userId.get(i)+"'";
 				ResultSet rs =  stmt.executeQuery(query);
 				rs.next();
 
@@ -434,4 +435,241 @@ public class DAO {
 		}
 		return UserInfoList;
 	}
+
+	//⑭いいね情報追加
+	public void InsertRead(int readUserId ,int postId) {
+		//現在時刻取得
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String str = sdf.format(timestamp);
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "INSERT INTO Read_Info(Read_Date,Read_User_ID,Post_ID,Comment_ID) values('"+str+"',?,?,null)";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1,readUserId);
+			pst.setInt(2,postId);
+			pst.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//[14-1]いいね情報削除
+	public void DeleteRead(int readUserId ,int postId) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "DELETE FROM Read_Info WHERE Read_User_ID = ? AND Post_ID=?";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1,readUserId);
+			pst.setInt(2,postId);
+			pst.executeUpdate();
+
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//[14-2]記事のいいね数取得
+	public int GetReadCount(int postId) {
+		int readCount=0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "SELECT * FROM Read_Info WHERE Post_ID = '"+postId+"'";
+
+			ResultSet rs =  stmt.executeQuery(query);
+
+			while(rs.next()) {
+				readCount++;
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return readCount;
+	}
+
+	//⑮いいね情報追加(コメントのいいね)
+	public void InsertCommentRead(int readUserId ,int commentId) {
+		//現在時刻取得
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String str = sdf.format(timestamp);
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "INSERT INTO Read_Info(Read_Date,Read_User_ID,Post_ID,Comment_ID) values('"+str+"',?,null,?)";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1,readUserId);
+			pst.setInt(2,commentId);
+			pst.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//[15-1]いいね情報削除(コメントのいいね)
+	public void DeleteCommentRead(int readUserId ,int commentId) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "DELETE FROM Read_Info WHERE Read_User_ID = ? AND Comment_ID=?";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1,readUserId);
+			pst.setInt(2,commentId);
+			pst.executeUpdate();
+
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//[15-2]コメントのいいね数取得
+	public int GetReadCommentCount(int Comment) {
+		int readCount=0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "SELECT * FROM Read_Info WHERE Comment_ID = '"+Comment+"'";
+
+			ResultSet rs =  stmt.executeQuery(query);
+
+			while(rs.next()) {
+				readCount++;
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return readCount;
+	}
+
+	//⑯定型文情報の取得
+	public ArrayList<TemplateInfoBean> GetTemplates(int templateUserId) {
+		ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "SELECT * FROM Template_Info WHERE Template_User_ID = '"+templateUserId+"'";
+
+			ResultSet rs =  stmt.executeQuery(query);
+
+			while(rs.next()) {
+				TemplateInfoBean b = new TemplateInfoBean();
+				b.setTempleId(rs.getInt("Template_ID"));
+				b.setTempleUserId(rs.getInt("Template_User_ID"));
+				b.setTempleName(rs.getString("Template_Name"));
+				b.setTempleTitle(rs.getString("Template_Title"));
+				b.setTempleContents(rs.getString("Template_Contents"));
+				TemplateInfoList.add(b);
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return TemplateInfoList;
+	}
+
+	//⑰定型文情報更新
+	public boolean UpdateTemplate(TemplateInfoBean bean) {
+		boolean b=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "UPDATE Template_Info SET Template_Name=?,Template_Title=?,Template_Contents=? WHERE Template_ID=?";
+			pst = conn.prepareStatement(query);
+
+			pst.setString(1,bean.getTempleName());
+			pst.setString(2,bean.getTempleTitle());
+			pst.setString(3,bean.getTempleContents());
+			pst.setInt(4,bean.getTempleId());
+
+			pst.executeUpdate();
+
+			b=true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
+	//⑱定型文情報追加
+	public boolean InsertTemplate(TemplateInfoBean bean) {
+		boolean b=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "INSERT INTO Template_Info(Template_User_ID,Template_Name,Template_Title,Template_Contents) "
+					+ "VALUES(?,?,?,?)";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1,bean.getTempleUserId());
+			pst.setString(2,bean.getTempleName());
+			pst.setString(3,bean.getTempleTitle());
+			pst.setString(4,bean.getTempleContents());
+
+			pst.executeUpdate();
+
+			b=true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
+	//⑲定型文情報削除
+	public boolean DeleteTemplate(int templateId) {
+		boolean b=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query = "DELETE FROM Template_Info WHERE template_Id = ?";
+			pst = conn.prepareStatement(query);
+
+			pst.setInt(1,templateId);
+			pst.executeUpdate();
+
+			b=true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
 }
