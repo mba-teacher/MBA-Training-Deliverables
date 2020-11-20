@@ -809,6 +809,53 @@ public class DAO {
 		return b;
 	}
 
+	/* ㉗ UpdateBoard  掲示板の情報を更新する
+	 * 引数：BoardInfoBean、User_ID[]
+	 */
+	public void UpdateBoard(BoardInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "update Board_Info set Board_Category = ?, Board_Color = ?, "
+					+ "Board_Image = ?, Board_Contents = ? "
+					+ "where Board_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, b.getBoardCategory());
+			pst.setInt(2, b.getBoardColor());
+			pst.setString(3, b.getBoardImgPath());
+			pst.setString(4, b.getBoardContents());
+			pst.setInt(5, b.getBoardId());
+			pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉙ UpdatePermmisioinMembers  アクセス制限が変更されたらDBからDELETEしてINSERTし直す
+	 * 引数：Board_ID、User_ID[] / 戻り値：なし
+	 * 変更のある/なしはどこで判断する？
+	 */
+	public void UpdatePermmisioinMembers(int boardId, int[] userId) {
+		try {
+			//DBからDELETEする
+			String[] column = {BoardPermissionInfoBean.BOARD_ID_COLUMN};
+			int[] values = {boardId};
+			DeleteQuery(DefineDatabase.BOARD_PERMISSION_INFO, column, values);
+
+			//DBにINSERTする
+			GivePermission(boardId, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	//㉝
 	public BoardInfoBean[] GetAllBoards() {
 		if(conn == null) {
