@@ -510,7 +510,7 @@ public class DAO {
 				b.setTempleId(rs.getInt("Template_ID"));
 				b.setTempleUserId(rs.getInt("Template_User_ID"));
 				b.setTempleName(rs.getString("Template_Name"));
-				b.setTempleTitle(rs.getString("Template_Title"));
+				b.setTempleTitle(rs.getString("Template_Title"));//Nameと同じなため、削除予定
 				b.setTempleContents(rs.getString("Template_Contents"));
 				TemplateInfoList.add(b);
 			}
@@ -533,7 +533,7 @@ public class DAO {
 			pst = conn.prepareStatement(query);
 
 			pst.setString(1,bean.getTempleName());
-			pst.setString(2,bean.getTempleTitle());
+			pst.setString(2,bean.getTempleTitle());//Nameと同じなため、削除予定
 			pst.setString(3,bean.getTempleContents());
 			pst.setInt(4,bean.getTempleId());
 
@@ -562,7 +562,7 @@ public class DAO {
 
 			pst.setInt(1,bean.getTempleUserId());
 			pst.setString(2,bean.getTempleName());
-			pst.setString(3,bean.getTempleTitle());
+			pst.setString(3,bean.getTempleTitle());//Nameと同じなため、削除予定
 			pst.setString(4,bean.getTempleContents());
 
 			pst.executeUpdate();
@@ -991,6 +991,72 @@ public class DAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+	}
+	//㉜ユーザー削除
+	public boolean DeleteUser(int userId) {
+		boolean b=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query;
+			Statement stmt;
+			ResultSet rs;
+			//ユーザー情報から削除
+			query = "DELETE FROM User_Info WHERE User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,userId);
+			pst.executeUpdate();
+			//削除ユーザーの投稿記事、および付属しているコメント全削除
+			stmt = conn.createStatement();
+        	query = "SELECT * FROM Post_Info WHERE Post_User_ID = "+userId;
+        	rs = stmt.executeQuery(query);
+        	while(rs.next()) {
+        		DeletePost(rs.getInt("Post_ID"));
+        	}
+			//削除ユーザーがつけたいいね全削除
+			query = "DELETE FROM Read_Info WHERE Read_User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,userId);
+			pst.executeUpdate();
+			//削除ユーザーをグループから削除
+			query = "DELETE FROM Group_Info WHERE User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,userId);
+			pst.executeUpdate();
+			//削除ユーザーの定型文全削除
+			query = "DELETE FROM Template_Info WHERE Template_User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,userId);
+			pst.executeUpdate();
+			//削除ユーザーの投稿コメント、および付属しているコメント全削除
+			stmt = conn.createStatement();
+        	query = "SELECT * FROM Comment_Info WHERE Comment_User_ID = "+userId;
+        	rs = stmt.executeQuery(query);
+        	while(rs.next()) {
+        		DeleteComment(rs.getInt("Comment_ID"));
+        	}
+			//削除ユーザーの掲示板メンバー情報全削除
+			query = "DELETE FROM Board_Member_Info WHERE User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,userId);
+			pst.executeUpdate();
+			//削除ユーザーの掲示板参加制限情報を全削除
+			query = "DELETE FROM Board_Permission_Info WHERE User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,userId);
+			pst.executeUpdate();
+
+			b=true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+
 	}
 
 	//㉝
@@ -1133,6 +1199,83 @@ public class DAO {
 	public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
 		return null;
 	}
+
+
+	//㊸記事、および付属しているコメント、いいね全削除
+	public boolean DeletePost(int postId) {
+		boolean b=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query;
+			//記事削除
+			query = "DELETE FROM Post_Info WHERE Post_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,postId);
+			pst.executeUpdate();
+			//削除した記事のいいね全削除
+			query = "DELETE FROM Read_Info WHERE Post_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,postId);
+			pst.executeUpdate();
+
+			//削除した記事についてるコメント削除
+			Statement stmt = conn.createStatement();
+        	query = "SELECT * FROM Comment_Info WHERE Post_ID = "+postId;
+        	ResultSet rs = stmt.executeQuery(query);
+        	while(rs.next()) {
+        		DeleteComment(rs.getInt("Comment_ID"));
+        	}
+
+			b=true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
+	//㊺コメント、および付属しているコメント、いいね全削除
+	public boolean DeleteComment(int commentId) {
+		boolean b=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url+dbName, user, pass);
+			String query;
+			//コメント削除
+			query= "DELETE FROM Comment_Info WHERE Comment_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,commentId);
+			pst.executeUpdate();
+			//削除したコメントのいいね全削除
+			query = "DELETE FROM Read_Info WHERE Comment_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1,commentId);
+			pst.executeUpdate();
+
+			//削除したコメントについてるコメント削除
+			Statement stmt = conn.createStatement();
+        	query = "SELECT * FROM Comment_Info WHERE Comment_Chain = "+commentId;
+        	ResultSet rs = stmt.executeQuery(query);
+        	while(rs.next()) {
+        		DeleteComment(rs.getInt("Comment_ID"));
+        	}
+
+			b=true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			b=false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			b=false;
+		}
+		return b;
+	}
+
+
 	//条件なしオーバーロード
 	public ResultSet SelectQuery(String tablename) {
 		if(conn == null) {
