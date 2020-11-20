@@ -3,7 +3,6 @@ package data;
 public class TestMain {
 	public static void main(String[] args) {
 		DAO dao = new DAO();
-
 		//⑩MakePost()のテスト
 //		String now = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 //		PostInfoBean pib = new PostInfoBean(333,now,"title","contents",333,"category","img",333);

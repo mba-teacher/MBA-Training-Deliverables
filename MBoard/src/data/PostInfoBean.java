@@ -24,7 +24,23 @@ public class PostInfoBean implements Serializable {
 	private int commentCount;
 	private int readCount;
 	private String annexFilePath;
+	//DBに存在しないコラムだけどjspで投稿者名を表示しやすくするためにこのBeanにUser_Nameを格納する
+	private String postUserName;
+	//DBに存在しないコラムだけどjspで投稿者名を表示しやすくするためにこのBeanにProfile_Imageを格納する
+	private String postUserIconPath;
 
+	public String getPostUserIconPath() {
+		return postUserIconPath;
+	}
+	public void setPostUserIconPath(String postUserIconPath) {
+		this.postUserIconPath = postUserIconPath;
+	}
+	public String getPostUserName() {
+		return postUserName;
+	}
+	public void setPostUserName(String postUserName) {
+		this.postUserName = postUserName;
+	}
 	public PostInfoBean() {	}
 	public PostInfoBean(int postId, String postDate, String postTitle, String postContents, int postUserId,
 						 String postCategory, String postImgPath, int boardId) {

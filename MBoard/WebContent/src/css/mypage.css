@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
-
+.clear{
+	clear:both;
+}
 
 .profile_area{
 	position:relative;
@@ -52,15 +54,15 @@
 
 
 
-
+/* 						↓タブの設定						*/
 
 .tabs {
 	margin-top:50px;
 	padding-bottom:40px;
-	background-color:#fff;
+	/* background-color:#fff; */
 	width:1000px;
 	max-width:calc(100vw - 80px);
-	margin:10px auto;
+	margin:10px auto 0 auto;;
 }
 
 .tab_item {
@@ -87,14 +89,6 @@ input[name="tab_item"] {
   display: none;
 }
 
-.tab_content {
-	display:none;
-	padding:40px 40px 0;
-	clear:both;
-	overflow:hidden;
-	height:1000px;
-}
-
 #post:checked ~ #post_content,
 #profile:checked ~ #profile_content{
 	display:block;
@@ -103,4 +97,66 @@ input[name="tab_item"] {
 .tabs input:checked + .tab_item{
 	background-color:#5ab4bd;
 	color:#fff;
+}
+
+/* 						↓タブの内容						*/
+
+#post_content {
+	display:none;
+	padding:0px 0px 0;
+	clear:both;
+	overflow:visible;
+	/*height:1000px;*/
+}
+
+#profile_content {
+	display:none;
+	padding:0px 0px 0;
+	clear:both;
+	overflow:hidden;
+	height:1000px;
+}
+
+.post_area{
+	background-color:white;
+	width:100%;
+	/*height:300px;*/
+	margin-bottom:10px;
+	border-radius:8px;
+}
+
+.icon_area{
+	width:54px;
+	height:54px;
+	float:left;
+	margin:20px 0 0 20px;
+	border-radius:27px;
+}
+
+.icon_area img{
+	width:100%;
+	height:100%;
+}
+
+.title_area{
+	float:left;
+	margin:20px 0 0 20px;
+	height:55px;
+	text-align:left;
+	font-size:20px;
+}
+
+.title_name {
+	font-weight:bold;
+}
+
+.post{
+	width:calc(100% - 40px);
+	margin:10px 0 0 20px;
+	padding-bottom:10px;
+	text-align:left;
+}
+
+.date {
+	font-size:small;
 }

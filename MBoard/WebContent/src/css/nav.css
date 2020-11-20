@@ -2,21 +2,24 @@
 
 html {
 	height:100%;
+	overflow:auto;
 }
 
 body {
 	padding:0px;
 	margin:0px;
-	height:100%;
 	background-color:#dceaef;
+	height:100%;
+	overflow:auto;
 }
 
 .nav-area {
-	position:relative;
 	background-color:#ff9100;
 	width:80px;
-	height:100%;
 	text-align:center;
+	position:fixed;
+	top:0;
+	bottom:0;
 }
 
 .logo-area {
@@ -79,16 +82,8 @@ body {
 	display:flex;
 }
 
-.nav-area {
-	position:sticky;
-	height:100vh;
-	margin-bottom:0;
-	top:0px;
-}
-
 .mypage_content{
 	width:calc(100vw - 80px);
-	height:3000px;
 	background-color:#ddd;
 	border-radius:0 0 0 0 ;
 	text-align:center;

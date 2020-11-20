@@ -9,7 +9,7 @@ public class UserInfoBean implements Serializable {
 	public static final String LOGIN_ID_COLUMN = "Login_ID";
 	public static final String LOGIN_PASS_COLUMN = "Login_Pass";
 	public static final String LOGIN_LOG_COLUMN = "Login_Log";
-	public static final String EMAIL_ADRESS_COLUMN = "Email_Address";
+	public static final String EMAIL_ADDRESS_COLUMN = "Email_Address";
 	public static final String LINE_WORKS_ID_COLUMN = "Line_Works_ID";
 	public static final String PROFILE_IMAGE_COLUMN = "Profile_Image";
 	public static final String ADMIN_COLUMN = "Admin";
@@ -19,7 +19,7 @@ public class UserInfoBean implements Serializable {
 	private String loginId;
 	private String loginPass;
 	private String loginLog;
-	private String emailAdress;
+	private String emailAddress;
 	private String lineWorksId;
 	private String profileImgPath;
 	private boolean isAdmin;
@@ -32,7 +32,7 @@ public class UserInfoBean implements Serializable {
 		this.loginId = loginId;
 		this.loginPass = loginPass;
 		this.loginLog = loginLog;
-		this.emailAdress = emailAdress;
+		this.emailAddress = emailAdress;
 		this.lineWorksId = lineWorksId;
 		this.profileImgPath = profileImgPath;
 		this.isAdmin = isAdmin;
@@ -69,10 +69,10 @@ public class UserInfoBean implements Serializable {
 		this.loginLog = loginLog;
 	}
 	public String getEmailAdress() {
-		return emailAdress;
+		return emailAddress;
 	}
 	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+		this.emailAddress = emailAdress;
 	}
 	public String getLineWorksID() {
 		return lineWorksId;
