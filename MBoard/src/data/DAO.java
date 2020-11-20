@@ -909,6 +909,88 @@ public class DAO {
 		}
 	}
 
+	/* ㊷ UpdatePost  記事の更新(Post_IDとPost_User_IDは更新しない)
+	 * 引数：Post_Info / 戻り値：なし
+	 */
+	public void UpdatePost(PostInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "UPDATE Post_Info SET Post_Date = ?, Post_Title = ?, "
+					+ "Post_Contents = ?, Post_Category = ?, Post_Image = ?, Board_ID = ? "
+					+ "WHERE Post_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, b.getPostDate());
+			pst.setString(2, b.getPostTitle());
+			pst.setString(3, b.getPostContents());
+			pst.setString(4, b.getPostCategory());
+			pst.setString(5, b.getPostImgPath());
+			pst.setInt(6, b.getBoardId());
+			pst.setInt(7, b.getPostId());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㊹ UpdateComment  コメントの更新(Comment_IDとComment_User_IDとPost_IDとComment_Chainは更新しない)
+	 * 引数：Comment_Info / 戻り値：なし
+	 */
+	public void UpdateComment(CommentInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "UPDATE Comment_Info SET Comment_Date = ?, Comment_Contents = ?"
+					+ "WHERE Comment_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, b.getCommentDate());
+			pst.setString(2, b.getCommentContents());
+			pst.setInt(3, b.getCommentId());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㊻ MakeComment  コメントを作成する
+	 * 引数：Comment_Info / 戻り値：なし
+	 */
+	public void MakeComment(CommentInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "INSERT INTO Comment_Info VALUES (?,?,?,?,?,?)";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1, 0);
+			pst.setString(2, b.getCommentDate());
+			pst.setInt(3, b.getCommentUserId());
+			pst.setString(4, b.getCommentContents());
+			pst.setInt(5, b.getPostId());
+			pst.setInt(6, b.getCommentChain());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	//㉝
 	public BoardInfoBean[] GetAllBoards() {
 		if(conn == null) {
