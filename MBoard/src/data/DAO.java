@@ -666,7 +666,7 @@ public class DAO {
 		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
 		UserInfoBean b;
 		try {
-			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE);
+			ResultSet rs = SelectQuery(DefineDatabase.USER_INFO_TABLE);
 
 			while(rs.next()) {
 				b = new UserInfoBean(
@@ -780,10 +780,11 @@ public class DAO {
 			while(rs.next()) {
 				list.add(rs.getInt(BoardPermissionInfoBean.USER_ID_COLUMN));
 			}
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return list;
+		return null;
 	}
 
 	/* ㉖ GetBoardInfo  掲示板情報をDBから取得する
@@ -852,6 +853,59 @@ public class DAO {
 			//DBにINSERTする
 			GivePermission(boardId, userId);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉚ CreateUser  ユーザーアカウントを作成する
+	 * 引数：UserInfoBean / 戻り値：なし
+	 */
+	public void CreateUser(UserInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "insert into User_Info values (?,?,?,?,?,?,?,?,?)";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1, 0);
+			pst.setString(2, b.getUserName());
+			pst.setString(3, b.getLoginID());
+			pst.setString(4, b.getLoginPass());
+			pst.setString(5, b.getLoginLog());
+			pst.setString(6, b.getEmailAdress());
+			pst.setString(7, b.getLineWorksID());
+			pst.setString(8, b.getProfileImgPath());
+			pst.setBoolean(9, b.isAdmin());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉛ UpdateAdmin  ユーザーの管理者権限を編集する
+	 * 引数：User_ID、Admin / 戻り値：なし
+	 */
+	public void UpdateAdmin(int uesrId, boolean admin) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "update User_Info set Admin = ? where User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setBoolean(1, admin);
+			pst.setInt(2, uesrId);
+			pst.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
