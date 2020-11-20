@@ -81,7 +81,7 @@ public class DAO {
 	//③
 	public boolean UpdatePassword(String mailAdress, String newPass, String newPassConfirmation) {
 		if(newPass.equals(newPassConfirmation)) {
-			UpdateSetQuery(DefineDatabase.USER_INFO_TABLE, UserInfoBean.LOGIN_PASS_COLUMN, newPass, UserInfoBean.EMAIL_ADRESS_COLUMN, mailAdress);
+			UpdateSetQuery(DefineDatabase.USER_INFO_TABLE, UserInfoBean.LOGIN_PASS_COLUMN, newPass, UserInfoBean.EMAIL_ADDRESS_COLUMN, mailAdress);
 			return true;
 		}
 		System.out.println("password and confirmation doest match->pass:" + newPass + "/confirmation:" + newPassConfirmation);
@@ -109,6 +109,8 @@ public class DAO {
 					pib[i].setPostCategory(result.getString(PostInfoBean.POST_CATEGORY_COLUMN));
 					pib[i].setPostImgPath(result.getString(PostInfoBean.POST_IMAGE_COLUMN));
 					pib[i].setBoardId(result.getInt(PostInfoBean.BOARD_ID_COLUMN));
+					pib[i].setPostUserName(SelectMember(userId).getUserName());
+					pib[i].setPostUserIconPath(SelectMember(userId).getProfileImgPath());
 				}
 			}
 			result.close();
@@ -132,7 +134,7 @@ public class DAO {
 
 		String query = "UPDATE " + DefineDatabase.USER_INFO_TABLE + " SET "
 						+ UserInfoBean.USER_NAME_COLUMN +" = '" + userInfoBean.getUserName() + "', "
-				        + UserInfoBean.EMAIL_ADRESS_COLUMN +" = '" + userInfoBean.getEmailAdress() + "', "
+				        + UserInfoBean.EMAIL_ADDRESS_COLUMN +" = '" + userInfoBean.getEmailAdress() + "', "
 						+ UserInfoBean.LINE_WORKS_ID_COLUMN +" = '" + userInfoBean.getLineWorksID() + "', "
 				        + UserInfoBean.PROFILE_IMAGE_COLUMN + " = '" + userInfoBean.getProfileImgPath() + "' WHERE "
 				        + UserInfoBean.USER_ID_COLUMN + " = " + userInfoBean.getUserID() + ";";
@@ -157,7 +159,7 @@ public class DAO {
 			uib.setLoginID(result.getString(UserInfoBean.LOGIN_ID_COLUMN));
 			uib.setLoginPass(result.getString(UserInfoBean.LOGIN_PASS_COLUMN));
 			uib.setLoginLog(result.getString(UserInfoBean.LOGIN_LOG_COLUMN));
-			uib.setEmailAdress(result.getString(UserInfoBean.EMAIL_ADRESS_COLUMN));
+			uib.setEmailAdress(result.getString(UserInfoBean.EMAIL_ADDRESS_COLUMN));
 			uib.setLineWorksID(result.getString(UserInfoBean.LINE_WORKS_ID_COLUMN));
 			uib.setProfileImgPath(result.getString(UserInfoBean.PROFILE_IMAGE_COLUMN));
 			uib.setAdmin(result.getBoolean(UserInfoBean.ADMIN_COLUMN));
@@ -675,7 +677,7 @@ public class DAO {
 						rs.getString(UserInfoBean.LOGIN_ID_COLUMN),
 						rs.getString(UserInfoBean.LOGIN_PASS_COLUMN),
 						rs.getString(UserInfoBean.LOGIN_LOG_COLUMN),
-						rs.getString(UserInfoBean.EMAIL_ADRESS_COLUMN),
+						rs.getString(UserInfoBean.EMAIL_ADDRESS_COLUMN),
 						rs.getString(UserInfoBean.LINE_WORKS_ID_COLUMN),
 						rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN),
 						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
@@ -1130,7 +1132,6 @@ public class DAO {
 	//㊶
 	public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
 		return null;
-
 	}
 	//条件なしオーバーロード
 	public ResultSet SelectQuery(String tablename) {
@@ -1427,6 +1428,3 @@ public class DAO {
 	}
 
 }
-
-
-

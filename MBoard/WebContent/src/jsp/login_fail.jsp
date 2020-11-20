@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>サインイン</title>
+<title>ログイン失敗</title>
 <link type= "text/css" rel="stylesheet" href="<%=request.getContextPath()%>/src/css/login.css" />
 </head>
 <body>

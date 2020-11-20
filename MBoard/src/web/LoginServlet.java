@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import data.BoardInfoBean;
 import data.DAO;
+import data.PostInfoBean;
 import data.UserInfoBean;
 
 public class LoginServlet extends HttpServlet {
@@ -23,10 +24,12 @@ public class LoginServlet extends HttpServlet {
 			//ログイン
 			System.out.println("LOGIN SUCCESS");
 			session = req.getSession(true);
-			session.setAttribute("UserInfoBean", uib);
+			session.setAttribute("userInfoBean", uib);
 
 			BoardInfoBean[] bib = dao.GetMyBoards(uib.getUserID());
-			req.setAttribute("BoardInfoBean", bib);
+			PostInfoBean[] pib = dao.GetMyPosts(uib.getUserID());
+			req.setAttribute("boardInfoBean", bib);
+			req.setAttribute("postInfoBean", pib);
 
 			RequestDispatcher rd = req.getRequestDispatcher("/src/jsp/my_page.jsp");
 			rd.forward(req, resp);
