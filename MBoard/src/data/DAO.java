@@ -704,7 +704,7 @@ public class DAO {
 
 		try {
 			conn.setAutoCommit(false);
-			String query = "insert into Board_Permission_Info values (?,?)";
+			String query = "INSERT INTO Board_Permission_Info VALUES (?,?)";
 			pst = conn.prepareStatement(query);
 
 			for (int i = 0; i < userId.length; i++) {
@@ -734,9 +734,9 @@ public class DAO {
 		}
 
 		try {
-			String query = "insert into Board_Info "
+			String query = "INSERT INTO Board_Info "
 					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
-					+ "values (?,?,?,?)";
+					+ "VALUES (?,?,?,?)";
 			pst = conn.prepareStatement(query);
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
@@ -745,8 +745,8 @@ public class DAO {
 			pst.executeUpdate();
 
 			//ボードIDを取得する  タイムスタンプのカラムがあれば短くなるかも
-			String selQuery = "select Board_ID from Board_Info where Board_Category = ? and "
-					+ "Board_Color = ? and Board_Image = ? and Board_Contents = ?";
+			String selQuery = "SELECT Board_ID FROM Board_Info WHERE Board_Category = ? AND "
+					+ "Board_Color = ? AND Board_Image = ? AND Board_Contents = ?";
 			pst = conn.prepareStatement(selQuery);
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
@@ -823,9 +823,9 @@ public class DAO {
 			}
 		}
 		try {
-			String query = "update Board_Info set Board_Category = ?, Board_Color = ?, "
+			String query = "UPDATE Board_Info SET Board_Category = ?, Board_Color = ?, "
 					+ "Board_Image = ?, Board_Contents = ? "
-					+ "where Board_ID = ?";
+					+ "WHERE Board_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
@@ -870,7 +870,7 @@ public class DAO {
 			}
 		}
 		try {
-			String query = "insert into User_Info values (?,?,?,?,?,?,?,?,?)";
+			String query = "INSERT INTO User_Info VALUES (?,?,?,?,?,?,?,?,?)";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1, 0);
 			pst.setString(2, b.getUserName());
@@ -900,7 +900,7 @@ public class DAO {
 			}
 		}
 		try {
-			String query = "update User_Info set Admin = ? where User_ID = ?";
+			String query = "UPDATE User_Info SET Admin = ? WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setBoolean(1, admin);
 			pst.setInt(2, uesrId);
