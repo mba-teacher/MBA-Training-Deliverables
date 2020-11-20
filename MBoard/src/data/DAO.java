@@ -734,14 +734,13 @@ public class DAO {
 		}
 
 		try {
-			String query = "INSERT INTO Board_Info "
-					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
-					+ "VALUES (?,?,?,?)";
+			String query = "INSERT INTO Board_Info VALUES (?,?,?,?,?)";
 			pst = conn.prepareStatement(query);
-			pst.setString(1, b.getBoardCategory());
-			pst.setInt(2, b.getBoardColor());
-			pst.setString(3, b.getBoardImgPath());
-			pst.setString(4, b.getBoardContents());
+			pst.setInt(1, 0);
+			pst.setString(2, b.getBoardCategory());
+			pst.setInt(3, b.getBoardColor());
+			pst.setString(4, b.getBoardImgPath());
+			pst.setString(5, b.getBoardContents());
 			pst.executeUpdate();
 
 			//ボードIDを取得する  タイムスタンプのカラムがあれば短くなるかも
@@ -760,7 +759,7 @@ public class DAO {
 				GivePermission(b.getBoardId(), userId);
 			} else {
 				//rs.next()がない場合（検索がヒットしてない）
-				System.out.println("insertが失敗している可能性があります。DBを確認してください。");
+				System.out.println("insertが失敗している可能性があります。");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
