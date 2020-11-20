@@ -666,7 +666,7 @@ public class DAO {
 		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
 		UserInfoBean b;
 		try {
-			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE);
+			ResultSet rs = SelectQuery(DefineDatabase.USER_INFO_TABLE);
 
 			while(rs.next()) {
 				b = new UserInfoBean(
@@ -704,7 +704,7 @@ public class DAO {
 
 		try {
 			conn.setAutoCommit(false);
-			String query = "insert into Board_Permission_Info values (?,?)";
+			String query = "INSERT INTO Board_Permission_Info VALUES (?,?)";
 			pst = conn.prepareStatement(query);
 
 			for (int i = 0; i < userId.length; i++) {
@@ -734,19 +734,18 @@ public class DAO {
 		}
 
 		try {
-			String query = "insert into Board_Info "
-					+ "(Board_Category, Board_Color, Board_Image, Board_Contents) "
-					+ "values (?,?,?,?)";
+			String query = "INSERT INTO Board_Info VALUES (?,?,?,?,?)";
 			pst = conn.prepareStatement(query);
-			pst.setString(1, b.getBoardCategory());
-			pst.setInt(2, b.getBoardColor());
-			pst.setString(3, b.getBoardImgPath());
-			pst.setString(4, b.getBoardContents());
+			pst.setInt(1, 0);
+			pst.setString(2, b.getBoardCategory());
+			pst.setInt(3, b.getBoardColor());
+			pst.setString(4, b.getBoardImgPath());
+			pst.setString(5, b.getBoardContents());
 			pst.executeUpdate();
 
 			//ボードIDを取得する  タイムスタンプのカラムがあれば短くなるかも
-			String selQuery = "select Board_ID from Board_Info where Board_Category = ? and "
-					+ "Board_Color = ? and Board_Image = ? and Board_Contents = ?";
+			String selQuery = "SELECT Board_ID FROM Board_Info WHERE Board_Category = ? AND "
+					+ "Board_Color = ? AND Board_Image = ? AND Board_Contents = ?";
 			pst = conn.prepareStatement(selQuery);
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
@@ -760,7 +759,7 @@ public class DAO {
 				GivePermission(b.getBoardId(), userId);
 			} else {
 				//rs.next()がない場合（検索がヒットしてない）
-				System.out.println("insertが失敗している可能性があります。DBを確認してください。");
+				System.out.println("insertが失敗している可能性があります。");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -780,10 +779,11 @@ public class DAO {
 			while(rs.next()) {
 				list.add(rs.getInt(BoardPermissionInfoBean.USER_ID_COLUMN));
 			}
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return list;
+		return null;
 	}
 
 	/* ㉖ GetBoardInfo  掲示板情報をDBから取得する
@@ -807,6 +807,106 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return b;
+	}
+
+	/* ㉗ UpdateBoard  掲示板の情報を更新する
+	 * 引数：BoardInfoBean、User_ID[]
+	 */
+	public void UpdateBoard(BoardInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "UPDATE Board_Info SET Board_Category = ?, Board_Color = ?, "
+					+ "Board_Image = ?, Board_Contents = ? "
+					+ "WHERE Board_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, b.getBoardCategory());
+			pst.setInt(2, b.getBoardColor());
+			pst.setString(3, b.getBoardImgPath());
+			pst.setString(4, b.getBoardContents());
+			pst.setInt(5, b.getBoardId());
+			pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉙ UpdatePermmisioinMembers  アクセス制限が変更されたらDBからDELETEしてINSERTし直す
+	 * 引数：Board_ID、User_ID[] / 戻り値：なし
+	 * 変更のある/なしはどこで判断する？
+	 */
+	public void UpdatePermmisioinMembers(int boardId, int[] userId) {
+		try {
+			//DBからDELETEする
+			String[] column = {BoardPermissionInfoBean.BOARD_ID_COLUMN};
+			int[] values = {boardId};
+			DeleteQuery(DefineDatabase.BOARD_PERMISSION_INFO, column, values);
+
+			//DBにINSERTする
+			GivePermission(boardId, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉚ CreateUser  ユーザーアカウントを作成する
+	 * 引数：UserInfoBean / 戻り値：なし
+	 */
+	public void CreateUser(UserInfoBean b) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "INSERT INTO User_Info VALUES (?,?,?,?,?,?,?,?,?)";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1, 0);
+			pst.setString(2, b.getUserName());
+			pst.setString(3, b.getLoginID());
+			pst.setString(4, b.getLoginPass());
+			pst.setString(5, b.getLoginLog());
+			pst.setString(6, b.getEmailAdress());
+			pst.setString(7, b.getLineWorksID());
+			pst.setString(8, b.getProfileImgPath());
+			pst.setBoolean(9, b.isAdmin());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ㉛ UpdateAdmin  ユーザーの管理者権限を編集する
+	 * 引数：User_ID、Admin / 戻り値：なし
+	 */
+	public void UpdateAdmin(int uesrId, boolean admin) {
+		if(conn == null) {
+			try {
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			String query = "UPDATE User_Info SET Admin = ? WHERE User_ID = ?";
+			pst = conn.prepareStatement(query);
+			pst.setBoolean(1, admin);
+			pst.setInt(2, uesrId);
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	//㉝
