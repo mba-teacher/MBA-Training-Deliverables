@@ -1332,7 +1332,7 @@ public class DAO {
 		return null;
 
 	}
-}
+
 
 	//㊶
 	public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
