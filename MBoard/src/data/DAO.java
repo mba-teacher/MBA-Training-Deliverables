@@ -276,22 +276,32 @@ public class DAO {
 		}
 	}
 
-	//⑪ 掲示板に参加
+	/*⑪ユーザーを掲示板に参加
+	 *メソッド名：JoinBoard()
+	 * 引数      ：int userId, int boardId
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数(ユーザーID,掲示板ID)を代入したSQL文を発行し、DB(Board_Member_Info)にレコードを追加する
+	 */
 	public boolean JoinBoard(int userId,int boardId) {
+		//戻り値で返す変数を定義
 		boolean b;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, pass);
-			//st = cnct.createStatement();
+
+			//SQL文作成
 			String query = "insert into Board_Member_Info values(?,?)";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1, userId);
 			pst.setInt(2,boardId);
+			//SQL文実行
 			pst.executeUpdate();
-
 			b=true;
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -299,21 +309,32 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
-		return b;
+		return b;//tryを通過したかを返す
 	}
 
-	//⑫記事のコメント情報取得
+	/*⑫記事のコメント情報取得
+	 *メソッド名：GetBoards()
+	 * 引数      ：int postId
+	 * 戻り値    ：ArrayList<CommentInfoBean>型 CommentInfoList
+	 * 処理      ：DB(Comment_Info)に記事IDを指定してSQL文を発行し、コメント情報を取得する
+	 */
 	public ArrayList<CommentInfoBean> GetBoards(int postId) {
+		//戻り値として返すようの配列を定義
 		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, pass);
 			stmt = conn.createStatement();
-			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
 
+			//SQL文作成
+			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
 			ResultSet rs =  stmt.executeQuery(query);
 
+			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
+				//CommentInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
 				CommentInfoBean b = new CommentInfoBean();
 				b.setCommentId(rs.getInt("Comment_ID"));
 				b.setCommentDate(rs.getString("Comment_Date"));
@@ -321,30 +342,44 @@ public class DAO {
 				b.setCommentContents(rs.getString("Comment_Contents"));
 				b.setPostId(rs.getInt("Post_ID"));
 				b.setCommentChain(rs.getInt("Comment_Chain"));
+				//最初に定義した配列にBeanのインスタンスを格納する
 				CommentInfoList.add(b);
 			}
-
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return CommentInfoList;
 	}
 
-	//⑬複数のユーザー情報を取得
+	/*⑬複数のユーザー情報を取得
+	 * メソッド名：SelectMembers()
+	 * 引数      ：ArrayList<Integer> userId
+	 * 戻り値    ：ArrayList<UserInfoBean>型 UserInfoList
+	 * 処理      ：DB(User_Info)にユーザーIDを指定してSQL文を発行し、ユーザー情報を取得する
+	 */
 	public ArrayList<UserInfoBean> SelectMembers(ArrayList<Integer> userId) {
+		//戻り値として返すようの配列を定義
 		ArrayList<UserInfoBean> UserInfoList=new ArrayList<UserInfoBean>();
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, pass);
 			stmt = conn.createStatement();
 
+			//引数の配列の要素数文for文を回す
 			for(int i=0;i<userId.size();i++) {
-				String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId.get(i)+"'";
+				//SQL文作成
+				String query = "SELECT * FROM User_Info WHERE user_id = '"+userId.get(i)+"'";
 				ResultSet rs =  stmt.executeQuery(query);
+				//レコードにカーソルを当てる
 				rs.next();
 
+				//UserInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
 				UserInfoBean b = new UserInfoBean();
 				b.setUserID(rs.getInt("User_ID"));
 				b.setUserName(rs.getString("User_Name"));
@@ -355,32 +390,45 @@ public class DAO {
 				b.setLineWorksID(rs.getString("Line_Works_ID"));
 				b.setProfileImgPath(rs.getString("Profile_Image"));
 				b.setAdmin(rs.getBoolean("Profile_Image"));
+				//最初に定義した配列にBeanのインスタンスを格納する
 				UserInfoList.add(b);
 			}
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return UserInfoList;
 	}
 
-	//⑭いいね情報追加
+	/*⑭いいね情報追加
+	 * メソッド名：InsertRead()
+	 * 引数      ：int readUserId,int postId
+	 * 処理      ：引数(いいねユーザーID,記事ID)を代入したSQL文を発行し、DB(Read_Info)にレコードを追加する
+	 */
 	public void InsertRead(int readUserId ,int postId) {
-		//現在時刻取得
+		//現在時刻取得し、String型に変換
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String str = sdf.format(timestamp);
+
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "INSERT INTO Read_Info(Read_Date,Read_User_ID,Post_ID,Comment_ID) values('"+str+"',?,?,null)";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,readUserId);
 			pst.setInt(2,postId);
 			pst.executeUpdate();
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -388,19 +436,28 @@ public class DAO {
 		}
 	}
 
-	//[14-1]いいね情報削除
+	/*[14-1]いいね情報削除
+	 * メソッド名：DeleteRead()
+	 * 引数      ：int readUserId ,int postId
+	 * 処理      ：引数(いいねユーザーID,記事ID)を代入したSQL文を発行し、DB(Read_Info)のレコードを削除する
+	 */
 	public void DeleteRead(int readUserId ,int postId) {
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "DELETE FROM Read_Info WHERE Read_User_ID = ? AND Post_ID=?";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,readUserId);
 			pst.setInt(2,postId);
+			//SQL文実行
 			pst.executeUpdate();
 
-
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -408,44 +465,66 @@ public class DAO {
 		}
 	}
 
-	//[14-2]記事のいいね数取得
+	/*[14-2]記事のいいね数取得
+	 * メソッド名：GetReadCount()
+	 * 引数      ：int postId
+	 * 戻り値    ：int型 readCount
+	 * 処理      ：DB(Read_Info)に記事IDを指定してSQL文を発行し、いいね数を取得する
+	 */
 	public int GetReadCount(int postId) {
+		//戻り値として返すようの変数を定義
 		int readCount=0;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
-			String query = "SELECT * FROM Read_Info WHERE Post_ID = '"+postId+"'";
 
+			//SQL文作成
+			String query = "SELECT * FROM Read_Info WHERE Post_ID = '"+postId+"'";
 			ResultSet rs =  stmt.executeQuery(query);
 
+			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
+				//戻り値として返すいいねの合計値を加算
 				readCount++;
 			}
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return readCount;
 	}
 
-	//⑮いいね情報追加(コメントのいいね)
+	/*⑮いいね情報追加(コメントのいいね)
+	 * メソッド名：InsertCommentRead()
+	 * 引数      ：int readUserId ,int commentId
+	 * 処理      ：引数(いいねユーザーID,コメントID)を代入したSQL文を発行し、DB(Read_Info)にレコードを追加する
+	 */
 	public void InsertCommentRead(int readUserId ,int commentId) {
-		//現在時刻取得
+		//現在時刻取得し、String型に変換
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String str = sdf.format(timestamp);
+
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "INSERT INTO Read_Info(Read_Date,Read_User_ID,Post_ID,Comment_ID) values('"+str+"',?,null,?)";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,readUserId);
 			pst.setInt(2,commentId);
 			pst.executeUpdate();
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -453,19 +532,28 @@ public class DAO {
 		}
 	}
 
-	//[15-1]いいね情報削除(コメントのいいね)
+	/*[15-1]いいね情報削除(コメントのいいね)
+	 * メソッド名：DeleteCommentRead()
+	 * 引数      ：int readUserId ,int commentId
+	 * 処理      ：引数(いいねユーザーID,コメントID)を代入したSQL文を発行し、DB(Read_Info)のレコードを削除する
+	 */
 	public void DeleteCommentRead(int readUserId ,int commentId) {
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "DELETE FROM Read_Info WHERE Read_User_ID = ? AND Comment_ID=?";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,readUserId);
 			pst.setInt(2,commentId);
+			//SQL文実行
 			pst.executeUpdate();
 
-
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -473,48 +561,73 @@ public class DAO {
 		}
 	}
 
-	//[15-2]コメントのいいね数取得
+	/*[15-2]コメントのいいね数取得
+	 * メソッド名：GetReadCommentCount()
+	 * 引数      ：int Comment
+	 * 戻り値    ：int型 readCount
+	 * 処理      ：DB(Read_Info)にコメントIDを指定してSQL文を発行し、いいね数を取得する
+	 */
 	public int GetReadCommentCount(int Comment) {
+		//戻り値として返すようの変数を定義
 		int readCount=0;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
-			String query = "SELECT * FROM Read_Info WHERE Comment_ID = '"+Comment+"'";
 
+			//SQL文作成
+			String query = "SELECT * FROM Read_Info WHERE Comment_ID = '"+Comment+"'";
 			ResultSet rs =  stmt.executeQuery(query);
 
+			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
+				//戻り値として返すいいねの合計値を加算
 				readCount++;
 			}
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return readCount;
 	}
 
 	//⑯定型文情報の取得
+	/* メソッド名：GetTemplates()
+	 * 引数      ：int templateUserId
+	 * 戻り値    ：ArrayList<TemplateInfoBean>型 TemplateInfoList
+	 * 処理      ：DB(Template_Info)に定型文ユーザーIDを指定してSQL文を発行し、ユーザー情報を取得する
+	 */
 	public ArrayList<TemplateInfoBean> GetTemplates(int templateUserId) {
+		//戻り値として返すようの配列を定義
 		ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
 		try {
+			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
-			String query = "SELECT * FROM Template_Info WHERE Template_User_ID = '"+templateUserId+"'";
 
+			//SQL文作成
+			String query = "SELECT * FROM Template_Info WHERE Template_User_ID = '"+templateUserId+"'";
 			ResultSet rs =  stmt.executeQuery(query);
 
+			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
+				//TemplateInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
 				TemplateInfoBean b = new TemplateInfoBean();
 				b.setTempleId(rs.getInt("Template_ID"));
 				b.setTempleUserId(rs.getInt("Template_User_ID"));
 				b.setTempleName(rs.getString("Template_Name"));
 				b.setTempleTitle(rs.getString("Template_Title"));//Nameと同じなため、削除予定
 				b.setTempleContents(rs.getString("Template_Contents"));
+				//最初に定義した配列にBeanのインスタンスを格納する
 				TemplateInfoList.add(b);
 			}
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -523,23 +636,35 @@ public class DAO {
 		return TemplateInfoList;
 	}
 
-	//⑰定型文情報更新
+	/*⑰定型文情報更新
+	 *メソッド名：UpdateTemplate()
+	 * 引数      ：TemplateInfoBean bean
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数(定型文情報)を代入したSQL文を発行し、DB(Template_Info)のレコードを更新する
+	 */
 	public boolean UpdateTemplate(TemplateInfoBean bean) {
+		//戻り値で返す変数を定義
 		boolean b=false;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "UPDATE Template_Info SET Template_Name=?,Template_Title=?,Template_Contents=? WHERE Template_ID=?";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setString(1,bean.getTempleName());
 			pst.setString(2,bean.getTempleTitle());//Nameと同じなため、削除予定
 			pst.setString(3,bean.getTempleContents());
 			pst.setInt(4,bean.getTempleId());
-
+			//SQL文実行
 			pst.executeUpdate();
 
 			b=true;
+
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -547,27 +672,40 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
+		//tryを通過したかを返す
 		return b;
 	}
 
-	//⑱定型文情報追加
+	/*⑱定型文情報追加
+	 *メソッド名：InsertTemplate()
+	 * 引数      ：TemplateInfoBean bean
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数(定型文情報)を代入したSQL文を発行し、DB(Template_Info)のレコードを追加する
+	 */
 	public boolean InsertTemplate(TemplateInfoBean bean) {
+		//戻り値で返す変数を定義
 		boolean b=false;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "INSERT INTO Template_Info(Template_User_ID,Template_Name,Template_Title,Template_Contents) "
 					+ "VALUES(?,?,?,?)";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,bean.getTempleUserId());
 			pst.setString(2,bean.getTempleName());
 			pst.setString(3,bean.getTempleTitle());//Nameと同じなため、削除予定
 			pst.setString(4,bean.getTempleContents());
-
+			//SQL文実行
 			pst.executeUpdate();
 
 			b=true;
+
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -575,22 +713,36 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
+		//tryを通過したかを返す
 		return b;
 	}
 
-	//⑲定型文情報削除
+	/*⑲定型文情報削除
+	 *メソッド名：DeleteTemplate()
+	 * 引数      ：int templateId
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数(定型文ID)を代入したSQL文を発行し、DB(Template_Info)のレコードを削除する
+	 */
 	public boolean DeleteTemplate(int templateId) {
+		//戻り値で返す変数を定義
 		boolean b=false;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成
 			String query = "DELETE FROM Template_Info WHERE template_Id = ?";
 			pst = conn.prepareStatement(query);
 
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,templateId);
+			//SQL文実行
 			pst.executeUpdate();
 
 			b=true;
+
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -598,57 +750,82 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
+		//tryを通過したかを返す
 		return b;
 	}
 
-
-
-
 	//㉑ユーザーの参加可能な掲示板を取得
+	/* メソッド名：GetPermissionInfo()
+	 * 引数      ：int userId
+	 * 戻り値    ：ArrayList<BoardPermissionInfoBean>型 BoardPermissionInfoList
+	 * 処理      ：DB(Board_Permission_Info)にユーザーIDを指定してSQL文を発行し、ユーザー情報を取得する
+	 */
 	public ArrayList<BoardPermissionInfoBean> GetPermissionInfo(int userId) {
+		//戻り値として返すようの配列を定義
 		ArrayList<BoardPermissionInfoBean> BoardPermissionInfoList=new ArrayList<BoardPermissionInfoBean>();
 		try {
+			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, pass);
 			stmt = conn.createStatement();
-			String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId+"'";
 
+			//SQL文作成
+			String query = "SELECT * FROM Board_Permission_Info WHERE user_id = '"+userId+"'";
 			ResultSet rs =stmt.executeQuery(query);
 
+			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
+				//BoardPermissionInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
 				BoardPermissionInfoBean b = new BoardPermissionInfoBean();
 				b.setBoardId(rs.getInt("Board_ID"));
 				b.setUserId(rs.getInt("User_ID"));
+				//最初に定義した配列にBeanのインスタンスを格納する
 				BoardPermissionInfoList.add(b);
 			}
 
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return BoardPermissionInfoList;
 	}
 
 	//㉒参加可能の掲示板情報の取得
+	/* メソッド名：GetBoards()
+	 * 引数      ：ArrayList<BoardPermissionInfoBean> list
+	 * 戻り値    ：ArrayList<BoardInfoBean>型 BoardInfoList
+	 * 処理      ：DB(Board_Info)に掲示板参加制限情報を指定してSQL文を発行し、掲示板情報を取得する
+	 */
 	public ArrayList<BoardInfoBean> GetBoards(ArrayList<BoardPermissionInfoBean> list) {
+		//戻り値として返すようの配列を定義
 		ArrayList<BoardInfoBean> BoardInfoList=new ArrayList<BoardInfoBean>();
 		try {
+			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, pass);
 			stmt = conn.createStatement();
 
+			//引数の配列の要素数文for文を回す
 			for(int i=0;i<list.size();i++) {
+				//SQL文作成
 				String query = "SELECT * FROM Board_Info WHERE Board_ID = '"+list.get(i).getBoardId()+"'";
 				ResultSet rs = stmt.executeQuery(query);
+				//レコードにカーソルを当てる
 				rs.next();
 
+				//BoardInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
 				BoardInfoBean b = new BoardInfoBean();
 				b.setBoardId(rs.getInt("Board_ID"));
 				b.setBoardCategory(rs.getString("Board_Category"));
 				b.setBoardColor(rs.getInt("Board_Color"));
 				b.setBoardImgPath(rs.getString("Board_Image"));
 				b.setBoardContents(rs.getString("Board_Contents"));
+				//最初に定義した配列にBeanのインスタンスを格納する
 				BoardInfoList.add(b);
 			}
 
@@ -658,6 +835,7 @@ public class DAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return BoardInfoList;
 	}
 
@@ -993,54 +1171,76 @@ public class DAO {
 		}
 
 	}
-	//㉜ユーザー削除
+
+	/*㉜ユーザー削除
+	 *メソッド名：DeleteUser()
+	 * 引数      ：int userId
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数で渡されたユーザーIDに関連するDB情報をすべて削除
+	 */
 	public boolean DeleteUser(int userId) {
+		//戻り値で返す変数を定義
 		boolean b=false;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+
+			//SQL文作成用の変数を定義
 			String query;
 			Statement stmt;
 			ResultSet rs;
+
 			//ユーザー情報から削除
 			query = "DELETE FROM User_Info WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1,userId);
 			pst.executeUpdate();
+
 			//削除ユーザーの投稿記事、および付属しているコメント全削除
 			stmt = conn.createStatement();
-        	query = "SELECT * FROM Post_Info WHERE Post_User_ID = "+userId;
-        	rs = stmt.executeQuery(query);
-        	while(rs.next()) {
-        		DeletePost(rs.getInt("Post_ID"));
-        	}
+			query = "SELECT * FROM Post_Info WHERE Post_User_ID = "+userId;
+			rs = stmt.executeQuery(query);
+			//上記SQL文で指定したレコードの数分while文を回す
+			while(rs.next()) {
+				//記事削除メソッド呼び出し(㊸)
+				DeletePost(rs.getInt("Post_ID"));
+			}
+
 			//削除ユーザーがつけたいいね全削除
 			query = "DELETE FROM Read_Info WHERE Read_User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1,userId);
 			pst.executeUpdate();
+
 			//削除ユーザーをグループから削除
 			query = "DELETE FROM Group_Info WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1,userId);
 			pst.executeUpdate();
+
 			//削除ユーザーの定型文全削除
 			query = "DELETE FROM Template_Info WHERE Template_User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1,userId);
 			pst.executeUpdate();
+
 			//削除ユーザーの投稿コメント、および付属しているコメント全削除
 			stmt = conn.createStatement();
-        	query = "SELECT * FROM Comment_Info WHERE Comment_User_ID = "+userId;
-        	rs = stmt.executeQuery(query);
-        	while(rs.next()) {
-        		DeleteComment(rs.getInt("Comment_ID"));
-        	}
+			query = "SELECT * FROM Comment_Info WHERE Comment_User_ID = "+userId;
+			rs = stmt.executeQuery(query);
+			//上記SQL文で指定したレコードの数分while文を回す
+			while(rs.next()) {
+				//コメント削除メソッド呼び出し(㊺)
+				DeleteComment(rs.getInt("Comment_ID"));
+			}
+
 			//削除ユーザーの掲示板メンバー情報全削除
 			query = "DELETE FROM Board_Member_Info WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1,userId);
 			pst.executeUpdate();
+
 			//削除ユーザーの掲示板参加制限情報を全削除
 			query = "DELETE FROM Board_Permission_Info WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
@@ -1048,6 +1248,8 @@ public class DAO {
 			pst.executeUpdate();
 
 			b=true;
+
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -1055,8 +1257,8 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
+		//tryを通過したかを返す
 		return b;
-
 	}
 
 	//㉝全ての掲示板の情報を取得
@@ -1340,33 +1542,53 @@ public class DAO {
 	}
 
 
-	//㊸記事、および付属しているコメント、いいね全削除
+	/*㊸記事、および付属しているコメント、いいね全削除
+	 *メソッド名：DeletePost()
+	 * 引数      ：int postId
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数(記事ID)を代入したSQL文を発行し、DB(Post_Info,Read_Info,Comment_Info)のレコードを削除する
+	 */
 	public boolean DeletePost(int postId) {
+		//戻り値で返す変数を定義
 		boolean b=false;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
 			String query;
-			//記事削除
+
+			//記事を削除するSQL文作成
 			query = "DELETE FROM Post_Info WHERE Post_ID = ?";
 			pst = conn.prepareStatement(query);
+
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,postId);
+			//SQL文実行
 			pst.executeUpdate();
-			//削除した記事のいいね全削除
+
+
+			//削除した記事のいいねを全削除するSQL文作成
 			query = "DELETE FROM Read_Info WHERE Post_ID = ?";
 			pst = conn.prepareStatement(query);
+
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,postId);
+			//SQL文実行
 			pst.executeUpdate();
 
-			//削除した記事についてるコメント削除
+			//削除した記事についてるコメント情報を取得するSQL文作成
 			Statement stmt = conn.createStatement();
-        	query = "SELECT * FROM Comment_Info WHERE Post_ID = "+postId;
-        	ResultSet rs = stmt.executeQuery(query);
-        	while(rs.next()) {
-        		DeleteComment(rs.getInt("Comment_ID"));
-        	}
+			query = "SELECT * FROM Comment_Info WHERE Post_ID = "+postId;
+			ResultSet rs = stmt.executeQuery(query);
+			//上記SQL文で指定したレコードの数分while文を回す
+			while(rs.next()) {
+				//コメント削除メソッド呼び出し(㊺)
+				DeleteComment(rs.getInt("Comment_ID"));
+			}
 
 			b=true;
+
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -1374,36 +1596,56 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
+		//tryを通過したかを返す
 		return b;
 	}
 
-	//㊺コメント、および付属しているコメント、いいね全削除
+	/*㊺コメント、および付属しているコメント、いいね全削除
+	 *メソッド名：DeleteComment()
+	 * 引数      ：int commentId
+	 * 戻り値    ：boolean型 b
+	 * 処理      ：引数(コメントID)を代入したSQL文を発行し、DB(Read_Info,Comment_Info)のレコードを削除する
+	 */
 	public boolean DeleteComment(int commentId) {
+		//戻り値で返す変数を定義
 		boolean b=false;
 		try {
+			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
-			String query;
-			//コメント削除
-			query= "DELETE FROM Comment_Info WHERE Comment_ID = ?";
+
+			//コメントを削除するSQL文作成
+			 String query= "DELETE FROM Comment_Info WHERE Comment_ID = ?";
 			pst = conn.prepareStatement(query);
+
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,commentId);
+			//SQL文実行
 			pst.executeUpdate();
-			//削除したコメントのいいね全削除
+
+
+			//削除したコメントのいいねを全削除するSQL文作成
 			query = "DELETE FROM Read_Info WHERE Comment_ID = ?";
 			pst = conn.prepareStatement(query);
+
+			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,commentId);
+			//SQL文実行
 			pst.executeUpdate();
 
-			//削除したコメントについてるコメント削除
+			//削除したコメントについてるコメント情報を取得するSQL文作成
 			Statement stmt = conn.createStatement();
-        	query = "SELECT * FROM Comment_Info WHERE Comment_Chain = "+commentId;
-        	ResultSet rs = stmt.executeQuery(query);
-        	while(rs.next()) {
-        		DeleteComment(rs.getInt("Comment_ID"));
-        	}
+			query = "SELECT * FROM Comment_Info WHERE Comment_Chain = "+commentId;
+			ResultSet rs = stmt.executeQuery(query);
+			//上記SQL文で指定したレコードの数分while文を回す
+			while(rs.next()) {
+				//再帰呼び出し
+				DeleteComment(rs.getInt("Comment_ID"));
+			}
 
 			b=true;
+
+			//下記catchはエラーハンドリング用
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			b=false;
@@ -1411,6 +1653,7 @@ public class DAO {
 			e.printStackTrace();
 			b=false;
 		}
+		//tryを通過したかを返す
 		return b;
 	}
 
