@@ -1,14 +1,15 @@
 @charset "UTF-8";
 
-html {
-	height:100%;
-}
 
 body {
 	padding:0px;
 	margin:0px;
-	height:100%;
+	/* height:100%; */
 	background-color:#dceaef;
+}
+
+.clear{
+	clear:both;
 }
 
 .nav-area {
@@ -17,6 +18,9 @@ body {
 	width:80px;
 	height:100%;
 	text-align:center;
+	top:0px;
+	position:sticky;
+	height:100vh;
 }
 
 .logo-area {
@@ -46,7 +50,7 @@ body {
 }
 
 .popup-content{
-	position:absolute;
+	position:fixed;
 	top:305px;
 	left:90px;
 	width:290px;
@@ -66,7 +70,7 @@ body {
 }
 
 .popup-bg {
-	position:absolute;
+	position:fixed;
 	top:0;
 	left:0;
 	width:100vw;
@@ -79,16 +83,8 @@ body {
 	display:flex;
 }
 
-.nav-area {
-	position:sticky;
-	height:100vh;
-	margin-bottom:0;
-	top:0px;
-}
-
 .mypage_content{
 	width:calc(100vw - 80px);
-	height:3000px;
 	background-color:#ddd;
 	border-radius:0 0 0 0 ;
 	text-align:center;
