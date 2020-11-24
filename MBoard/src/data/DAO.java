@@ -1059,36 +1059,42 @@ public class DAO {
 
 	}
 
-	//㉝
-	public BoardInfoBean[] GetAllBoards() {
-		if(conn == null) {
-			try {
-				ConnectToDB(dbName);
-			}
-			catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+	//㉝全ての掲示板の情報を取得
+	/*メソッド名:GetAllBoards()
+	 *引数:無し
+	 *戻り値:ArrayList<BoardInfoBean>型 list
+	 *処理:Board_Info内の全てを指定してSQL分を発行し、掲示板の情報を取得する。
+	*/
+
+	public ArrayList<BoardInfoBean> GetAllBoards() throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
         	String query = "SELECT * FROM Board_Info";
         	ResultSet rs = stmt.executeQuery(query);
 
+        	//戻り値として次の配列を定義
         	ArrayList<BoardInfoBean> list = new ArrayList<BoardInfoBean>();
+
+        	//レコードにカーソルを当て、カーソルが当たるレコードの回数分While文を回す
         	while(rs.next()) {
+        		//BoardInfoBeanクラスのインスタンス作成
+        		//各種情報をBeanにsetterメソッドで格納
         		BoardInfoBean bib = new BoardInfoBean();
         		bib.setBoardId(rs.getInt("Board_ID"));
         		bib.setBoardCategory(rs.getString("Board_Category"));
         		bib.setBoardColor(rs.getInt("Board_Color"));
         		bib.setBoardImgPath(rs.getString("Board_Image"));
         		bib.setBoardContents(rs.getString("Board_Contents"));
+        		//定義していた配列にBeanのインスタンスを格納
         		list.add(bib);
         	}
-        	BoardInfoBean[] Board_Info= new BoardInfoBean[list.size()];
-        	for(int i=0;i<list.size();i++) {
-        		Board_Info[i]= list.get(i);
-        	}
-        	return Board_Info;
+        	//データを格納した配列を返す
+        	return list;
 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -1096,74 +1102,149 @@ public class DAO {
 		return null;
 	}
 
-	//㉞
-	public BoardInfoBean DeleteBoard(int boardId) {
+	//㉞掲示板の削除
+	/*メソッド名:DeleteBoard()
+	 *引数:int boardId
+	 *戻り値:無し
+	 *処理:Board_Infoに掲示板管理IDを指定してSQL分を発行し、掲示板の情報を削除する。
+	*/
+
+	public BoardInfoBean DeleteBoard(int boardId) throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
         	String query = "DELETE FROM Board_Info WHERE Board_ID="+boardId;
-        	ResultSet rs = stmt.executeQuery(query);
+        	int dele = stmt.executeUpdate(query);
 
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-
+		//戻り値はないのでnullで返す
 		return null;
 	}
 
-	//㉟
-	public GroupInfoBean ChangeGroupName(int groupId, String groupName) {
+
+	//㉟グループ名の変更
+	/*メソッド名:ChangeGroupName()
+	 *引数:int groupId, String groupName
+	 *戻り値:無し
+	 *処理:Group_InfoにグループIDを指定してSQL文を発行し、グループ名を変更する。
+	*/
+
+	public GroupInfoBean ChangeGroupName(int groupId, String groupName) throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
         	String query = "UPDATE Group_Info SET Group_Name="+groupName+"WHERE Group_ID="+groupId;
-			ResultSet rs = stmt.executeQuery(query);
-
+			int nc = stmt.executeUpdate(query);
 
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-
+		//戻り値はないのでnullで返す
 		return null;
 	}
 
-	//㊱
-	public GroupInfoBean CreateGroup(int groupId, String groupName, int userId) {
+	//㊱新しいグループ情報の追加
+	/*メソッド名:CreateGroup()
+	 *引数:int groupId, String groupName, int userId
+	 *戻り値:無し
+	 *処理:Group_InfoにSQL文を発行し、引数の値を元に新しくグループ情報をGroup_Infoに追加する。
+	*/
+
+	public GroupInfoBean CreateGroup(int groupId, String groupName, int userId) throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
 			String query = "INSERT INTO Group_Info VALUES("+groupId+","+groupName+","+userId+")";
-			ResultSet rs = stmt.executeQuery(query);
+			int rs = stmt.executeUpdate(query);
+
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-
+		//戻り値はないのでnullで返す
 		return null;
 	}
 
-	//㊲
-	public GroupInfoBean DeleteGroup(int groupId) {
+
+
+	//㊲引数で指定した値に該当するGroup_Info内の情報を削除する。
+	/*メソッド名:DeleteGroup()
+	 *引数:int groupId
+	 *戻り値:無し
+	 *処理:Group_InfoにグループIDを指定してSQL文を発行し、その指定したグループの情報を削除する。
+	*/
+
+	public GroupInfoBean DeleteGroup(int groupId) throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
         	String query = "DELETE FROM Group_Info WHERE Group_ID="+groupId;
-        	ResultSet rs = stmt.executeQuery(query);
+        	int rs = stmt.executeUpdate(query);
 
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		//戻り値はないのでnullで返す
 		return null;
 	}
 
-	//㊳
-	public UserInfoBean[] GetMembers(int userId[]) {
+	//㊳全てのユーザーの情報を取得
+	/*メソッド名:GetMembers()
+	 *引数:無し
+	 *戻り値:ArrayList<UserInfoBean>型 list
+	 *処理:User_Info内の全てを指定してSQL分を発行し、ユーザー情報を取得する。
+	*/
+
+	public ArrayList<UserInfoBean> GetMembers() throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
         	String query = "SELECT * FROM User_Info";
         	ResultSet rs = stmt.executeQuery(query);
+
+        	//戻り値として返す配列を定義
+        	ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
+
+        	//レコードにカーソルを当て、カーソルが当たるレコードの回数分While文を回す
         	while(rs.next()) {
+        		//UserInfoBeanクラスのインスタンス作成
+        		//各種情報をBeanにsetterメソッドで格納
         		UserInfoBean uib = new UserInfoBean();
         		uib.setUserID(rs.getInt("User_ID"));
         		uib.setUserName(rs.getString("User_Name"));
-
+        		uib.setLoginID(rs.getString("Login_ID"));
+        		uib.setLoginPass(rs.getString("Login_Pass"));
+        		uib.setLoginLog(rs.getString("Login_Log"));
+        		uib.setEmailAdress(rs.getString("Email_Adress"));
+        		uib.setLineWorksID(rs.getString("Line_Works_ID"));
+        		uib.setProfileImgPath(rs.getString("Profile_Image"));
+        		uib.setAdmin(rs.getBoolean("Admin"));
+        		//定義した配列にBeanのインスタンスを格納
+        		list.add(uib);
         	}
-
+        	//データを格納した配列を返す
+        	return list;
 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -1171,29 +1252,87 @@ public class DAO {
 		return null;
 	}
 
-	//㊴
-	public GroupInfoBean[] GetMyGroups(int userId) {
+
+
+	//㊴対象ユーザーにおける複数のグループ情報を取得
+	/*メソッド名:GetMyGroups()
+	 *引数:int userId
+	 *戻り値:ArrayList<GroupInfoBean>型 list
+	 *処理:Group_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を取得する。
+	*/
+
+	public ArrayList<GroupInfoBean> GetMyGroups(int userId) throws ClassNotFoundException {
 		try {
-			Statement stmt = conn.createStatement();
-        	String query = "SELECT * FROM Group_Info WHERE User_ID IN("+userId+")";
-        	ResultSet rs = stmt.executeQuery(query);
-        	GroupInfoBean[] gib = new GroupInfoBean[rs.getRow()];
-        	for(int i=0;i<gib.length;i++) {
-        		gib[i].setGroupId(rs.getInt("Group_ID"));
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//SQL文作成
+			String query = "SELECT * FROM Group_Info WHERE User_ID ="+userId;
+	        ResultSet rs = stmt.executeQuery(query);
+
+	        //戻り値として返す配列を定義
+	        ArrayList<GroupInfoBean> list = new ArrayList<GroupInfoBean>();
+
+	        //レコードにカーソルを当て、カーソルが当たるレコードの回数分While文を回す
+        	while(rs.next()) {
+        		//GroupInfoBeanクラスのインスタンス作成
+        		//各種情報をBeanにsetterメソッドで格納
+        		GroupInfoBean gib =new GroupInfoBean();
+        		gib.setGroupId(rs.getInt("Group_ID"));
+        		gib.setGroupName(rs.getString("Group_Name"));
+        		gib.setUserId(rs.getInt("User_ID"));
+        		//定義した配列に格納
+        		list.add(gib);
         	}
-
-
+        	//データを格納した配列を返す
+        	return list;
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	//㊵
-	public GroupInfoBean JoinGroup(int groupId, String groupName, int userId) {
+	//㊵対象ユーザーのグループ情報の更新
+	/*メソッド名:ChangeGroups()
+	 *引数:int groupId[], String groupName[], int userId[]
+	 *戻り値:無し
+	 *処理:
+	 *①Group_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を全て削除する。
+	 *②Group_Infoに再びSQL文を発行し、引数の値を元にグループ情報をGroup_Infoに追加する。
+	*/
+
+	public GroupInfoBean ChangeGroups(int groupId[], String groupName[], int userId[]) throws ClassNotFoundException {
+		try {
+			//MySQLに接続する
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url + dbName, user, pass);
+			stmt = conn.createStatement();
+
+			//繰り返し関数＆配列指定用の変数を定義
+			int count=0;
+
+			//SQL文作成1(DELETE文)
+			String query = "DELETE FROM Group_Info WHERE User_ID ="+userId[count];
+        	int leave = stmt.executeUpdate(query);
+
+        	//受け取った引数の配列の要素数分までfor文で繰り返す
+        	for(count=0;count<groupId.length;count++) {
+        		//SQL文作成2(INSERT文)
+        		query = "INSERT INTO Group_Info(Group_ID,Group_Name,User_ID)"
+						+ " VALUES("+groupId[count]+",'"+groupName[count]+"',"+userId[count]+")";
+				int join = stmt.executeUpdate(query);
+        	}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//戻り値はないのでnullで返す
 		return null;
 
 	}
+}
 
 	//㊶
 	public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
