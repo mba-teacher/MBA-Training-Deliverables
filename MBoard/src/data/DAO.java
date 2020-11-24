@@ -23,6 +23,7 @@ public class DAO {
 	Statement stmt = null;
 	PreparedStatement pst =null;
 
+	//SQL接続
 	private void ConnectToDB(String dbName) throws SQLException {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -37,6 +38,7 @@ public class DAO {
 		}
 	}
 
+	//SQL切断
 	public void Disconnect() throws SQLException {
 		if(conn!=null) {
 			try {
@@ -148,12 +150,21 @@ public class DAO {
 		}
 	}
 
-	//⑥
+	/*⑥ユーザー情報を取得
+	 *メソッド名：SelectMember()
+	 * 引数      ：int userId
+	 * 戻り値    ：UserInfoBean型 uib
+	 * 処理      ：DB(User_Info)にユーザーIDを指定してSQL文を発行し、ユーザー情報を取得する
+	 */
 	public UserInfoBean SelectMember(int userId) {
+		//戻り値として返すようのUserInfoBeanクラスのインスタンスを作成
 		UserInfoBean uib = new UserInfoBean();
+		//MySQLに接続し、SQL文作成するメソッド呼び出し
 		ResultSet result = SelectQuery(DefineDatabase.USER_INFO_TABLE, new String[] {UserInfoBean.USER_ID_COLUMN}, new int[] {userId});
 		try {
+			//レコードにカーソルを当てる
 			result.next();
+			//各種情報をBeanにsetterメソッドを使い、格納する
 			uib.setUserID(result.getInt(UserInfoBean.USER_ID_COLUMN));
 			uib.setUserName(result.getString(UserInfoBean.USER_NAME_COLUMN));
 			uib.setLoginID(result.getString(UserInfoBean.LOGIN_ID_COLUMN));
@@ -164,14 +175,23 @@ public class DAO {
 			uib.setProfileImgPath(result.getString(UserInfoBean.PROFILE_IMAGE_COLUMN));
 			uib.setAdmin(result.getBoolean(UserInfoBean.ADMIN_COLUMN));
 			result.close();
+
+			//下記catchはエラーハンドリング用
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納したUserInfoBeanクラスのインスタンスを返す
 		return uib;
 	}
 
-	//⑦
+	/*⑦ユーザーの参加している掲示板情報取得
+	 *メソッド名：GetMyBoards()
+	 * 引数      ：int userId
+	 * 戻り値    ：BoardInfoBean[]型 bib
+	 * 処理      ：引数で渡されたユーザーIDの参加中掲示板の掲示板情報をSQL文で発行し取得する。
+	 */
 	public BoardInfoBean[] GetMyBoards(int userId) {
+		//MySQLに接続し、SQL文作成するメソッド呼び出し(ユーザーの参加掲示板を取得)
 		ResultSet result = SelectQuery(DefineDatabase.BOARD_MEMBER_INFO_TABLE, new String[] {BoardMemberBean.USER_ID_COLUMN}, new int[] {userId});
 		int boardId[] = new int[] {};
 		try {
@@ -179,14 +199,17 @@ public class DAO {
 			boardId = new int[result.getRow()];
 			result.beforeFirst();
 			for (int i = 0; i < boardId.length; i++) {
+				//レコードにカーソルを当てる
 				result.next();
 				boardId[i] = result.getInt(BoardMemberBean.BOARD_ID_COLUMN);
 			}
+			//下記catchはエラーハンドリング用
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		result = SelectQueryOR(DefineDatabase.BOARD_INFO_TABLE, new String[] {BoardInfoBean.BOARD_ID_COLUMN}, boardId);
+		//戻り値として返すようの配列を定義
 		BoardInfoBean[] bib= null;
 		try {
 			if(result.next()) {
@@ -195,6 +218,8 @@ public class DAO {
 				result.beforeFirst();
 				for (int i = 0; i < bib.length; i++) {
 					result.next();
+					//BoardInfoBeanクラスのインスタンスを作成
+					//各種情報をBeanにsetterメソッドを使い、格納する
 					bib[i] = new BoardInfoBean();
 					bib[i].setBoardId(result.getInt(BoardInfoBean.BOARD_ID_COLUMN));
 					bib[i].setBoardCategory(result.getString(BoardInfoBean.BOARD_CATEGORY_COLUMN));
@@ -205,23 +230,36 @@ public class DAO {
 			}
 			result.close();
 			stmt.close();
+			//下記catchはエラーハンドリング用
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return bib;
 	}
 
-	//⑧
+	/*⑧掲示板の記事情報を取得
+	 *メソッド名：GetBoardPosts()
+	 * 引数      ：int boardId
+	 * 戻り値    ：PostInfoBean[]型 pib
+	 * 処理      ：引数(ユーザーID,掲示板ID)を代入したSQL文を発行し、DB(Board_Member_Info)にレコードを追加する
+	 */
 	public PostInfoBean[] GetBoardPosts(int boardId) {
+		//MySQLに接続し、SQL文作成するメソッド呼び出し
 		ResultSet result = SelectQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.BOARD_ID_COLUMN}, new int[] {boardId});
+		//戻り値として返すようの配列を定義
 		PostInfoBean[] pib = null;
 		try {
 			if(result.next()) {
 				result.last();
 				pib = new PostInfoBean[result.getRow()];
 				result.beforeFirst();
+				//上記SQL文で指定したレコードの数分while文を回す
 				for (int i = 0; i < pib.length; i++) {
+					//レコードにカーソルを当てる
 					result.next();
+					//UserInfoBeanクラスのインスタンスを作成
+					//各種情報をBeanにsetterメソッドを使い、格納する
 					pib[i] = new PostInfoBean();
 					pib[i].setPostId(result.getInt(PostInfoBean.POST_ID_COLUMN));
 					pib[i].setPostId(result.getInt(PostInfoBean.POST_ID_COLUMN));
@@ -236,15 +274,23 @@ public class DAO {
 			}
 			result.close();
 			stmt.close();
+			//下記catchはエラーハンドリング用
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return pib;
 	}
 
-	//⑨
+	/*⑨参加中の掲示板から脱退
+	 *メソッド名：LeaveBoard()
+	 * 引数      ：int boardId, int userId
+	 * 戻り値    ：boolean
+	 * 処理      ：引数(ユーザーID,掲示板ID)を代入したSQL文を発行し、DB(Board_Member_Info)のレコードを削除する
+	 */
 	public boolean LeaveBoard(int boardId, int userId) {
 		try {
+			//MySQLに接続し、SQL文作成するメソッド呼び出し(Board_Member_Infoからレコード削除)
 			DeleteQuery(DefineDatabase.BOARD_MEMBER_INFO_TABLE, new String[] {BoardMemberBean.BOARD_ID_COLUMN,
 					     BoardMemberBean.USER_ID_COLUMN}, new int[] {boardId,userId});
 			stmt.close();
@@ -255,13 +301,20 @@ public class DAO {
 		}
 	}
 
-	//⑩
+	/*⑩記事作成
+	 *メソッド名：MakePost()
+	 * 引数      ：PostInfoBean postInfoBean
+	 * 戻り値    ：boolean
+	 * 処理      ：引数(PostInfoBean)の情報をDB(PostInfoBean)でレコード追加。
+	 */
 	public boolean MakePost(PostInfoBean postInfoBean) {
+		//引数で渡されたPostInfoBeanクラスのインスタンスのユーザーIDと掲示板IDを変数に格納
 		Object o = postInfoBean.getPostUserId();
 		String postUserId = o.toString();
 		o = postInfoBean.getBoardId();
 		String boardId = o.toString();
 		try {
+			//MySQLに接続し、SQL文作成するメソッド呼び出し(Post_Infoにレコード追加)
 			InsertQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.POST_DATE_COLUMN,
 					    PostInfoBean.POST_TITLE_COLUMN, PostInfoBean.POST_CONTENTS_COLUMN,
 					    PostInfoBean.POST_USER_ID_COLUMN, PostInfoBean.POST_CATEGORY_COLUMN,
@@ -1658,70 +1711,105 @@ public class DAO {
 	}
 
 
-	//条件なしオーバーロード
+
+//--------------以下SQL基本構文(select、insert、update、delete)のメソッド。---------
+
+	/*SELECT文 条件なしオーバーロード
+	 *メソッド名：SelectQuery()
+	 * 引数      ：String tablename
+	 * 戻り値    ：ResultSet型 result
+	 */
 	public ResultSet SelectQuery(String tablename) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "SELECT * FROM " + tablename + ";";
 		stmt = null;
 		ResultSet result = null;
 
 		try {
+			//SQL文を作成
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(query);
+			//下記catchはエラーハンドリング用
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+		//作成したSQL文を返す
 		return result;
 	}
-	//条件ありオーバーロードString条件
+
+	/*SELECT文 条件ありオーバーロードString条件
+	 *メソッド名：SelectQuery()
+	 * 引数      ：String tablename, String[] whereColumn, String[] whereValue
+	 * 戻り値    ：ResultSet型 result
+	 */
 	public ResultSet SelectQuery(String tablename, String[] whereColumn, String[] whereValue ) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "SELECT * FROM " + tablename + " WHERE ";
 		stmt = null;
 		ResultSet result = null;
 
+		//引数の配列の要素数分for文を回す
 		for (int i = 0; i < whereColumn.length; i++) {
 			if(i>0)query += "AND ";
+			//WHERE句作成
 			query += whereColumn[i] + " = '" + whereValue[i]+"' ";
 		}
 		query += ";";
 		System.out.println(query);
 		try {
+			//SQL文を作成
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(query);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+		//作成したSQL文を返す
 		return result;
 	}
-	//条件ありオーバーロードint条件・ANDでわける
+
+	/*SELECT文 条件ありオーバーロードint条件・ANDでわける
+	 *メソッド名：SelectQuery()
+	 * 引数      ：String tablename, String[] whereColumn, int[] whereValue
+	 * 戻り値    ：ResultSet型 result
+	 */
 	public ResultSet SelectQuery(String tablename, String[] whereColumn, int[] whereValue ) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "SELECT * FROM " + tablename + " WHERE ";
 		stmt = null;
 		ResultSet result = null;
 
+		//引数の配列の要素数分for文を回す
+		//WHERE句作成
 		for (int i = 0; i < whereColumn.length; i++) {
 			if(i>0)query += "AND ";
 			query += whereColumn[i] + " = " + whereValue[i]+" ";
@@ -1729,28 +1817,41 @@ public class DAO {
 		query += ";";
 
 		try {
+			//SQL文を作成
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(query);
+
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		System.out.println(query);
+		//作成したSQL文を返す
 		return result;
 	}
-	//条件ありオーバーロードint条件・ORでわける
+
+	/*SELECT文 条件ありオーバーロードint条件・ORでわける
+	 *メソッド名：SelectQuery()
+	 * 引数      ：String tablename, String[] whereColumn, int[] whereValue
+	 * 戻り値    ：ResultSet型 result
+	 */
 	public ResultSet SelectQueryOR(String tablename, String[] whereColumn, int[] whereValue ) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "SELECT * FROM " + tablename + " WHERE ";
 		stmt = null;
 		ResultSet result = null;
 
+		//引数の配列の要素数分for文を回す
+		//WHERE句作成
 		for (int i = 0; i < whereColumn.length; i++) {
 			for (int j = 0; j < whereValue.length; j++) {
 				if(i>0 || j>0)query += "OR ";
@@ -1760,49 +1861,72 @@ public class DAO {
 		query += ";";
 
 		try {
+			//SQL文を作成
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(query);
+
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		System.out.println(query);
+		//作成したSQL文を返す
 		return result;
 	}
-	//新しい値がString条件がStringのオーバーロード
+
+	/*UPDATE文 新しい値がString条件がStringのオーバーロード
+	 *メソッド名：UpdateSetQuery()
+	 * 引数      ：String tablename, String setColumn, String setValue, String whereColumn, String whereValue
+	 * 戻り値    ：boolean型
+	 */
 	public boolean UpdateSetQuery( String tablename, String setColumn, String setValue, String whereColumn, String whereValue) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = '" + setValue
 				       + "' WHERE " + whereColumn + " = '" + whereValue + "';";
 		try {
+			//SQL文を作成し実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
+
+			//下記catchはエラーハンドリング用
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
-	//新しい値がint条件がintのオーバーロード
+
+	/*UPDATE文 新しい値がint条件がintのオーバーロード
+	 *メソッド名：UpdateSetQuery()
+	 * 引数      ：String tablename, String setColumn, int setValue, String whereColumn, int whereValue
+	 * 戻り値    ：boolean型
+	 */
 	public boolean UpdateSetQuery( String tablename, String setColumn, int setValue, String whereColumn, int whereValue) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = " + setValue
 				       + " WHERE " + whereColumn + " = " + whereValue + ";";
 		try {
+			//SQL文を作成し実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
@@ -1812,7 +1936,12 @@ public class DAO {
 		}
 		return true;
 	}
-	//新しい値がString条件がintのオーバーロード
+
+	/*UPDATE文 新しい値がString条件がintのオーバーロード
+	 *メソッド名：UpdateSetQuery()
+	 * 引数      ：String tablename, String setColumn, String setValue, String whereColumn, int whereValue
+	 * 戻り値    ：boolean型
+	 */
 	public boolean UpdateSetQuery( String tablename, String setColumn, String setValue, String whereColumn, int whereValue) {
 		if(conn == null) {
 			try {
@@ -1822,34 +1951,47 @@ public class DAO {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = '" + setValue
 				       + "' WHERE " + whereColumn + " = " + whereValue + ";";
 		try {
+			//SQL文を作成し実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
-	//新しい値がint条件がStringのオーバーロード
+
+	/*UPDATE文 新しい値がint条件がStringのオーバーロード
+	 *メソッド名：UpdateSetQuery()
+	 * 引数      ：String tablename, String setColumn, int setValue, String whereColumn, String whereValue
+	 * 戻り値    ：boolean型
+	 */
 	public boolean UpdateSetQuery( String tablename, String setColumn, int setValue, String whereColumn, String whereValue) {
+		//MySQLに接続されていなければ接続
 		if(conn == null) {
 			try {
+				//MySQLに接続するメソッド呼び出し
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		//SQL文用の変数
 		String query = "UPDATE " + tablename + " SET " + setColumn + " = " + setValue
 				       + " WHERE " + whereColumn + " = '" + whereValue + "';";
 		try {
+			//SQL文を作成し実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
