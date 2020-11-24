@@ -50,24 +50,42 @@ public class DAO {
 			}
 		}
 	}
-	//①
+	//①ログインしたユーザーの情報を取得
+	/*メソッド名:Login()
+	 *引数:String user, String pass
+	 *戻り値:uib
+	 *処理:
+	 *①User_InfoにログインIDとパスワードを指定してSQL文を発行して、ユーザー情報を取得
+	 *②ログインした時間を取得し、該当のユーザーの情報を更新
+	*/
+
 	public UserInfoBean Login(String user, String pass) {
 
 		try{
+			//SQL文の指定に使う要素を格納する配列の定義
 			String[] whereTables = {UserInfoBean.LOGIN_ID_COLUMN,UserInfoBean.LOGIN_PASS_COLUMN};
 			String[] whereValues = {user,pass};
+
+			//上記の配列を使用しSQLの呼び出し
 			ResultSet result = SelectQuery(DefineDatabase.USER_INFO_TABLE,whereTables, whereValues);
+
+			//指定に該当したSQL文があった場合if文を実行する
 			if(result.next()) {
+				//UserInfoBeanクラスのインスタンス作成
+				//ユーザー情報をBeanにSelectMemberメソッドで格納
 				UserInfoBean uib = new UserInfoBean();
 				uib = SelectMember(result.getInt(UserInfoBean.USER_ID_COLUMN));
+
 				//LoginLogの更新
 				String now = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 				UpdateSetQuery(DefineDatabase.USER_INFO_TABLE, UserInfoBean.LOGIN_LOG_COLUMN, now,
 						       UserInfoBean.USER_ID_COLUMN, result.getInt(UserInfoBean.USER_ID_COLUMN));
 				uib.setLoginLog(now);
-				//LoginLogの更新
+
 				result.close();
 				stmt.close();
+
+				//データを格納したBeanを返す
 				return uib;
 			}else {
 				result.close();
@@ -80,27 +98,60 @@ public class DAO {
 		return null;
 	}
 
-	//③
+
+
+	//③パスワード変更
+	/*メソッド名:UpdatePassword()
+	 *引数:String mailAdress, String newPass, String newPassConfirmation
+	 *戻り値:bool
+	 *処理:2つの引数が一致している時、User_InfoにEmail_Addressで指定してSQL文を発行し、パスワードの情報を更新する。
+	*/
+
 	public boolean UpdatePassword(String mailAdress, String newPass, String newPassConfirmation) {
+		//引数newPassとnewPassConfirmationの値が一致している時、if文を実行
 		if(newPass.equals(newPassConfirmation)) {
+			//SQLの呼び出し
 			UpdateSetQuery(DefineDatabase.USER_INFO_TABLE, UserInfoBean.LOGIN_PASS_COLUMN, newPass, UserInfoBean.EMAIL_ADDRESS_COLUMN, mailAdress);
+
+			//trueを返す
 			return true;
 		}
+		//文章を表示
 		System.out.println("password and confirmation doest match->pass:" + newPass + "/confirmation:" + newPassConfirmation);
+
+		//falseを返す
 		return false;
 	}
 
-	//④
+
+
+	//④当該ユーザーの記事情報取得
+	/*メソッド名:GetMyPosts()
+	 *引数:int userId
+	 *戻り値:pib
+	 *処理:Post_InfoにPost_User_IDで指定してSQL文を発行し、該当の記事情報を取得する。
+	*/
+
 	public PostInfoBean[] GetMyPosts(int userId) {
+		//SQLの呼び出し
 		ResultSet result = SelectQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.POST_USER_ID_COLUMN}, new int[] {userId});
+
+		//戻り値として返す配列を定義
 		PostInfoBean[] pib = null;
 		try {
+			//上記のSQLに該当するレコードがあった時、if文を実行
 			if(result.next()) {
 				result.last();
+
+				//配列の容量を指定
 				pib = new PostInfoBean[result.getRow()];
 				result.beforeFirst();
+
+				//指定した配列の容量分for文を回す
 				for (int i = 0; i < pib.length; i++) {
 					result.next();
+					//PostInfoBeanクラスのインスタンスを作成
+					//各種情報をBeanにsetterメソッドで格納
 					pib[i] = new PostInfoBean();
 					pib[i].setPostId(result.getInt(PostInfoBean.POST_ID_COLUMN));
 					pib[i].setPostId(result.getInt(PostInfoBean.POST_ID_COLUMN));
@@ -120,13 +171,23 @@ public class DAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納した配列を返す
 		return pib;
 	}
 
-	//⑤
+
+
+	//⑤当該ユーザの情報を更新
+	/*メソッド名:UpdateMyUserInfo()
+	 *引数:UserInfoBean userInfoBean
+	 *戻り値:無し
+	 *処理:User_InfoにUser_IDで指定してSQL文を発行し、ユーザー情報を更新する。
+	*/
+
 	public void UpdateMyUserInfo(UserInfoBean userInfoBean) {
 		if(conn == null) {
 			try {
+				//DBに接続
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
@@ -134,6 +195,7 @@ public class DAO {
 			}
 		}
 
+		//SQL文作成
 		String query = "UPDATE " + DefineDatabase.USER_INFO_TABLE + " SET "
 						+ UserInfoBean.USER_NAME_COLUMN +" = '" + userInfoBean.getUserName() + "', "
 				        + UserInfoBean.EMAIL_ADDRESS_COLUMN +" = '" + userInfoBean.getEmailAdress() + "', "
@@ -142,6 +204,7 @@ public class DAO {
 				        + UserInfoBean.USER_ID_COLUMN + " = " + userInfoBean.getUserID() + ";";
 
 		try {
+			//SQL文の実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
@@ -1999,68 +2062,99 @@ public class DAO {
 		return true;
 	}
 
-	//条件はStringのオーバーロード
+	//DELETE文の作成(条件はStringのオーバーロード)
+	/*メソッド名:DeleteQuery()
+	 *引数:String tablename, String[] whereColumn, String[] whereValue
+	 *戻り値:bool
+	 *処理:引数の値を元にDELETE文を作成・実行する。
+	*/
+
 	public boolean DeleteQuery(String tablename, String[] whereColumn, String[] whereValue) {
 		if(conn == null) {
 			try {
+				//DBに接続
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
-
+		//SQL文の作成(DELETE文)
 		String query = "DELETE FROM " + tablename + " WHERE " ;
 		stmt = null;
 		for (int i = 0; i < whereColumn.length; i++) {
 			if(i>0)query += "AND ";
-			query += whereColumn[i] + " = " + whereValue[i]+" ";
+			query += whereColumn[i] + " = " + whereValue[i]+" ";	//"DELETE FROM " + tablename + " WHERE " +whereColumn[i]+ " = " +whereValue[i]+" AND "～
 		}
-		query += ";";
+		query += ";";												//"DELETE FROM " + tablename + " WHERE " +whereColumn[i]+ " = " +whereValue[i]+" AND "～ ";"
 
 		try {
+			//DELETE文の実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			//falseを返す
 			return false;
 		}
+		//trueを返す
 		return true;
 	}
-	//条件はintのオーバーロード
+
+
+	//DELETE文の作成(条件はintのオーバーロード)
+	/*メソッド名:DeleteQuery()
+	 *引数:String tablename, String[] whereColumn, int[] whereValue
+	 *戻り値:bool
+	 *処理:引数の値を元にDELETE文を作成・実行する。
+	*/
+
 	public boolean DeleteQuery(String tablename, String[] whereColumn, int[] whereValue) {
 		if(conn == null) {
 			try {
+				//DB接続
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
-
+		//SQL文の作成(DELETE文)
 		String query = "DELETE FROM " + tablename + " WHERE " ;
 		stmt = null;
 		for (int i = 0; i < whereColumn.length; i++) {
 			if(i>0)query += "AND ";
-			query += whereColumn[i] + " = " + whereValue[i]+" ";
+			query += whereColumn[i] + " = " + whereValue[i]+" ";	//"DELETE FROM " + tablename + " WHERE " +whereColumn[i]+ " = " +whereValue[i]+" AND "～
 		}
-		query += ";";
+		query += ";";												//"DELETE FROM " + tablename + " WHERE " +whereColumn[i]+ " = " +whereValue[i]+" AND "～ ";"
 
 		try {
+			//DELETE文の実行
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			//falseを返す
 			return false;
 		}
+		//trueを返す
 		return true;
 	}
+
+
+	//INSERT文の作成
+	/*メソッド名:InsertQuery()
+	 *引数:String tablename, String[] columns, String[] values
+	 *戻り値:bool
+	 *処理:引数の値を元にINSERT文を作成・実行する。
+	*/
 
 	public boolean InsertQuery(String tablename, String[] columns, String[] values) {
 		if(conn == null) {
 			try {
+				//DB接続
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
@@ -2068,29 +2162,34 @@ public class DAO {
 			}
 		}
 
+		//SQL文の作成(INSERT文)
 		String query = "INSERT INTO " + tablename + "(" ;
 		stmt = null;
 		for (int i = 0; i < columns.length; i++) {
-			query += columns[i];
-			if(i!= columns.length-1)query += ", ";
+			query += columns[i];							//"INSERT INTO " + tablename + "( +columns[i]+"
+			if(i!= columns.length-1)query += ", ";			//"INSERT INTO " + tablename + "( +columns[i]+ ", "+columns[i+1]+", "～
 		}
-		query += ") VALUES (";
+		query += ") VALUES (";								//"INSERT INTO " + tablename + "( +columns[i]+ ", "～")  VALUES ("
 		for (int i = 0; i < values.length; i++) {
-			query += "'"+values[i]+"'";
-			if(i!= values.length-1)query += ", ";
+			query += "'"+values[i]+"'";						//"INSERT INTO " + tablename + "( +columns[i]+ ", "～")  VALUES ('"+values[i]+"'"
+			if(i!= values.length-1)query += ", ";			//"INSERT INTO " + tablename + "( +columns[i]+ ", "～")  VALUES ('"+values[i]+"' , '"+values[i]+"' , '"～
 		}
-		query += ");";
+		query += ");";										//"INSERT INTO " + tablename + "( +columns[i]+ ", "～")  VALUES ('"+values[i]+"' , '"～");"
 
+		//INSERT文を標準出力
 		System.out.println(query);
 
 		try {
+			//SQL(INSERT)文の出力
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			//falseを返す
 			return false;
 		}
+		//trueを返す
 		return true;
 	}
 
