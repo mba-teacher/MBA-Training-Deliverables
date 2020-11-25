@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+body {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+h1 {
+	text-align: left;
+	padding-left: 10%;
+}
+
+table {
+	text-align: center;
+}
+
+.inputForm {
+	text-align: left;
+	margin-left: 20%;
+}
+
+.chooseAdmin {
+	padding-top: 0;
+}
+
+.inputerror {
+	color: #f00;
+}
+
+/* モーダルCSS */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10; /* サイトによってここの数値は調整 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modalBg {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30,30,30,0.9);
+}
+
+.modalContents {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+  width: 70%;
+  max-width: 500px;
+  max-height: 300px;
+  padding: 10px 30px;
+  background-color: #fff;
+}
+
