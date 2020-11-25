@@ -870,6 +870,44 @@ public class DAO {
 		return b;
 	}
 
+	/* ⑳全ユーザー情報の取得
+	 * メソッド名：GetAllMembers()
+	 * 引数      ：なし
+	 * 戻り値    ：ArrayList<UserInfoBean> list
+	 * 処理      ：DB(User_Info)のすべてを指定してSQL文を発行し、ユーザー情報を取得する
+	 */
+	public ArrayList<UserInfoBean> GetAllMembers() {
+		//戻り値として返すようの配列を定義
+		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
+		//DBから取得した情報を格納するようのUserInfoBeanを宣言
+		UserInfoBean b;
+		try {
+			//SQL文の発行
+			ResultSet rs = SelectQuery(DefineDatabase.USER_INFO_TABLE);
+
+			//SQL文で指定したレコード分while文を回す
+			while(rs.next()) {
+				//UserInfoBeanのコンストラクタを使用し、DBから取得した情報を格納する
+				b = new UserInfoBean(
+						rs.getInt(UserInfoBean.USER_ID_COLUMN),
+						rs.getString(UserInfoBean.USER_NAME_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_ID_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_PASS_COLUMN),
+						rs.getString(UserInfoBean.LOGIN_LOG_COLUMN),
+						rs.getString(UserInfoBean.EMAIL_ADDRESS_COLUMN),
+						rs.getString(UserInfoBean.LINE_WORKS_ID_COLUMN),
+						rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN),
+						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
+				//Beanをリストに追加する
+				list.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//データを格納した配列を返す
+		return list;
+	}
+
 	//㉑ユーザーの参加可能な掲示板を取得
 	/* メソッド名：GetPermissionInfo()
 	 * 引数      ：int userId
@@ -955,83 +993,67 @@ public class DAO {
 		return BoardInfoList;
 	}
 
-	/* ⑳ GetAllMembers  登録済みアカウント全員分の取得
-	 * 引数：なし / 戻り値：ArrayList
-	 */
-	public ArrayList<UserInfoBean> GetAllMembers() {
-		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
-		UserInfoBean b;
-		try {
-			ResultSet rs = SelectQuery(DefineDatabase.USER_INFO_TABLE);
-
-			while(rs.next()) {
-				b = new UserInfoBean(
-						rs.getInt(UserInfoBean.USER_ID_COLUMN),
-						rs.getString(UserInfoBean.USER_NAME_COLUMN),
-						rs.getString(UserInfoBean.LOGIN_ID_COLUMN),
-						rs.getString(UserInfoBean.LOGIN_PASS_COLUMN),
-						rs.getString(UserInfoBean.LOGIN_LOG_COLUMN),
-						rs.getString(UserInfoBean.EMAIL_ADDRESS_COLUMN),
-						rs.getString(UserInfoBean.LINE_WORKS_ID_COLUMN),
-						rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN),
-						rs.getBoolean(UserInfoBean.ADMIN_COLUMN));
-				list.add(b);
-			}
-			return list;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/* ㉓ GivePermission  参加権限を付与する
-	 * 引数：Board_ID、User_ID[] / 戻り値：なし
-	 * トランザクションしてます
+	/* ㉓掲示板参加権限の付与
+	 * メソッド名：GivePermission()
+	 * 引数      ：int boardId , int[] userId
+	 * 戻り値    ：なし
+	 * 処理      ：引数を代入したSQL文を発行し、DB(Board_Permission_Info)にレコードを追加する
 	 */
 	public void GivePermission(int boardId, int[] userId) {
 		if(conn == null) {
 			try {
+				//DBに接続する
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
-
 		try {
+			//オートコミットを止める
 			conn.setAutoCommit(false);
+			//SQL文の作成
 			String query = "INSERT INTO Board_Permission_Info VALUES (?,?)";
 			pst = conn.prepareStatement(query);
 
+			//メソッドの引数をSQL文に代入する
 			for (int i = 0; i < userId.length; i++) {
 				pst.setInt(1, boardId);
 				pst.setInt(2, userId[i]);
 				pst.executeUpdate();
 			}
+			//for文を回しおわったらコミットする
 			conn.commit();
+			//オートコミットに戻す
 			conn.setAutoCommit(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	/* ㉔ CreateBoard  新規掲示板の情報をDBにINSERTする
-	 * 引数：BoardInfoBean、User_ID[] / 戻り値：なし
-	 * 中で㉓を呼んでいる
+	/* ㉔新規掲示板情報の追加
+	 * メソッド名：CreateBoard()
+	 * 引数      ：BoardInfoBean b , int[] userId
+	 * 戻り値    ：なし
+	 * 処理      ：引数を代入したSQL文を発行し、DB(Board_Info)にレコードを追加する
+	 *             DB(Board_Info)に作成した掲示板情報を指定してSQL文を発行し、Board_IDを取得する
+	 *             GivePermission()メソッドを使用し、アクセス制限をDBに追加する
 	 */
 	public void CreateBoard(BoardInfoBean b, int[] userId) {
 		if(conn == null) {
 			try {
+				//DBに接続する
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
-
 		try {
+			//DB(Board_Info)にレコードを追加するためのSQL文を発行する
 			String query = "INSERT INTO Board_Info VALUES (?,?,?,?,?)";
 			pst = conn.prepareStatement(query);
+			//IDはAUTOINCREMENTされるため0を代入
 			pst.setInt(1, 0);
 			pst.setString(2, b.getBoardCategory());
 			pst.setInt(3, b.getBoardColor());
@@ -1039,7 +1061,7 @@ public class DAO {
 			pst.setString(5, b.getBoardContents());
 			pst.executeUpdate();
 
-			//ボードIDを取得する  タイムスタンプのカラムがあれば短くなるかも
+			//作成した掲示板情報をSQL文に代入してBoard_IDを取得する
 			String selQuery = "SELECT Board_ID FROM Board_Info WHERE Board_Category = ? AND "
 					+ "Board_Color = ? AND Board_Image = ? AND Board_Contents = ?";
 			pst = conn.prepareStatement(selQuery);
@@ -1049,12 +1071,13 @@ public class DAO {
 			pst.setString(4, b.getBoardContents());
 			ResultSet rs = pst.executeQuery();
 
-			//アクセス制限でチェックした内容をDBに反映させる
 			if(rs.next()) {
+				//DBから返ってきたBoard_IDをBeanに代入
 				b.setBoardId(rs.getInt(BoardInfoBean.BOARD_ID_COLUMN));
+				//アクセス制限でチェックした内容をDBに反映させる
 				GivePermission(b.getBoardId(), userId);
 			} else {
-				//rs.next()がない場合（検索がヒットしてない）
+				//rs.next()がfalse場合（検索がヒットしてないので念のためコンソールに表示する）
 				System.out.println("insertが失敗している可能性があります。");
 			}
 		} catch (SQLException e) {
@@ -1062,36 +1085,48 @@ public class DAO {
 		}
 	}
 
-	/* ㉕ GetPermissionMembers  掲示板のアクセスできるユーザー一覧を取得する
-	 * 引数：Board_ID / 戻り値：ArrayList<Integer>
+	/* ㉕掲示板にアクセスできるユーザーの取得
+	 * メソッド名：GetPermissionMembers()
+	 * 引数      ：int boardId
+	 * 戻り値    ：ArrayList<Integer> list
+	 * 処理      ：DB(Board_Permission_Info)に掲示板IDを指定してSQL文を発行し、ユーザーIDを取得する
 	 */
 	public ArrayList<Integer> GetPermissionMembers(int boardId) {
+		//戻り値として返すようの配列を定義
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		try {
+			//Board_IDを代入してSQL文を発行する
 			String[] column = {BoardPermissionInfoBean.BOARD_ID_COLUMN};
 			int[] values = {boardId};
 			ResultSet rs = SelectQuery(DefineDatabase.BOARD_PERMISSION_INFO, column, values);
 
+			//SQL文で指定したレコード分while文を回す
 			while(rs.next()) {
 				list.add(rs.getInt(BoardPermissionInfoBean.USER_ID_COLUMN));
 			}
-			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		//データを格納した配列を返す
+		return list;
 	}
 
-	/* ㉖ GetBoardInfo  掲示板情報をDBから取得する
-	 * 引数：User_ID / 戻り値：BoardInfoBean
+	/* ㉖掲示板情報の取得
+	 * メソッド名：GetBoardInfo()
+	 * 引数      ：int boardId
+	 * 戻り値    ：BoardInfoBean b
+	 * 処理      ：DB(Board_Info)に掲示板IDを指定してSQL文を発行し、掲示板情報を取得する
 	 */
 	public BoardInfoBean GetBoardInfo(int boardId) {
+		//戻り値として返すようのBoardInfoBeanを定義
 		BoardInfoBean b = null;
 		try {
+			//Board_IDを代入してSQL文を発行する
 			String[] column = {BoardInfoBean.BOARD_ID_COLUMN};
 			int[] values = {boardId};
 			ResultSet rs = SelectQuery(DefineDatabase.BOARD_INFO_TABLE, column, values);
 
+			//該当するレコードがあったら掲示板情報をBeanに代入する
 			if (rs.next()) {
 				b = new BoardInfoBean(
 						boardId, rs.getString(BoardInfoBean.BOARD_CATEGORY_COLUMN),
@@ -1102,15 +1137,20 @@ public class DAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//データを格納したBeanを返す
 		return b;
 	}
 
-	/* ㉗ UpdateBoard  掲示板の情報を更新する
-	 * 引数：BoardInfoBean、User_ID[]
+	/* ㉗掲示板情報の更新
+	 * メソッド名：UpdateBoard()
+	 * 引数      ：BoardInfoBean b
+	 * 戻り値    ：なし
+	 * 処理      ：引数を代入したSQL文を発行し、DB(Board_Info)の掲示板情報を更新する
 	 */
 	public void UpdateBoard(BoardInfoBean b) {
 		if(conn == null) {
 			try {
+				//DBに接続する
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
@@ -1118,14 +1158,17 @@ public class DAO {
 			}
 		}
 		try {
+			//メソッドの引数を代入してSQL文を発行する
 			String query = "UPDATE Board_Info SET Board_Category = ?, Board_Color = ?, "
 					+ "Board_Image = ?, Board_Contents = ? "
 					+ "WHERE Board_ID = ?";
 			pst = conn.prepareStatement(query);
+			//1～4はSETする値
 			pst.setString(1, b.getBoardCategory());
 			pst.setInt(2, b.getBoardColor());
 			pst.setString(3, b.getBoardImgPath());
 			pst.setString(4, b.getBoardContents());
+			//5はWHERE条件につかう値
 			pst.setInt(5, b.getBoardId());
 			pst.executeUpdate();
 
@@ -1134,30 +1177,67 @@ public class DAO {
 		}
 	}
 
-	/* ㉙ UpdatePermmisioinMembers  アクセス制限が変更されたらDBからDELETEしてINSERTし直す
-	 * 引数：Board_ID、User_ID[] / 戻り値：なし
-	 * 変更のある/なしはどこで判断する？
+	/* ㉘全グループ情報の取得
+	 * メソッド名：GetAllGroups()
+	 * 引数      ：なし
+	 * 戻り値    ：ArrayList<GroupInfoBean> list
+	 * 処理      ：DB(Group_Info)のすべてを指定してSQL文を発行し、グループ情報を取得する
+	 */
+	public ArrayList<GroupInfoBean> GetAllGroups() {
+		//戻り値として返すようの配列を定義
+		ArrayList<GroupInfoBean> list = new ArrayList<GroupInfoBean>();
+		//DBから取得した情報を格納するようのGroupInfoBeanを宣言
+		GroupInfoBean b;
+		try {
+			//SQL文を発行する
+			ResultSet rs = SelectQuery(DefineDatabase.GROUP_INFO_TABLE);
+
+			while(rs.next()) {
+				//情報をBeanに代入する
+				b = new GroupInfoBean(rs.getInt(GroupInfoBean.GROUP_ID_COLUMN),
+						rs.getString(GroupInfoBean.GROUP_NAME_COLUMN),
+						rs.getInt(GroupInfoBean.USER_ID_COLUMN));
+				//Beanをlistに追加する
+				list.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//データを格納した配列を返す
+		return list;
+	}
+
+	/* ㉙アクセス制限メンバーの更新
+	 * メソッド名：UpdatePermmisioinMembers()
+	 * 引数      ：int boardId, int[] userId
+	 * 戻り値    ：なし
+	 * 処理      ：引数(boardId)を代入したSQL文を発行し、DB(Board_Permission_Info)からレコードを削除する
+	 *             GivePermissionメソッドを使用し、DB(Board_Permission_Info)にレコードを追加する
 	 */
 	public void UpdatePermmisioinMembers(int boardId, int[] userId) {
 		try {
-			//DBからDELETEする
+			//メソッドの引数boardIdに該当するレコードをDBから削除する
 			String[] column = {BoardPermissionInfoBean.BOARD_ID_COLUMN};
 			int[] values = {boardId};
 			DeleteQuery(DefineDatabase.BOARD_PERMISSION_INFO, column, values);
 
-			//DBにINSERTする
+			//アクセス制限でチェックした内容をDBに反映させる
 			GivePermission(boardId, userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/* ㉚ CreateUser  ユーザーアカウントを作成する
-	 * 引数：UserInfoBean / 戻り値：なし
+	/* ㉚ユーザーアカウントの作成
+	 * メソッド名：CreateUser()
+	 * 引数      ：UserInfoBean b
+	 * 戻り値    ：なし
+	 * 処理      ：引数を代入してSQL文を発行し、DB(User_Info)にユーザー情報を追加する
 	 */
 	public void CreateUser(UserInfoBean b) {
 		if(conn == null) {
 			try {
+				//DBに接続する
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
@@ -1165,8 +1245,10 @@ public class DAO {
 			}
 		}
 		try {
+			//ユーザー情報をDBに追加するためのSQL文を発行する
 			String query = "INSERT INTO User_Info VALUES (?,?,?,?,?,?,?,?,?)";
 			pst = conn.prepareStatement(query);
+			//IDはAUTOINCREMENTされるため0を代入
 			pst.setInt(1, 0);
 			pst.setString(2, b.getUserName());
 			pst.setString(3, b.getLoginID());
@@ -1182,12 +1264,16 @@ public class DAO {
 		}
 	}
 
-	/* ㉛ UpdateAdmin  ユーザーの管理者権限を編集する
-	 * 引数：User_ID、Admin / 戻り値：なし
+	/* ㉛ユーザーの管理者権限の編集
+	 * メソッド名：UpdateAdmin()
+	 * 引数      ：int uesrId, boolean admin
+	 * 戻り値    ：なし
+	 * 処理      ：引数を代入してSQL文を発行し、DB(User_Info)の管理者権限を更新する
 	 */
 	public void UpdateAdmin(int uesrId, boolean admin) {
 		if(conn == null) {
 			try {
+				//DBに接続する
 				ConnectToDB(dbName);
 			}
 			catch(SQLException e) {
@@ -1195,6 +1281,7 @@ public class DAO {
 			}
 		}
 		try {
+			//管理者権限を更新するためのSQL文を発行する
 			String query = "UPDATE User_Info SET Admin = ? WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setBoolean(1, admin);
@@ -1203,89 +1290,6 @@ public class DAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/* ㊷ UpdatePost  記事の更新(Post_IDとPost_User_IDは更新しない)
-	 * 引数：Post_Info / 戻り値：なし
-	 */
-	public void UpdatePost(PostInfoBean b) {
-		if(conn == null) {
-			try {
-				ConnectToDB(dbName);
-			}
-			catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			String query = "UPDATE Post_Info SET Post_Date = ?, Post_Title = ?, "
-					+ "Post_Contents = ?, Post_Category = ?, Post_Image = ?, Board_ID = ? "
-					+ "WHERE Post_ID = ?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, b.getPostDate());
-			pst.setString(2, b.getPostTitle());
-			pst.setString(3, b.getPostContents());
-			pst.setString(4, b.getPostCategory());
-			pst.setString(5, b.getPostImgPath());
-			pst.setInt(6, b.getBoardId());
-			pst.setInt(7, b.getPostId());
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/* ㊹ UpdateComment  コメントの更新(Comment_IDとComment_User_IDとPost_IDとComment_Chainは更新しない)
-	 * 引数：Comment_Info / 戻り値：なし
-	 */
-	public void UpdateComment(CommentInfoBean b) {
-		if(conn == null) {
-			try {
-				ConnectToDB(dbName);
-			}
-			catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			String query = "UPDATE Comment_Info SET Comment_Date = ?, Comment_Contents = ?"
-					+ "WHERE Comment_ID = ?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, b.getCommentDate());
-			pst.setString(2, b.getCommentContents());
-			pst.setInt(3, b.getCommentId());
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/* ㊻ MakeComment  コメントを作成する
-	 * 引数：Comment_Info / 戻り値：なし
-	 */
-	public void MakeComment(CommentInfoBean b) {
-		if(conn == null) {
-			try {
-				ConnectToDB(dbName);
-			}
-			catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			String query = "INSERT INTO Comment_Info VALUES (?,?,?,?,?,?)";
-			pst = conn.prepareStatement(query);
-			pst.setInt(1, 0);
-			pst.setString(2, b.getCommentDate());
-			pst.setInt(3, b.getCommentUserId());
-			pst.setString(4, b.getCommentContents());
-			pst.setInt(5, b.getPostId());
-			pst.setInt(6, b.getCommentChain());
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	/*㉜ユーザー削除
@@ -1658,6 +1662,44 @@ public class DAO {
 	}
 
 
+	/* ㊷記事の更新
+	 * メソッド名：UpdatePost()
+	 * 引数      ：PostInfoBean b
+	 * 戻り値    ：なし
+	 * 処理      ：引数(記事情報)を代入してSQL文を発行し、DB(Post_Info)のレコードを更新する
+	 */
+	public void UpdatePost(PostInfoBean b) {
+		if(conn == null) {
+			try {
+				//DBに接続する
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			//記事を更新するためのSQL文を発行する
+			//Post_IDとPost_User_IDは更新しない
+			String query = "UPDATE Post_Info SET Post_Date = ?, Post_Title = ?, "
+					+ "Post_Contents = ?, Post_Category = ?, Post_Image = ?, Board_ID = ? "
+					+ "WHERE Post_ID = ?";
+			pst = conn.prepareStatement(query);
+			//1～6はSETする値
+			pst.setString(1, b.getPostDate());
+			pst.setString(2, b.getPostTitle());
+			pst.setString(3, b.getPostContents());
+			pst.setString(4, b.getPostCategory());
+			pst.setString(5, b.getPostImgPath());
+			pst.setInt(6, b.getBoardId());
+			//7はWHERE条件でつかう値
+			pst.setInt(7, b.getPostId());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/*㊸記事、および付属しているコメント、いいね全削除
 	 *メソッド名：DeletePost()
 	 * 引数      ：int postId
@@ -1716,6 +1758,39 @@ public class DAO {
 		return b;
 	}
 
+	/* ㊹コメントの更新
+	 * メソッド名：UpdateComment()
+	 * 引数      ：CommentInfoBean b
+	 * 戻り値    ：なし
+	 * 処理      ：引数(コメント情報)を代入してSQL文を発行し、DB(Comment_Info)のレコードを更新する
+	 */
+	public void UpdateComment(CommentInfoBean b) {
+		if(conn == null) {
+			try {
+				//DBに接続する
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			//コメント更新のためのSQL文を発行する
+			//Comment_IDとComment_User_IDとPost_IDとComment_Chainは更新しない
+			String query = "UPDATE Comment_Info SET Comment_Date = ?, Comment_Contents = ?"
+					+ "WHERE Comment_ID = ?";
+			pst = conn.prepareStatement(query);
+			//1～2はSETする値
+			pst.setString(1, b.getCommentDate());
+			pst.setString(2, b.getCommentContents());
+			//3はWHEREでつかう値
+			pst.setInt(3, b.getCommentId());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/*㊺コメント、および付属しているコメント、いいね全削除
 	 *メソッド名：DeleteComment()
 	 * 引数      ：int commentId
@@ -1771,6 +1846,39 @@ public class DAO {
 		}
 		//tryを通過したかを返す
 		return b;
+	}
+
+	/* ㊻コメントの作成
+	 * メソッド名：MakeComment()
+	 * 引数      ：CommentInfoBean b
+	 * 戻り値    ：なし
+	 * 処理      ：引数(コメント情報)を代入してSQL文を発行し、DB(Comment_Info)にレコードを追加する
+	 */
+	public void MakeComment(CommentInfoBean b) {
+		if(conn == null) {
+			try {
+				//DBに接続する
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			//コメント情報をDBに追加するためのSQL文を発行する
+			String query = "INSERT INTO Comment_Info VALUES (?,?,?,?,?,?)";
+			pst = conn.prepareStatement(query);
+			//IDはAUTOINCREMENTされるため0を代入
+			pst.setInt(1, 0);
+			pst.setString(2, b.getCommentDate());
+			pst.setInt(3, b.getCommentUserId());
+			pst.setString(4, b.getCommentContents());
+			pst.setInt(5, b.getPostId());
+			pst.setInt(6, b.getCommentChain());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 
