@@ -1656,12 +1656,6 @@ public class DAO {
 	}
 
 
-	//㊶
-	public GroupInfoBean LeaveGroup(int groupId, String groupName, int userId) {
-		return null;
-	}
-
-
 	/* ㊷記事の更新
 	 * メソッド名：UpdatePost()
 	 * 引数      ：PostInfoBean b
