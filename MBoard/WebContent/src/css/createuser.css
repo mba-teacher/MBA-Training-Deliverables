@@ -1,34 +1,175 @@
 @charset "UTF-8";
 
+* {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	/* フォントはここに入れれは全体に反映される予定 */
+}
+
 body {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-h1 {
+
+/* <h1>タグを含む見えているページ全体 */
+.mainView {
+	position: relative;
+	left: 10%;
+	width: 80%;
 	text-align: left;
-	padding-left: 10%;
+	margin-top: 30px;
 }
 
-table {
+h1 {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	max-width: 560px;
+}
+
+
+/* 入力フォーム */
+.inputForm {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: left;
+	width: 70%;
+	max-width: 400px;
+}
+
+/* 入力の項目名 */
+.inputForm .title {
+	margin: 0;
+	margin-top: 10px;
+	padding: 1px;
+	font-size: 14px;
+	width: 100%;
+}
+
+/* 入力欄 */
+.inputForm .inputItem {
+	padding: 1px;
+	width: 100%;
+	height: 24px;
+	line-height: 16px;
+}
+
+::placeholder {
+	padding: 1px;
+	font-size: 14px;
+}
+
+/* 管理者権限のラジオボタン */
+.inputForm .chooseAdmin {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	display: -webkit-flex;
+	display: flex;
+	width: 60%;
+	margin-top: 3px;
+}
+
+.inputForm .chooseAdmin li {
+	width: 50%;
+	vertical-align: middle;
+}
+
+input[type=radio] {
+	/* width: 18px;
+	height: 18px; */
+	display: none;
+	margin-left: 40%;
+}
+
+.radioLabel {
+	position: relative;
+	padding: 0 0 0 42px;
+}
+
+.radioLabel:after, .radioLabel:before {
+	position: absolute;
+	content: "";
+	display: block;
+	top: 50%;
+}
+
+.radioLabel:after {
+	left: 15px;
+	margin-top: -10px;
+	width: 16px;
+	height: 16px;
+	border: 1.5px solid #000;
+	border-radius: 50%;
+}
+
+.radioLabel:before {
+	left: 18.5px;
+	margin-top: -7px;
+	width: 12px;
+	height: 12px;
+	background: #0f0f0f;
+	border-radius: 50%;
+	opacity: 0;
+}
+
+input[type=radio]:checked + .radioLabel:before {
+	opacity: 1;
+}
+
+/* 未入力注意文字のカスタム */
+.inputerror {
+	color: #f00;
+	margin-top: 10px;
 	text-align: center;
 }
 
-.inputForm {
-	text-align: left;
-	margin-left: 20%;
+/* 作成、キャンセルボタン */
+.button {
+  display: -webkit-flex;
+  display: flex;
 }
 
-.chooseAdmin {
-	padding-top: 0;
+.buttonCustom {
+	width: 95px;
+	height: 38px;
+	color: #fff;
+	background-color: #000;
 }
 
-.inputerror {
-	color: #f00;
+.buttonCustom:hover {
+	color: #fff;
+	background-color: #999;
 }
 
-/* モーダルCSS */
+#cancel {
+	color: #000;
+	background-color: #fff;
+	border: 2px solid #000;
+}
+
+#cancel:hover {
+	color: #fff;
+	background-color: #999;
+	border: none;
+}
+
+.inputForm .button {
+	margin-top: 40px;
+}
+
+.inputForm .button li {
+	width: 50%;
+	text-align: center;
+}
+
+
+/*     ↓モーダルCSS     */
 .modal {
   display: none;
   position: fixed;
@@ -39,12 +180,14 @@ table {
   height: 100%;
 }
 
+/* ポップアップ時の背景 */
 .modalBg {
   width: 100%;
   height: 100%;
   background-color: rgba(30,30,30,0.9);
 }
 
+/* ポップアップの内容 */
 .modalContents {
   position: absolute;
   top: 50%;
@@ -52,8 +195,47 @@ table {
   transform:translate(-50%,-50%);
   width: 70%;
   max-width: 500px;
-  max-height: 300px;
+  height: 300px;
   padding: 10px 30px;
   background-color: #fff;
+}
+
+/* ポップアップの文字 */
+.modalContents p {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%,-100%);
+  width: 230px;
+  height: 60px;
+  text-align: left;
+}
+
+/* ポップアップのボタン */
+.modalContents .button {
+  position: relative;
+  top: 40%;
+  width: 80%;
+}
+
+.modalContents .button li {
+	width: 50%;
+}
+
+#modalCancel, #modalOK {
+	margin-left: 50%;
+}
+
+button {
+	width: 100px;
+	height: 40px;
+	color: #000;
+	background-color: #fff;
+	border: 2px solid #000;
+}
+
+button:hover {
+	color: #fff;
+	background-color: #999;
 }
 
