@@ -17,18 +17,34 @@ function formCheck(){
     var flag = 0;
 
     // 入力必須項目が入力されているかチェック
-    if( document . Form1 . Login_ID . value == "" ){ // 名前が未入力の場合
+	//ユーザー名（ログインID）
+    if( document . Form1 . Login_ID . value == "" ){
         flag = 1;
         document . getElementById( 'inputItem1' ) . style . display = "block"; //表示
-    }else{ // 名前が入力済みの場合
+    }else{
         document . getElementById( 'inputItem1' ) . style . display = "none"; //非表示
     }
-    if( document . Form1 . Login_Pass . value == "" ){ // コメントが未入力の場合
+	//仮パスワード
+    if( document . Form1 . Login_Pass . value == "" ){
         flag = 1;
         document . getElementById( 'inputItem1' ) . style . display = "block"; //表示
-    }else{ // コメントが入力済みの場合
+    }else{
         document . getElementById( 'inputItem1' ) . style . display = "none"; //非表示
     }
+	//メールアドレス
+	if(document.Form1.Email_Address.value == "") {
+		flag = 1;
+		document.getElementById( 'inputItem1' ).style.display = "block"; //表示
+	} else {
+		document.getElementById( 'inputItem1' ).style.display = "none"; //非表示
+	}
+	//LINEWORKS ID
+	if(document.Form1.Line_Works_ID.value == "") {
+		flag = 1;
+		document.getElementById( 'inputItem1' ).style.display = "block"; //表示
+	} else {
+		document.getElementById( 'inputItem1' ).style.display = "none"; //非表示
+	}
 
     if( flag ){ // 入力必須項目に未入力があった場合
         return false; // 送信中止
