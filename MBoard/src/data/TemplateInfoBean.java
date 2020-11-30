@@ -7,13 +7,11 @@ public class TemplateInfoBean implements Serializable{
 	public static final String TEMPLATE_ID_COLUMN = "Template_ID";
 	public static final String TEMPLATE_USER_ID_COLUMN = "Template_User_ID";
 	public static final String TEMPLATE_NAME_COLUMN = "Template_Name";
-	public static final String TEMPLATE_TITLE_COLUMN = "Template_Title";
 	public static final String TEMPLATE_CONTENTS_COLUMN = "Template_Contents";
 
 	private int templateId;
 	private int templateUserId;
 	private String templateName;
-	private String templateTitle;
 	private String templateContents;
 
 	public TemplateInfoBean() {}
@@ -22,7 +20,6 @@ public class TemplateInfoBean implements Serializable{
 		this.templateId = templateId;
 		this.templateUserId =templateUserId;
 		this.templateName = templateName;
-		this.templateTitle = templateTitle;
 		this.templateContents = templateContents;
 	}
 
@@ -43,12 +40,6 @@ public class TemplateInfoBean implements Serializable{
 	}
 	public void setTempleName(String templateName) {
 		this.templateName = templateName;
-	}
-	public String getTempleTitle() {
-		return templateTitle;
-	}
-	public void setTempleTitle(String templateTitle) {
-		this.templateTitle = templateTitle;
 	}
 	public String getTempleContents() {
 		return templateContents;

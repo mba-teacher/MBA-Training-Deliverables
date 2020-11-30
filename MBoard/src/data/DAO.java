@@ -737,7 +737,6 @@ public class DAO {
 				b.setTempleId(rs.getInt("Template_ID"));
 				b.setTempleUserId(rs.getInt("Template_User_ID"));
 				b.setTempleName(rs.getString("Template_Name"));
-				b.setTempleTitle(rs.getString("Template_Title"));//Nameと同じなため、削除予定
 				b.setTempleContents(rs.getString("Template_Contents"));
 				//最初に定義した配列にBeanのインスタンスを格納する
 				TemplateInfoList.add(b);
@@ -767,14 +766,13 @@ public class DAO {
 			conn = DriverManager.getConnection(url+dbName, user, pass);
 
 			//SQL文作成
-			String query = "UPDATE Template_Info SET Template_Name=?,Template_Title=?,Template_Contents=? WHERE Template_ID=?";
+			String query = "UPDATE Template_Info SET Template_Name=?,Template_Contents=? WHERE Template_ID=?";
 			pst = conn.prepareStatement(query);
 
 			//上記SQL文のの？に引数で渡された値を代入
 			pst.setString(1,bean.getTempleName());
-			pst.setString(2,bean.getTempleTitle());//Nameと同じなため、削除予定
-			pst.setString(3,bean.getTempleContents());
-			pst.setInt(4,bean.getTempleId());
+			pst.setString(2,bean.getTempleContents());
+			pst.setInt(3,bean.getTempleId());
 			//SQL文実行
 			pst.executeUpdate();
 
@@ -807,15 +805,14 @@ public class DAO {
 			conn = DriverManager.getConnection(url+dbName, user, pass);
 
 			//SQL文作成
-			String query = "INSERT INTO Template_Info(Template_User_ID,Template_Name,Template_Title,Template_Contents) "
-					+ "VALUES(?,?,?,?)";
+			String query = "INSERT INTO Template_Info(Template_User_ID,Template_Name,Template_Contents) "
+					+ "VALUES(?,?,?)";
 			pst = conn.prepareStatement(query);
 
 			//上記SQL文のの？に引数で渡された値を代入
 			pst.setInt(1,bean.getTempleUserId());
 			pst.setString(2,bean.getTempleName());
-			pst.setString(3,bean.getTempleTitle());//Nameと同じなため、削除予定
-			pst.setString(4,bean.getTempleContents());
+			pst.setString(3,bean.getTempleContents());
 			//SQL文実行
 			pst.executeUpdate();
 
@@ -1259,6 +1256,21 @@ public class DAO {
 			pst.setString(8, b.getProfileImgPath());
 			pst.setBoolean(9, b.isAdmin());
 			pst.executeUpdate();
+
+			//SelectQueryメソッド用の変数に作成したログインIDとログインPassを代入
+			String Value[] = {b.getLoginID(),b.getLoginPass()};
+			String Column[]  = {"Login_ID","Login_Pass"};
+			//SelectQueryメソッドを呼び出し、作成したユーザーIDを取得
+			ResultSet result=SelectQuery("User_Info",Column,Value);
+			result.next();
+			//InsertTemplateメソッド用にbeanを作成
+			TemplateInfoBean bean =new TemplateInfoBean();
+			bean.setTempleUserId(result.getInt("User_ID"));
+			bean.setTempleName("定型文1");
+			bean.setTempleContents("定型文内容");
+			//ユーザー作成時に、そのユーザーの定型文を一つ追加する
+			InsertTemplate(bean);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
