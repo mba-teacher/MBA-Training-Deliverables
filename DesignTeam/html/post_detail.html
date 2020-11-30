@@ -2,9 +2,10 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>掲示板</title>
+	<title>会話詳細</title>
 	<link rel="stylesheet" href="../css/nav.css" />
 	<link rel="stylesheet" href="../css/board.css" />
+	<link rel="stylesheet" href="../css/post_detail.css" />
 	<link rel="stylesheet" href="../css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
@@ -119,33 +120,119 @@
 					<div class="board-header">
 						<div class="board-name-area">
 							<img src="../img/mb_e_plus.png" class="board-icon">
-							<div class="board-name">掲示板名</div>
+							<div class="board-name">会話詳細</div>
 							<img src="../img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
 
 					<div class="board-content">
-						<form action="" class="form">
-							<input class="post-form" name="post" placeholder="なんでも投稿できます">
-							<div class="post-detail">
-								<textarea class="post-form-content" name="post-content" placeholder="なんでも投稿できます"></textarea>
-								<div class="post-option">
-									<div class="post-option-icon">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-									</div>
-									<input type="submit" value="送信" class="post-submit">
-								</div>
-							</div>
-						</form>
-
-						<textarea class="search"></textarea>
 
 						<div class="post">
 							<img src="../img/mb_e_plus.png" class="post-icon">
 							<div class="post-board-name">掲示板名</div>
+							<div class="post-user-name">投稿者名</div>
+							<div class="post-date">投稿日時</div>
+							<div class="clear"></div>
+							<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
+							<div class="post-icon-area">
+								<div class="comment">
+									<img src="../img/mb_i_comment.png">
+									<span class="number">100</span>コメント
+								</div>
+								<div class="good">
+									<img src="../img/mb_j_good.png">
+									<span class="number">100</span>確認済
+								</div>
+							</div>
+							<div class="post-detail-button">
+								<img src="../img/mb_2_syousai.png">
+							</div>
+						</div>
+
+						<div class="post post-comment">
+							<img src="../img/mb_e_plus.png" class="post-icon">
+							<div class="post-board-name">掲示板名</div>
+							<div class="post-comment-for">苗字名前へ返信</div>
+							<div class="post-user-name">投稿者名</div>
+							<div class="post-date">投稿日時</div>
+							<div class="clear"></div>
+							<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
+							<div class="post-icon-area">
+								<div class="comment">
+									<img src="../img/mb_i_comment.png">
+									<span class="number">100</span>コメント
+								</div>
+								<div class="good">
+									<img src="../img/mb_j_good.png">
+									<span class="number">100</span>確認済
+								</div>
+							</div>
+							<div class="post-detail-button">
+								<img src="../img/mb_2_syousai.png">
+							</div>
+						</div>
+
+						<div class="tree-area">
+							<div class="comment-branch">
+								<div class="branch-border border-top"></div>
+								<div class="branch-border border-bottom"></div>
+							</div>
+							<div class="post post-comment post-tree">
+								<img src="../img/mb_e_plus.png" class="post-icon">
+								<div class="post-board-name">掲示板名</div>
+								<div class="post-comment-for">苗字名前へ返信</div>
+								<div class="post-user-name">投稿者名</div>
+								<div class="post-date">投稿日時</div>
+								<div class="clear"></div>
+								<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
+								<div class="post-icon-area">
+									<div class="comment">
+										<img src="../img/mb_i_comment.png">
+										<span class="number">100</span>コメント
+									</div>
+									<div class="good">
+										<img src="../img/mb_j_good.png">
+										<span class="number">100</span>確認済
+									</div>
+								</div>
+								<div class="post-detail-button">
+									<img src="../img/mb_2_syousai.png">
+								</div>
+							</div>
+						</div>
+
+						<div class="tree-area">
+							<div class="comment-branch">
+								<div class="branch-border border-top"></div>
+							</div>
+							<div class="post post-comment post-tree">
+								<img src="../img/mb_e_plus.png" class="post-icon">
+								<div class="post-board-name">掲示板名</div>
+								<div class="post-comment-for">苗字名前へ返信</div>
+								<div class="post-user-name">投稿者名</div>
+								<div class="post-date">投稿日時</div>
+								<div class="clear"></div>
+								<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
+								<div class="post-icon-area">
+									<div class="comment">
+										<img src="../img/mb_i_comment.png">
+										<span class="number">100</span>コメント
+									</div>
+									<div class="good">
+										<img src="../img/mb_j_good.png">
+										<span class="number">100</span>確認済
+									</div>
+								</div>
+								<div class="post-detail-button">
+									<img src="../img/mb_2_syousai.png">
+								</div>
+							</div>
+						</div>
+
+						<div class="post post-comment">
+							<img src="../img/mb_e_plus.png" class="post-icon">
+							<div class="post-board-name">掲示板名</div>
+							<div class="post-comment-for">苗字名前へ返信</div>
 							<div class="post-user-name">投稿者名</div>
 							<div class="post-date">投稿日時</div>
 							<div class="clear"></div>

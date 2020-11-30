@@ -3,7 +3,7 @@
 	display:flex;
 	justify-content:center;
 	background:white;
-	height:100vh;
+	min-height:100vh;
 	background-image: url("../img/mb_q_editillust.png");
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -214,6 +214,7 @@ input[type="checkbox"]:checked + label .checkbox{
 	display:flex;
 	justify-content:flex-end;
 	margin-top:10px;
+	padding-bottom:50px;
 }
 
 .cancel,.submit {

@@ -24,7 +24,6 @@ body{
 
 .board-content-area{
 	background-color:#dceaef;
-	height:3000px;
 	width:calc(100% - 220px);
 	display:flex;
 	flex-direction:column;
@@ -240,8 +239,10 @@ textarea{
 .post-letter{
 	/* background-color:#ddd; */
 	width:97%;
-	margin:10px auto;
+	margin:0px auto;
+	margin-top:10px;
 	padding-bottom:50px;
+	box-sizing:border-box;
 }
 
 .post-icon-area{
@@ -276,7 +277,16 @@ textarea{
 	height:30px;
 }
 
+.post-detail-button {
+	position:absolute;
+	top:20px;
+	right:12px;
+}
 
+.number {
+	margin:0 2px;
+	font-weight:bold;
+}
 
 /* 						↓掲示板一覧ポップアップ						*/
 
