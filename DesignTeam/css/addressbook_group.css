@@ -1,8 +1,16 @@
 @charset "UTF-8";
 
+
+
 .clear{
 	clear:both;
 }
+
+.clear_none{
+	clear:none;
+}
+
+
 
 h1{
 	background-color: #fff;
@@ -105,7 +113,8 @@ input[name="tab_item"] {
 	padding:0px 0px 0;
 	clear:both;
 	overflow:hidden;
-	height:1000px;
+	height:100%;
+	width:1050px;
 }
 
 #group_content {
@@ -113,23 +122,108 @@ input[name="tab_item"] {
 	padding:0px 0px 0;
 	clear:both;
 	overflow:hidden;
-	height:1000px;
+	height:100%;
+	width:1050px;
 }
 
 .address_area{
 	background-color:white;
 	width:100%;
-	height:250px;
-	margin-bottom:10px;
+	height:100%;
+	margin:10px;
+	padding:10px;
 	border-radius:8px;
+}
+
+.user_information_area{
+	float:left;
+	/* background-color:yellow; */
+	width:100px;
+	height:100px;
+	margin:10px;
+	padding:10px
+
+
+}
+
+.user_information{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	display: block;
+	font-family:sans-serif;
+	font-weight:bold;
+	font-size:15px;
+	margin: auto;
+	/* background:red; */
+}
+
+.user_name{
+	font-size:14px;
+}
+
+.user_icon{
+	margin:0 auto;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	width:50px;
+	height:50px;
 }
 
 .group_area{
 	background-color:white;
 	width:100%;
-	height:250px;
-	margin-bottom:10px;
+	height:100%;
+	margin:10px;
+	padding:10px;
 	border-radius:8px;
+}
+
+.group_tab{
+	padding:20px;
+	border-radius:8px
+}
+
+.on-off{
+	display:none;
+}
+
+.label inbox1{
+	background-color:#FFFFFF;
+	padding: 10px;
+	margin-bottom: 5px;
+	cursor: pointer;
+	border-bottom:solid 2px #000000;
+}
+
+.box label{
+	background: #5f9;
+	display: block;
+	padding: 10px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+
+.box input[type="checkbox"].on-off,
+.box input[type="checkbox"].on-off +div{
+	display: none;
+}
+
+.box input[type="checkbox"].on-off:checked +div{
+	display: block;
+}
+
+.box div{
+	margin: 0 0 20px;
+}
+
+#inbox2:checked + .dropdown{
+  display:block;
+}
+
+.box div{
+	margin: 0 0 20px;
 }
 
 .icon_area{
@@ -139,10 +233,42 @@ input[name="tab_item"] {
 	margin:20px 0 0 20px;
 }
 
+
+
 .icon_area img{
 	width:100%;
 	height:100%;
 }
+
+
+input[type="checkbox"]{
+  display:none;
+}
+
+
+input[type="checkbox"]{
+  display:none;
+}
+
+label[for="inbox1"]{
+  content:"";
+  display:block;
+  background-color:white;
+  border-bottom:#7F7F7F 2px solid;
+  font-family:sans-serif;
+  font-weight:bold;
+  padding:10px;
+}
+label[for="inbox2"]{
+  content:"";
+  display:block;
+  background-color:white;
+  border-bottom:#7F7F7F 2px solid;
+  font-family:sans-serif;
+  font-weight:bold;
+  padding:10px;
+}
+
 
 .title_area{
 	float:left;
@@ -158,12 +284,14 @@ input[name="tab_item"] {
 
 .address{
 	width:calc(100% - 40px);
-	margin:10px 0 0 20px;
+	padding:10px;
 	text-align:left;
+	font-size:18px;
+	font-family:sans-serif;
+	font-weight:bold;
 }
 
 .date {
 	font-size:small;
 }
-
 
