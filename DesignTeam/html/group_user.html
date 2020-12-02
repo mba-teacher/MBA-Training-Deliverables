@@ -1,24 +1,28 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>各ユーザーグループ設定画面</title>
-<link rel= "stylesheet"href="group_user.css">
+<link rel= "stylesheet"href="css/group_user.css">
+<link rel= "stylesheet"href="css/cansel_modal.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/group_user.js"></script>
+
 </head>
 
 <body>
 
 
+  <a href="" class="backbtn js-modal-open">　戻る　</a>
 
-<div class="back">
-  <a href="" class="backbtn">　戻る　</a>
-</div>
 
 <div class="name">
    <h1>ユーザー名(設定されたもの)</h1>
    <p>　　　　　　　追加するグループを選択してください。</p>
    </div>
 
+
+<div class="center_box">
 
 <div class="c_box">
 <input type="checkbox" id="01-A" name="checkbox01">
@@ -78,14 +82,23 @@
 <input type="checkbox" id="05-C" name="checkbox01">
 <label for="05-C" class="checkbox01">　グループ名C</label>
 </div>
-
-
-<div class="ok">
-  <a href="" class="okbtn">　決定　</a>
 </div>
 
+  <a href="" class="okbtn">　決定　</a>
 
 
+
+<div class="modal js-modal">
+        <div class="modal__bg"></div>
+        <div class="modal__content">
+            <p>編集内容は保持されませんが<br>
+               よろしいですか？</p>
+         <div class="btn_box">
+            <a href="" class="js-modal-close">キャンセル</a>
+            <a href="" class="mobal_btn2">OK</a>
+         </div>
+        </div><!--modal__inner-->
+    </div><!--modal-->
 
 
 </body>
