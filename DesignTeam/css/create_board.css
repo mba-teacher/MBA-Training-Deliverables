@@ -1,0 +1,237 @@
+
+.mypage_content {
+	display:flex;
+	justify-content:center;
+	background:white;
+	min-height:100vh;
+	background-image: url("../img/mb_q_editillust.png");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: 6% -3%;
+}
+
+.page-title {
+	margin-top:40px;
+	font-size:30px;
+}
+
+.create-area {
+	width:700px;
+	border-radius:8px;
+	text-align:left;
+}
+
+.create-area p {
+	font-size:16px;
+	font-weight:bold;
+	margin-bottom:2px;
+}
+
+
+
+/*----------↓アイコン選択----------*/
+
+.board-icon-area {
+	display:flex;
+	align-items:flex-end;
+	margin-top:30px;
+}
+
+.board-icon {
+	width:120px;
+	height:120px;
+	background-color:#aaa;
+	border-radius:100px;
+}
+
+#board-icon {
+	display:none;
+}
+
+.browse-button {
+	width:120px;
+	height:35px;
+	margin:0 0 5px 30px;
+	background-color:#ff9100;
+	border:none;
+	color:white;
+	border-radius:8px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.board-name-area {
+	float:left;
+	margin-right:30px;
+}
+
+
+/*----------↓掲示板色----------*/
+.board-color {
+	width:100px;
+	height:30px;
+	border-radius:8px;
+	border:1px solid ;
+	box-sizing:border-box;
+}
+
+
+
+/*----------↓アクセス制限----------*/
+
+input, .access {
+	width:290px;
+	height:30px;
+	border-radius:8px;
+	border:1px solid ;
+	box-sizing:border-box;
+}
+
+.access {
+	font-size:14px;
+	display:flex;
+	align-items:center;
+	position:relative;
+}
+
+.access-box {
+	font-size:14px;
+	display:flex;
+	align-items:center;
+	position:relative;
+	width:100%;
+	cursor:pointer;
+}
+
+.arrow {
+	margin-left:auto;
+	margin-right:5px;
+	font-size:20px;
+}
+
+.access-list-area {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	border-radius:8px 8px 8px 8px ;
+	border:1px solid ;
+	transform:translate(-1px, -2px);
+	background:#b5c2c8;
+	box-shadow: 0 0px 10px 0 rgba(0, 0, 0, .4);
+
+	display:none;
+}
+
+.access-list-bg {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100vw;
+	height:100vh;
+
+	display:none;
+}
+
+.access-list-header {
+	width:100%;
+	height:30px;
+	display:flex;
+	align-items:center;
+	border-bottom:1px solid;
+	cursor:pointer;
+}
+
+.access-list-header-title {
+	margin-left:0px;
+}
+
+.access-list-item {
+	background:white;
+	border-bottom:1px solid;
+}
+
+.access-list-item:last-of-type {
+	border-radius:0px 0px 8px 8px ;
+	border-bottom:none;
+}
+
+input[type="checkbox"]{
+	display:none;
+}
+
+.access-item {
+	display:flex;
+	align-items:center;
+}
+
+.checkbox {
+	background:white;
+	width:24px;
+	height:24px;
+	border-radius:8px;
+	margin-left:auto;
+	margin-right:10px;
+	box-sizing:border-box;
+	border:3px solid #ff9100;
+}
+
+.access-user-icon {
+	margin-left:5px;
+	width:35px;
+	height:35px;
+	padding:5px 0px;
+}
+
+.access-user-name {
+	margin-left:10px;
+}
+
+input[type="checkbox"]:checked + label .checkbox{
+	background:#ff9100;
+}
+
+
+
+
+/*----------↓記事詳細----------*/
+
+.board-detail {
+	width:700px;
+	height:240px;
+	border-radius:8px;
+	border:1px solid ;
+	resize:none;
+	box-sizing:border-box;
+}
+
+
+
+/*----------↓作成ボタン----------*/
+
+.submit-area {
+	display:flex;
+	justify-content:flex-end;
+	margin-top:10px;
+	padding-bottom:50px;
+}
+
+.cancel,.submit {
+	width:120px;
+	height:40px;
+	background-color:#ff9100;
+	border:none;
+	color:white;
+	border-radius:10px;
+	margin-left:8px;
+	font-weight:bold;
+	font-size:14px;
+}
+
+.cancel {
+	background-color:white;
+	color:#ff9100;
+	border:2px solid #ff9100;
+	box-sizing:border-box;
+}

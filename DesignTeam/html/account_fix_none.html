@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>アカウント修正・削除</title>
+<link rel= "stylesheet"href="../css/account_fix.css">
+<link rel= "stylesheet"href="../css/cansel_modal.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/account_fix.js"></script>
+<script src="../js/account_fix_modal.js"></script>
+</head>
+
+<body>
+
+   <a href="" class="backbtn js-modal-open">　戻る　</a>
+   <a href="" class="okbtn">　修正　</a>
+
+  <div class="title"><h1>アカウント修正・削除</h1></div>
+
+
+
+ <div id="realWrite">
+   <p></p>
+ </div>
+
+ <div id="realText">
+   <input type="text" value="" placeholder="　ユーザー名検索" class="textbox">
+ </div>
+
+
+
+<div class="test">
+
+  <div class="user_name">
+  <div class="user_list"><P>ユーザー<span>管理者権限</span></P>
+     </div>
+
+  <div id="none" class="user_list">
+  <p>該当しませんでした</p>
+ 	 </div>
+
+
+
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+<div class="modal js-modal">
+        <div class="modal__bg"></div>
+        <div class="modal__content">
+            <p>編集内容は保持されませんが<br>
+               よろしいですか？</p>
+         <div class="btn_box">
+            <a href="" class="js-modal-close">キャンセル</a>
+            <a href="" class="mobal_btn2">OK</a>
+         </div>
+        </div><!--modal__inner-->
+    </div><!--modal-->
+
+
+<div class="modal js-modal2">
+        <div class="modal__bg"></div>
+        <div class="modal__content">
+            <p><br>本当に削除してもよろしいですか？</p>
+         <div class="btn_box">
+            <a href="" class="js-modal-close">キャンセル</a>
+            <a href="" class="mobal_btn2">OK</a>
+         </div>
+        </div><!--modal__inner-->
+    </div><!--modal-->
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+@charset "UTF-8";
+
+
+
+.clear{
+	clear:both;
+}
+
+.clear_none{
+	clear:none;
+}
+
+
+
+h1{
+	background-color: #fff;
+}
+
+.addresandgroup{
+	padding:20px ;
+
+}
+
+.profile_area h2{
+	margin-top:60px;
+}
+
+.profile_icon{
+	background-color:#ddd;
+	width:150px;
+	height:150px;
+	border-radius:24px;
+	transform:translate(0px,50px);
+}
+
+.profile_edit{
+	position:absolute;
+	top:10px;
+	right:15px;
+	background:#4f4f4f;
+	color:white;
+	padding:8px 30px;
+	width:150px;
+	text-align:center;
+	border-radius:8px;
+}
+
+.admin{
+	position:absolute;
+	top:60px;
+	right:15px;
+	background:#4f4f4f;
+	color:white;
+	padding:8px 30px;
+	width:150px;
+	text-align:center;
+	border-radius:8px;
+}
+
+
+
+
+
+/* 						↓タブの設定						*/
+
+.tabs {
+	margin-top:50px;
+	padding-bottom:40px;
+	/* background-color:#fff; */
+	width:500px;
+	max-width:calc(100vw - 80px);
+	margin:10px auto 0 auto;;
+}
+
+.tab_item {
+  width: calc(100%/2);
+  height: 50px;
+  border-bottom: 3px solid #5ab4bd;
+  background-color: #fff;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center;
+  color: #565656;
+  display: block;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.tab_item:hover {
+  opacity: 0.75;
+}
+
+input[name="tab_item"] {
+  display: none;
+}
+
+#address:checked ~ #address_content,
+#group:checked ~ #group_content{
+	display:block;
+}
+
+.tabs input:checked + .tab_item{
+	background-color:#5ab4bd;
+	color:#fff;
+}
+
+/* 						↓タブの内容						*/
+
+#address_content {
+	display:none;
+	padding:0px 0px 0;
+	clear:both;
+	overflow:hidden;
+	height:100%;
+	width:1050px;
+}
+
+#group_content {
+	display:none;
+	padding:0px 0px 0;
+	clear:both;
+	overflow:hidden;
+	height:100%;
+	width:1050px;
+}
+
+.address_area{
+	background-color:white;
+	width:100%;
+	height:100%;
+	margin:10px;
+	padding:10px;
+	border-radius:8px;
+}
+
+.user_information_area{
+	float:left;
+	/* background-color:yellow; */
+	width:100px;
+	height:100px;
+	margin:10px;
+	padding:10px
+
+
+}
+
+.user_information{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	display: block;
+	font-family:sans-serif;
+	font-weight:bold;
+	font-size:15px;
+	margin: auto;
+	/* background:red; */
+}
+
+.user_name{
+	font-size:14px;
+}
+
+.user_icon{
+	margin:0 auto;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	width:50px;
+	height:50px;
+}
+
+.group_area{
+	background-color:white;
+	width:100%;
+	height:100%;
+	margin:10px;
+	padding:10px;
+	border-radius:8px;
+}
+
+.group_tab{
+	padding:5px 20px 5px 20px;
+	border-radius:8px
+}
+
+.on-off{
+	display:none;
+}
+
+.label inbox1{
+	background-color:#FFFFFF;
+	padding: 10px;
+	margin-bottom: 5px;
+	cursor: pointer;
+	border-bottom:solid 2px #000000;
+}
+
+.box label{
+	background: #5f9;
+	display: block;
+	padding: 10px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+
+.box input[type="checkbox"].on-off,
+.box input[type="checkbox"].on-off +div{
+	display: none;
+}
+
+.box input[type="checkbox"].on-off:checked +div{
+	display: block;
+}
+
+.box div{
+	margin: 0 0 20px;
+}
+
+#inbox2:checked + .dropdown{
+  display:block;
+}
+
+.box div{
+	margin: 0 0 20px;
+}
+
+.icon_area{
+	width:55px;
+	height:55px;
+	float:left;
+	margin:20px 0 0 20px;
+}
+
+
+
+.icon_area img{
+	width:100%;
+	height:100%;
+}
+
+
+input[type="checkbox"]{
+  display:none;
+}
+
+
+input[type="checkbox"]{
+  display:none;
+}
+
+label[for="inbox1"]{
+  content:"";
+  display:block;
+  background-color:white;
+  border-bottom:#7F7F7F 2px solid;
+  font-family:sans-serif;
+  font-weight:bold;
+  padding:10px;
+}
+label[for="inbox2"]{
+  content:"";
+  display:block;
+  background-color:white;
+  border-bottom:#7F7F7F 2px solid;
+  font-family:sans-serif;
+  font-weight:bold;
+  padding:10px;
+}
+
+
+.title_area{
+	float:left;
+	margin:20px 0 0 20px;
+	height:55px;
+	text-align:left;
+	font-size:20px;
+}
+
+.title_name {
+	font-weight:bold;
+}
+
+.address{
+	width:calc(100% - 40px);
+	padding:10px;
+	text-align:left;
+	font-size:18px;
+	font-family:sans-serif;
+	font-weight:bold;
+}
+
+.date {
+	font-size:small;
+}
+
