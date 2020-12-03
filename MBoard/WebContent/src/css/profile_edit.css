@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+
+.board-icon-area {
+	display:flex;
+	align-items:flex-end;
+	margin-top:10px;
+}
+
+input {
+	width:400px;
+}
+
