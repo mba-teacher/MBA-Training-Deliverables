@@ -1,16 +1,23 @@
 @charset "UTF-8";
 
 
+/*----------↓body要素----------*/
 body {
 	padding:0px;
 	margin:0px;
 	background-color:#dceaef;
 }
 
+/*----------↓float解除用----------*/
 .clear{
 	clear:both;
 }
 
+
+
+
+
+/*----------↓ナビゲーション本体----------*/
 .nav-area {
 	position:relative;
 	background-color:#ff9100;
@@ -22,6 +29,7 @@ body {
 	height:100vh;
 }
 
+/*----------↓ロゴ表示領域----------*/
 .logo-area {
 	background-color:#4f4f4f;
 	width:100%;
@@ -34,16 +42,23 @@ body {
 	padding-top:16px;
 }
 
+/*----------↓アイコン----------*/
 .nav-icon {
 	width:70px;
 }
 
+/*----------↓その他・通知ボタン----------*/
 .nav-bottom {
 	position:absolute;
 	width:100%;
 	bottom:0px;
 }
 
+
+
+
+
+/*----------↓ポップアップ----------*/
 .popup-link{
 	display:none;
 }
@@ -68,6 +83,7 @@ body {
 	width:90px;
 }
 
+/*----------↓ポップアップ背景----------*/
 .popup-bg {
 	position:fixed;
 	top:0;
@@ -76,6 +92,11 @@ body {
 	height:100vh;
 }
 
+
+
+
+
+/*----------↓display:flexの設定----------*/
 .flex_container {
 	width:1000px;
 	display:-webkit-flex;
