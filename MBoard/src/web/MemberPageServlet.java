@@ -15,27 +15,28 @@ import data.UserInfoBean;
 
 public class MemberPageServlet extends HttpServlet {
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//セッションが切れているか確認
 		HttpSession s = req.getSession(true);
-		String url = "/src/jsp/member_page.jsp";
-		/*if (s == null) {
-			url = "http://localhost:8080/MBoard/src/html/login.html";
-		} else {*/
+		String url = "";
+		if (s == null) {
+			url = "http://localhost:8080/MBoard/src/html/login.jsp";
+		} else {
 			DAO dao = new DAO();
+			int memberId = Integer.parseInt(req.getParameter("memberId"));
 
-			//テスト用にユーザーID：1を設定
-			UserInfoBean uib = dao.SelectMember(7);
-			PostInfoBean[] pib = dao.GetMyPosts(7);
+			//受け取ったユーザーIDでユーザー情報と記事を取得する
+			UserInfoBean uib = dao.SelectMember(memberId);
+			PostInfoBean[] pib = dao.GetMyPosts(memberId);
+
 			req.setAttribute("memberInfoBean", uib);
-			s.setAttribute("postInfoBean", pib);
-
+			s.setAttribute("memberPostInfoBean", pib);
 			s.setAttribute("count", 0);
-			for (int i = 0; i < pib.length; i++) {
-				System.out.println(pib[i].getPostId());
-			}
-			System.out.println("servlet" + url);
-			RequestDispatcher rd = req.getRequestDispatcher(url);
-			rd.forward(req, resp);
-		//}
+
+			url = "/src/jsp/member_page.jsp";
+		}
+		System.out.println("servlet:" + url);
+		RequestDispatcher rd = req.getRequestDispatcher(url);
+		rd.forward(req, resp);
 	}
 }

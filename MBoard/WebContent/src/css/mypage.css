@@ -106,7 +106,9 @@ input[name="tab_item"] {
 	padding:0px 0px 0;
 	clear:both;
 	overflow:hidden;
-	height:1000px;
+	/*--heightを設定するとスクロールが動かなくなるのでmin-heightに変更しました--*/
+	/* height:1000px; */
+	min-height: 1000px;
 }
 
 #profile_content {
