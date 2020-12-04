@@ -1,0 +1,165 @@
+@charset "UTF-8";
+
+#group{
+	position:relative;
+	left: 10%;
+    top: 25%;
+    width: 600px;
+    height: 50px;
+    margin-right: -100px;
+
+	background-color: #ffffff;
+	border:solid 2px;
+	display: flex;
+/*  	justify-content: center;*/ /* コンテナ内全体の主軸方向(初期値は横方向)の揃え位置を指定する */
+  	align-items: center;
+
+}
+p#tx{
+	display: block;
+	margin: 0 0 0 35px;
+	font-size:1.3em;
+}
+.bottonEdit{
+	display: block;
+	margin: 0 -200px 0 auto;
+}
+.bottonDele{
+	display: block;
+	margin: 0 20px 0 auto;
+}
+
+#groupNew{
+	display: block;
+	margin: 30px auto auto 580px;
+}
+
+.bottonBack{
+	display: block;
+	margin: -50px auto 30px 700px;
+}
+
+
+#layer {
+    display: none;  /* 初期表示は非表示 */
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.20;
+}
+
+#popup {
+    display: none;  /* 初期表示は非表示 */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 450px;
+    height: 250px;
+    margin-left: -150px;
+    margin-top: -100px;
+    background-color: white;
+    border-radius: 5px;
+    text-align: center;
+}
+#popup p{
+	/* 文字サイズを1.2emに指定 */
+    font-size: 1.2em;
+
+    /* 文字の太さを指定 */
+    font-weight: bold;
+
+	/* 文字の配置指定*/
+    margin-right: 200px;
+}
+#popup g{
+	/* 文字サイズを1.1emに指定 */
+    font-size: 1.1em;
+
+    /* 文字の太さを指定 */
+    font-weight: bold;
+
+	/* 文字の配置指定*/
+    margin-right: 230px;
+}
+#popup t{
+	/* 文字サイズを0.8emに指定 */
+    font-size: 0.8em;
+
+    /* 文字の太さを指定 */
+    font-weight: 400;
+
+	/* 文字の配置指定*/
+    margin-left: 250px;
+}
+
+
+#delepop {
+    display: none;  /* 初期表示は非表示 */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 400px;
+    height: 200px;
+    margin-left: -150px;
+    margin-top: -100px;
+    background-color:white;
+    border-radius: 5px;
+    text-align: center;
+}
+#delepop p{
+	display: inline-block;
+	width: 400px;
+	line-height: 80px;
+}
+
+
+input.button1 {
+    /* 文字サイズを1.2emに指定 */
+    font-size: 1.2em;
+
+    /* 文字の太さを指定 */
+
+	/* ボタンの大きさを固定指定*/
+   	width: 60px;
+    height: 32px;
+}
+input.button2 {
+    /* 文字サイズを0.9emに指定 */
+    font-size: 0.9em;
+
+    /* 文字の太さを指定 */
+
+	/* ボタンの大きさを固定指定 */
+   	width: 100px;
+    height: 40px;
+}
+input.button3 {
+    /* 文字サイズを0.9emに指定 */
+    font-size: 1.5em;
+
+    /* 文字の太さを指定 */
+
+	/* ボタンの大きさを固定指定 */
+   	width: 130px;
+    height: 40px;
+}
+input.button4 {
+    /* 文字サイズを0.9emに指定 */
+    font-size: 1.2em;
+
+    /* 文字の太さを指定 */
+
+	/* ボタンの大きさを固定指定 */
+   	width: 65px;
+    height: 40px;
+}
+.inner {
+  padding-top: 0px;
+  margin-top:20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
