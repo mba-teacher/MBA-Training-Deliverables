@@ -594,6 +594,7 @@ public class DAO {
 			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+			stmt = conn.createStatement();
 
 			//SQL文作成
 			String query = "SELECT * FROM Read_Info WHERE Post_ID = '"+postId+"'";
@@ -690,6 +691,7 @@ public class DAO {
 			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+			stmt = conn.createStatement();
 
 			//SQL文作成
 			String query = "SELECT * FROM Read_Info WHERE Comment_ID = '"+Comment+"'";
@@ -724,6 +726,7 @@ public class DAO {
 			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url+dbName, user, pass);
+			stmt = conn.createStatement();
 
 			//SQL文作成
 			String query = "SELECT * FROM Template_Info WHERE Template_User_ID = '"+templateUserId+"'";
