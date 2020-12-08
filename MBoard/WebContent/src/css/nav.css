@@ -47,6 +47,13 @@ body {
 	width:70px;
 }
 
+/*----------↓マイページ遷移用のアイコン----------*/
+#my-icon {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
 /*----------↓その他・通知ボタン----------*/
 .nav-bottom {
 	position:absolute;
