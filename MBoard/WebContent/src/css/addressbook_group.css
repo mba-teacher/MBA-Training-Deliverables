@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
-
-
+/*--------↓float解除用--------*/
 .clear{
 	clear:both;
 }
@@ -11,52 +10,18 @@
 }
 
 
-
 h1{
 	background-color: #fff;
+	border-radius:8px;
+	display: table;
+	margin: 20px 0;
+	padding: 0px 4px;
 }
 
 .addresandgroup{
 	padding:20px ;
-
+	width: 1050px;
 }
-
-.profile_area h2{
-	margin-top:60px;
-}
-
-.profile_icon{
-	background-color:#ddd;
-	width:150px;
-	height:150px;
-	border-radius:24px;
-	transform:translate(0px,50px);
-}
-
-.profile_edit{
-	position:absolute;
-	top:10px;
-	right:15px;
-	background:#4f4f4f;
-	color:white;
-	padding:8px 30px;
-	width:150px;
-	text-align:center;
-	border-radius:8px;
-}
-
-.admin{
-	position:absolute;
-	top:60px;
-	right:15px;
-	background:#4f4f4f;
-	color:white;
-	padding:8px 30px;
-	width:150px;
-	text-align:center;
-	border-radius:8px;
-}
-
 
 
 
@@ -64,16 +29,18 @@ h1{
 /* 						↓タブの設定						*/
 
 .tabs {
-	margin-top:50px;
+	margin-top:10px;  /* 50px */
 	padding-bottom:40px;
 	/* background-color:#fff; */
-	width:500px;
+	width:100%;  /* 500px */
+	min-width: 500px;
 	max-width:calc(100vw - 80px);
-	margin:10px auto 0 auto;;
+	/* margin:10px auto 0 auto; */
 }
 
 .tab_item {
-  width: calc(100%/2);
+  width: calc(50%/2);  /* calc(100%/2) */
+  min-width: 250px;
   height: 50px;
   border-bottom: 3px solid #5ab4bd;
   background-color: #fff;
@@ -106,33 +73,48 @@ input[name="tab_item"] {
 	color:#fff;
 }
 
+
 /* 						↓タブの内容						*/
 
 #address_content {
 	display:none;
-	padding:0px 0px 0;
+	padding:0px;
 	clear:both;
 	overflow:hidden;
 	height:100%;
-	width:1050px;
+	width: 100%;  /* 1050px / calc(100% * 2) */
 }
 
 #group_content {
 	display:none;
-	padding:0px 0px 0;
+	padding:0px;
 	clear:both;
 	overflow:hidden;
 	height:100%;
 	width:1050px;
 }
 
+/*--------アドレスの内容--------*/
 .address_area{
 	background-color:white;
-	width:100%;
+	width: calc(100% - 20px);
 	height:100%;
-	margin:10px;
+	margin:10px 0px;  /*左右を0に変更*/;
 	padding:10px;
 	border-radius:8px;
+}
+
+/* 検索窓の位置は仮で設定してあります（要調整） */
+.serch {
+	position: absolute;
+	top: 110px;
+	left: 850px;
+	margin: 5px 10px;
+}
+
+.address {
+	font-size: 18px;
+	font-weight: bold;
 }
 
 .user_information_area{
@@ -140,12 +122,17 @@ input[name="tab_item"] {
 	/* background-color:yellow; */
 	width:100px;
 	height:100px;
-	margin:10px;
-	padding:10px
-
-
+	margin:15px;
+	padding:5px;
+	text-align: center;
+	text-decoration: none;
 }
 
+.user_information_area:hover {
+	opacity: 0.75;
+}
+
+/* 使用していないタグのためコメントアウト
 .user_information{
 	display:flex;
 	align-items:center;
@@ -155,11 +142,14 @@ input[name="tab_item"] {
 	font-weight:bold;
 	font-size:15px;
 	margin: auto;
-	/* background:red; */
-}
+	background:red;
+} */
 
 .user_name{
-	font-size:14px;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	color: black;
 }
 
 .user_icon{
@@ -167,41 +157,34 @@ input[name="tab_item"] {
 	display:flex;
 	align-items:center;
 	justify-content:center;
-	width:50px;
-	height:50px;
+	width:60px;
+	height:60px;
+	border-radius: 50%;
 }
 
+/*--------グループの内容--------*/
 .group_area{
 	background-color:white;
-	width:100%;
+	width: calc(100% - 20px);
 	height:100%;
-	margin:10px;
+	margin:10px 0px;  /*左右を0に変更*/
 	padding:10px;
 	border-radius:8px;
 }
 
 .group_tab{
-	padding:5px 20px 5px 20px;
+	padding:5px 20px;
 	border-radius:8px
 }
 
-.on-off{
-	display:none;
-}
-
-.label inbox1{
-	background-color:#FFFFFF;
-	padding: 10px;
-	margin-bottom: 5px;
-	cursor: pointer;
-	border-bottom:solid 2px #000000;
-}
-
 .box label{
-	background: #5f9;
+	background: white;  /* #5f9 */
 	display: block;
 	padding: 10px;
 	margin-bottom: 5px;
+	border-bottom:#7F7F7F 2px solid;
+	font-family:sans-serif;
+	font-weight:bold;
 	cursor: pointer;
 }
 
@@ -212,86 +195,5 @@ input[name="tab_item"] {
 
 .box input[type="checkbox"].on-off:checked +div{
 	display: block;
-}
-
-.box div{
-	margin: 0 0 20px;
-}
-
-#inbox2:checked + .dropdown{
-  display:block;
-}
-
-.box div{
-	margin: 0 0 20px;
-}
-
-.icon_area{
-	width:55px;
-	height:55px;
-	float:left;
-	margin:20px 0 0 20px;
-}
-
-
-
-.icon_area img{
-	width:100%;
-	height:100%;
-}
-
-
-input[type="checkbox"]{
-  display:none;
-}
-
-
-input[type="checkbox"]{
-  display:none;
-}
-
-label[for="inbox1"]{
-  content:"";
-  display:block;
-  background-color:white;
-  border-bottom:#7F7F7F 2px solid;
-  font-family:sans-serif;
-  font-weight:bold;
-  padding:10px;
-}
-label[for="inbox2"]{
-  content:"";
-  display:block;
-  background-color:white;
-  border-bottom:#7F7F7F 2px solid;
-  font-family:sans-serif;
-  font-weight:bold;
-  padding:10px;
-}
-
-
-.title_area{
-	float:left;
-	margin:20px 0 0 20px;
-	height:55px;
-	text-align:left;
-	font-size:20px;
-}
-
-.title_name {
-	font-weight:bold;
-}
-
-.address{
-	width:calc(100% - 40px);
-	padding:10px;
-	text-align:left;
-	font-size:18px;
-	font-family:sans-serif;
-	font-weight:bold;
-}
-
-.date {
-	font-size:small;
 }
 

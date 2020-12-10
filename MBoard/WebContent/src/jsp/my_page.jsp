@@ -30,14 +30,13 @@
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<!-- <a href=""> --> <%-- リンク先：<%=request.getContextPath()%>/src/jsp/my_page.jsp --%>
+			<%-- 同一ページには遷移しない設定のためaタグをはずす --%>
 				<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon" id="my-icon">
-				<%-- <img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon"> --%>
-			<!-- </a> -->
+
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
 			</a>
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">
@@ -57,7 +56,7 @@
 				<div class="profile_area">
 					<div>
 						<% if (uib.getProfileImgPath() == null)  { %>
-							<span class="profile_icon">高</span>
+							<p class="profile_icon">高</p>
 						<% } else { %>
 							<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="profile_icon">
 						<% } %>
