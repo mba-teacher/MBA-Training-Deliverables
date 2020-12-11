@@ -1,0 +1,15 @@
+仕様書
+https://mbainter-my.sharepoint.com/:x:/g/personal/torihara_mba-international_jp/EcO-HfombhxHrsGK371bXvsBzk-HckAHJpxYb14iZr1ZUg?e=JewW7E
+
+DB設計書
+https://mbainter-my.sharepoint.com/:x:/g/personal/torihara_mba-international_jp/EbGZaXCto_dFgT4dawVPiAsBX0iIF3XIp2-O8_OFg3dqLg?e=lEhojp
+
+サブシステム設計書
+https://mbainter-my.sharepoint.com/:x:/g/personal/torihara_mba-international_jp/EeHJynuVmARIlX2ilepnYfEB8e2DALTuuttmqtDrQdpJow?e=rDmVYU
+
+開発役割分担
+https://mbainter-my.sharepoint.com/:x:/g/personal/torihara_mba-international_jp/EaEojgyhgGlOlzBxitNgsdcBtVg5gilrC6VJjavE74mLqg?e=95DpH4
+
+システム機能要望リスト
+https://mbainter-my.sharepoint.com/:x:/g/personal/torihara_mba-international_jp/EX91jkj5mZ1BiyWfFbqkmskBQUmOKrICMr0KkbYgTsKoVw?e=dNbOwB
+
