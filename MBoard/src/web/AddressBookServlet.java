@@ -45,7 +45,6 @@ public class AddressBookServlet extends HttpServlet {
 
 			//必要なグループ情報だけを渡すためのString[]を作る
 			String[] groupName = new String[max];
-			//boolean bool;
 			for (int i = 0; i < max; i++) {
 				for (int j = 0; j < gib.size(); j++) {
 					if ((i + 1) == gib.get(j).getGroupId()) {

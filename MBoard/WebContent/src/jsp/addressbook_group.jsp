@@ -63,7 +63,11 @@
 								<!-- <div class="user_information"> -->
 									<% for (int i = 0; i < uib.size(); i++) { %>
 									<a class="user_information_area" href="javascript:setAndSubmit('<%=uib.get(i).getUserID()%>')">
+										<% if (uib.get(i).getProfileImgPath() == null || uib.get(i).getProfileImgPath() == "") { %>
+										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
+										<% } else { %>
 										<img src="<%=request.getContextPath()%><%=uib.get(i).getProfileImgPath()%>" class="user_icon">
+										<% } %>
 										<p class="user_name"><%= uib.get(i).getUserName() %></p>
 									</a>
 									<% } %>
@@ -83,12 +87,14 @@
 										<label for="inbox<%=i%>"><%=gn[i]%></label><input type="checkbox" id="inbox<%=i%>" class="on-off">
 										<div class="dropdown">
 											<% for (int j = 0; j < lists.get(i).size(); j++) { %>
-											<div class="user_information">
 											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>')">
+												<% if (lists.get(i).get(j).getProfileImgPath() == null || lists.get(i).get(j).getProfileImgPath() == "") { %>
+												<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
+												<% } else { %>
 												<img src="<%=request.getContextPath()%><%=lists.get(i).get(j).getProfileImgPath()%>" class="user_icon">
+												<% } %>
 												<p class="user_name"><%=lists.get(i).get(j).getUserName()%></p>
 											</a>
-											</div>
 											<% } %>
 										</div>
 									</div>
