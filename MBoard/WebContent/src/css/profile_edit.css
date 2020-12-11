@@ -11,3 +11,6 @@ input {
 	width:400px;
 }
 
+#profile-icon {
+	display:none;
+}

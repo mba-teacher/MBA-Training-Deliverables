@@ -55,16 +55,18 @@
 			<div class="mypage_content">
 				<div class="profile_area">
 					<div>
-						<% if (uib.getProfileImgPath() == null)  { %>
-							<p class="profile_icon">高</p>
+						<% if (uib.getProfileImgPath() == null || uib.getProfileImgPath() == "")  { %>
+							<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="profile_icon">
 						<% } else { %>
 							<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="profile_icon">
 						<% } %>
 					</div>
 					<h2><%= uib.getUserName() %></h2>
 					<p class="address"><%= uib.getEmailAdress() %></p>
-					<div class="profile_edit">プロフィール編集</div>
-					<div class="admin">管理者画面</div>
+					<a href="profile_edit.jsp"><div class="profile_edit">プロフィール編集</div></a>
+					<% if (uib.isAdmin()) { %>
+						<div class="admin">管理者画面</div>
+					<% } %>
 				</div>
 
 				<div class="tabs">

@@ -51,8 +51,8 @@
 				<div class="create-area">
 				<h1 class="page-title">掲示板作成</h1>
 					<form action="createBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
-						<div class="board-icon-area">
-							<div class="board-icon">
+						<div class="create-icon-area">
+							<div class="create-icon">
 							<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 							</div>
 							<input type="file" name="board-icon" id="board-icon" value="参照" onchange="previewImage(this)">
@@ -112,7 +112,7 @@
 							</div>
 						</div>
 						<p>掲示板詳細</p>
-						<textarea class="board-detail" name="Board_Content" placeholder="例：日報の提出用の掲示板です。"></textarea>
+						<textarea class="create-detail" name="Board_Content" placeholder="例：日報の提出用の掲示板です。"></textarea>
 						<div class="submit-area">
 							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/src/jsp/board.jsp'">
 							<input type="submit" name="" value="作成" class="submit">
@@ -140,5 +140,6 @@
 
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/create_board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
 </body>
 </html>
