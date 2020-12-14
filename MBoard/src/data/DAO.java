@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class DAO {
 
 	String user = "root";
-	String pass = "root";
+	String pass = "password";
 	String dbName = "MBoard";
 	String url = "jdbc:mysql://localhost/";
 	String ssl = "?autoReconnect=true&useSSL=false";
@@ -1195,8 +1195,7 @@ public class DAO {
 			while(rs.next()) {
 				//情報をBeanに代入する
 				b = new GroupInfoBean(rs.getInt(GroupInfoBean.GROUP_ID_COLUMN),
-						rs.getString(GroupInfoBean.GROUP_NAME_COLUMN),
-						rs.getInt(GroupInfoBean.USER_ID_COLUMN));
+						rs.getString(GroupInfoBean.GROUP_NAME_COLUMN));
 				//Beanをlistに追加する
 				list.add(b);
 			}
@@ -1349,7 +1348,7 @@ public class DAO {
 			pst.executeUpdate();
 
 			//削除ユーザーをグループから削除
-			query = "DELETE FROM Group_Info WHERE User_ID = ?";
+			query = "DELETE FROM Group_Member_Info WHERE User_ID = ?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1,userId);
 			pst.executeUpdate();
@@ -1467,7 +1466,7 @@ public class DAO {
 
 	//㉟グループ名の変更
 	/*メソッド名:ChangeGroupName()
-	 *引数:int groupId, String groupName
+	 *引数:String groupName
 	 *戻り値:無し
 	 *処理:Group_InfoにグループIDを指定してSQL文を発行し、グループ名を変更する。
 	*/
@@ -1480,7 +1479,7 @@ public class DAO {
 			stmt = conn.createStatement();
 
 			//SQL文作成
-        	String query = "UPDATE Group_Info SET Group_Name="+groupName+"WHERE Group_ID="+groupId;
+        	String query = "UPDATE Group_Info SET Group_Name='"+groupName+"' WHERE Group_ID="+groupId;
 			int nc = stmt.executeUpdate(query);
 
 		}catch(SQLException e){
@@ -1492,12 +1491,12 @@ public class DAO {
 
 	//㊱新しいグループ情報の追加
 	/*メソッド名:CreateGroup()
-	 *引数:int groupId, String groupName, int userId
+	 *引数:int groupId, String groupName
 	 *戻り値:無し
 	 *処理:Group_InfoにSQL文を発行し、引数の値を元に新しくグループ情報をGroup_Infoに追加する。
 	*/
 
-	public GroupInfoBean CreateGroup(int groupId, String groupName, int userId) throws ClassNotFoundException {
+	public GroupInfoBean CreateGroup(String groupName) throws ClassNotFoundException {
 		try {
 			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
@@ -1505,7 +1504,7 @@ public class DAO {
 			stmt = conn.createStatement();
 
 			//SQL文作成
-			String query = "INSERT INTO Group_Info VALUES("+groupId+","+groupName+","+userId+")";
+			String query = "INSERT INTO Group_Info(Group_Name) VALUES('"+groupName+"')";
 			int rs = stmt.executeUpdate(query);
 
 		}catch(SQLException e){
@@ -1517,11 +1516,12 @@ public class DAO {
 
 
 
-	//㊲引数で指定した値に該当するGroup_Info内の情報を削除する。
+	//㊲引数で指定した値に該当するGroup_Info、内の情報を削除する。
 	/*メソッド名:DeleteGroup()
 	 *引数:int groupId
 	 *戻り値:無し
-	 *処理:Group_InfoにグループIDを指定してSQL文を発行し、その指定したグループの情報を削除する。
+	 *処理:①Group_InfoにグループIDを指定してSQL文を発行し、その指定したグループの情報を削除する。
+	 *②Group_Member_InfoにグループIDを指定してSQL文を発行し、その指定したグループの情報を全削除する。
 	*/
 
 	public GroupInfoBean DeleteGroup(int groupId) throws ClassNotFoundException {
@@ -1532,8 +1532,10 @@ public class DAO {
 			stmt = conn.createStatement();
 
 			//SQL文作成
-        	String query = "DELETE FROM Group_Info WHERE Group_ID="+groupId;
-        	int rs = stmt.executeUpdate(query);
+        	String queryG = "DELETE FROM Group_Info WHERE Group_ID="+groupId;
+        	int rsG = stmt.executeUpdate(queryG);
+        	String queryU = "DELETE FROM Group_Member_Info WHERE Group_ID="+groupId;
+        	int rsU = stmt.executeUpdate(queryU);
 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -1595,10 +1597,10 @@ public class DAO {
 	/*メソッド名:GetMyGroups()
 	 *引数:int userId
 	 *戻り値:ArrayList<GroupInfoBean>型 list
-	 *処理:Group_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を取得する。
+	 *処理:Group_Member_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を取得する。
 	*/
 
-	public ArrayList<GroupInfoBean> GetMyGroups(int userId) throws ClassNotFoundException {
+	public ArrayList<GroupMemberInfoBean> GetMyGroups(int userId) throws ClassNotFoundException {
 		try {
 			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
@@ -1606,22 +1608,21 @@ public class DAO {
 			stmt = conn.createStatement();
 
 			//SQL文作成
-			String query = "SELECT * FROM Group_Info WHERE User_ID ="+userId;
+			String query = "SELECT * FROM Group_Member_Info WHERE User_ID ="+userId;
 	        ResultSet rs = stmt.executeQuery(query);
 
 	        //戻り値として返す配列を定義
-	        ArrayList<GroupInfoBean> list = new ArrayList<GroupInfoBean>();
+	        ArrayList<GroupMemberInfoBean> list = new ArrayList<GroupMemberInfoBean>();
 
 	        //レコードにカーソルを当て、カーソルが当たるレコードの回数分While文を回す
         	while(rs.next()) {
         		//GroupInfoBeanクラスのインスタンス作成
         		//各種情報をBeanにsetterメソッドで格納
-        		GroupInfoBean gib =new GroupInfoBean();
-        		gib.setGroupId(rs.getInt("Group_ID"));
-        		gib.setGroupName(rs.getString("Group_Name"));
-        		gib.setUserId(rs.getInt("User_ID"));
+        		GroupMemberInfoBean gmib =new GroupMemberInfoBean();
+        		gmib.setGroupId(rs.getInt("Group_ID"));
+        		gmib.setUserId(rs.getInt("User_ID"));
         		//定義した配列に格納
-        		list.add(gib);
+        		list.add(gmib);
         	}
         	//データを格納した配列を返す
         	return list;
@@ -1636,11 +1637,11 @@ public class DAO {
 	 *引数:int groupId[], String groupName[], int userId[]
 	 *戻り値:無し
 	 *処理:
-	 *①Group_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を全て削除する。
-	 *②Group_Infoに再びSQL文を発行し、引数の値を元にグループ情報をGroup_Infoに追加する。
+	 *①Group_Member_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を全て削除する。
+	 *②Group_Member_Infoに再びSQL文を発行し、引数の値を元にグループ情報をGroup_Member_Infoに追加する。
 	*/
 
-	public GroupInfoBean ChangeGroups(int groupId[], String groupName[], int userId[]) throws ClassNotFoundException {
+	public GroupMemberInfoBean ChangeGroups(int groupId[], int userId[]) throws ClassNotFoundException {
 		try {
 			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
@@ -1651,14 +1652,14 @@ public class DAO {
 			int count=0;
 
 			//SQL文作成1(DELETE文)
-			String query = "DELETE FROM Group_Info WHERE User_ID ="+userId[count];
+			String query = "DELETE FROM Group_Member_Info WHERE User_ID ="+userId[count];
         	int leave = stmt.executeUpdate(query);
 
         	//受け取った引数の配列の要素数分までfor文で繰り返す
         	for(count=0;count<groupId.length;count++) {
         		//SQL文作成2(INSERT文)
-        		query = "INSERT INTO Group_Info(Group_ID,Group_Name,User_ID)"
-						+ " VALUES("+groupId[count]+",'"+groupName[count]+"',"+userId[count]+")";
+        		query = "INSERT INTO Group_Member_Info(Group_ID,User_ID)"
+						+ " VALUES("+groupId[count]+","+userId[count]+")";
 				int join = stmt.executeUpdate(query);
         	}
 
