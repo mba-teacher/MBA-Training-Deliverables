@@ -52,28 +52,32 @@
 			<div class="mypage_content">
 				<div class="create-area">
 					<h1 class="page-title">プロフィール編集</h1>
-					<form action="#" method="post" name="profileForm">
+					<form action="../../profileEdit" method="post" name="profileForm" enctype="multipart/form-data"  onsubmit="return formCheck()">
 						<p>プロフィールアイコン</p>
 						<div class="create-icon-area">
 							<div class="create-icon">
+								<img id="before" src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>">
 								<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 								<!--  -->
 							</div>
-							<input type="file" name="profile-icon"  accept="image/*" id="profile-icon" value="参照" onchange="previewImage(this)">
+							<input type="file" name="profile-icon"  accept="image/*" id="profile-icon" value="参照" onchange="previewImage(this)" >
 							<label for="profile-icon" class="browse-button">参照</label>
 						</div>
 
 						<div>
 							<p>表示名<span class="requierdItem">*</span></p>
-							<input type="text" name="user_name" placeholder="表示名" value="<%=myb.getUserName()%>">
+							<input type="text" name="user_name" value="<%=myb.getUserName()%>">
+							<%-- placeholder="表示名"  --%>
 						</div>
 						<div>
-							<p>メールアドレス<span class="requierdItem">*</span></p>
-							<input type="text" name="email_address" placeholder="メールアドレス" value="<%=myb.getEmailAdress()%>">
+							<p>メールアドレス<span class="requierdItem">*</span><span class="alertarea"></span></p>
+							<input type="text" name="email_address" value="<%=myb.getEmailAdress()%>" class="email">
+							<%-- placeholder="メールアドレス" --%>
 						</div>
 						<div>
 							<p>LINEWORKSアドレス<span class="requierdItem">*</span></p>
-							<input type="text" name="line_works_id" placeholder="LINEWORKSアドレス" value="<%=myb.getLineWorksID()%>">
+							<input type="text" name="line_works_id" value="<%=myb.getLineWorksID()%>">
+							<%-- placeholder="LINEWORKSアドレス" --%>
 						</div>
 						<div>
 							<p>スキル</p>
@@ -91,6 +95,7 @@
 							<input type="submit" name="" value="保存" class="submit">
 						</div>
 					</form>
+					<p id="errortext" style="display: none; color: red;">未入力項目があります</p>
 				</div>
 			</div>
 
@@ -112,5 +117,6 @@
 
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/profile_edit.js"></script>
 </body>
 </html>

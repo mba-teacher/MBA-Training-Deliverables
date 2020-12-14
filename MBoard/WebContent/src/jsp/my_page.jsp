@@ -55,7 +55,7 @@
 			<div class="mypage_content">
 				<div class="profile_area">
 					<div>
-						<% if (uib.getProfileImgPath() == null || uib.getProfileImgPath() == "")  { %>
+						<% if (uib.getProfileImgPath() == null || uib.getProfileImgPath().isEmpty())  { %>
 							<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="profile_icon">
 						<% } else { %>
 							<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="profile_icon">
