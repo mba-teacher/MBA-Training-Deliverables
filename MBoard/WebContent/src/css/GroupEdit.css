@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 #group{
 	position:relative;
 	left: 10%;
@@ -14,6 +15,14 @@
   	align-items: center;
 
 }
+
+.pos{
+	position:absolute;
+	left: 50%;
+	top:50%;
+	transform:translate(-50% , -50%);
+}
+
 p#tx{
 	display: block;
 	margin: 0 0 0 35px;
@@ -21,16 +30,18 @@ p#tx{
 }
 .bottonEdit{
 	display: block;
-	margin: 0 -200px 0 auto;
+	margin: 0 50px 0 auto;
 }
 .bottonDele{
 	display: block;
-	margin: 0 20px 0 auto;
+	margin: 0 30px 0 0;
 }
 
 #groupNew{
+	position:absolute;
 	display: block;
 	margin: 30px auto auto 580px;
+
 }
 
 .bottonBack{
@@ -52,15 +63,17 @@ p#tx{
 
 #popup {
     display: none;  /* 初期表示は非表示 */
-    position: fixed;
+    position: absolute;
     left: 50%;
     top: 50%;
     width: 450px;
     height: 250px;
     margin-left: -150px;
     margin-top: -100px;
+    margin: 0 auto;
     background-color: white;
     border-radius: 5px;
+    transform:translate(-50% , -50%);
     text-align: center;
 }
 #popup p{
@@ -84,6 +97,52 @@ p#tx{
     margin-right: 230px;
 }
 #popup t{
+	/* 文字サイズを0.8emに指定 */
+    font-size: 0.8em;
+
+    /* 文字の太さを指定 */
+    font-weight: 400;
+
+	/* 文字の配置指定*/
+    margin-left: 250px;
+}
+
+#popupCre {
+    display: none;  /* 初期表示は非表示 */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 450px;
+    height: 250px;
+    margin-left: -150px;
+    margin-top: -100px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 5px;
+    transform:translate(-50% , -50%);
+    text-align: center;
+}
+#popupCre p{
+	/* 文字サイズを1.2emに指定 */
+    font-size: 1.2em;
+
+    /* 文字の太さを指定 */
+    font-weight: bold;
+
+	/* 文字の配置指定*/
+    margin-right: 200px;
+}
+#popupCre g{
+	/* 文字サイズを1.1emに指定 */
+    font-size: 1.1em;
+
+    /* 文字の太さを指定 */
+    font-weight: bold;
+
+	/* 文字の配置指定*/
+    margin-right: 230px;
+}
+#popupCre t{
 	/* 文字サイズを0.8emに指定 */
     font-size: 0.8em;
 

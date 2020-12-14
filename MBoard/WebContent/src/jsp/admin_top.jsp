@@ -62,8 +62,11 @@
 			<div class="modal__content">
 				<a class="js-modal-close" href="">×</a>
 				<p class="modal_title">グループ関連</p>
-				<a href="">
-					<div class="mobal_btn1">グループ編集</div></a>
+				<%-- <a href="<%=request.getContextPath()%>/src/jsp/GroupEdit.jsp"> --%>
+					<form action="http://localhost:8080/MBoard/sample" method="post">
+					<input type="submit" class="mobal_btn1" name="goto" value="グループ編集">
+					<!-- <div class="mobal_btn1">グループ編集</div></a> -->
+					</form>
 				<a href="">
 				<div class="mobal_btn2">ユーザー設定</div></a>
 			</div>

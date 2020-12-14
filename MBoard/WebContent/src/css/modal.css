@@ -45,6 +45,9 @@
 }
 
 .mobal_btn1{
+	font-size: 0.9em;
+	width: 480px;
+    height: 75px;
 	position:relative;
     border:solid 2px #414141;
     padding:15px 50px;
