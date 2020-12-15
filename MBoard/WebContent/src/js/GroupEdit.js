@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 	var targets = document.getElementsByClassName('number');
-	alert(targets.length);
+	//alert(targets.length);
 	for (var i=0 ; i<targets.length ; i++) {
     	var alertelement = this.parentNode.getElementsByClassName('alertarea');
     	if( ( this.value != '') && ( this.value.match( /[^\d\-]+/ )) ) {

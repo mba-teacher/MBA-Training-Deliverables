@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class DAO {
 
 	String user = "root";
-	String pass = "password";
+	String pass = "root";
 	String dbName = "MBoard";
 	String url = "jdbc:mysql://localhost/";
 	String ssl = "?autoReconnect=true&useSSL=false";
