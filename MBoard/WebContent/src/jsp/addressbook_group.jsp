@@ -62,7 +62,7 @@
 								<p class="address">アドレス一覧</p>
 								<!-- <div class="user_information"> -->
 									<% for (int i = 0; i < uib.size(); i++) { %>
-									<a class="user_information_area" href="javascript:setAndSubmit('<%=uib.get(i).getUserID()%>')">
+									<a class="user_information_area" href="javascript:setMemberAndSubmit('<%=uib.get(i).getUserID()%>')">
 										<% if (uib.get(i).getProfileImgPath() == null || uib.get(i).getProfileImgPath() == "") { %>
 										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 										<% } else { %>

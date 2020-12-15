@@ -50,7 +50,7 @@
 			<div class="mypage_content">
 				<div class="create-area">
 				<h1 class="page-title">掲示板作成</h1>
-					<form action="createBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
+					<form action="<%=request.getContextPath()%>/createBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
 						<div class="create-icon-area">
 							<div class="create-icon">
 							<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
@@ -60,7 +60,7 @@
 						</div>
 						<div class="board-name-area">
 							<p>掲示板名<span class="requierdItem">*</span></p>
-							<input type="text" name="Board_Category" placeholder="例：日報">
+							<input type="text" name="Board_Category" placeholder="例：日報"	>
 						</div>
 						<div>
 							<p>掲示板色選択</p>
@@ -113,6 +113,7 @@
 						</div>
 						<p>掲示板詳細</p>
 						<textarea class="create-detail" name="Board_Content" placeholder="例：日報の提出用の掲示板です。"></textarea>
+						<input type="hidden" name="pageType" value="create">
 						<div class="submit-area">
 							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/src/jsp/board.jsp'">
 							<input type="submit" name="" value="作成" class="submit">

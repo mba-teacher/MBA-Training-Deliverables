@@ -55,11 +55,13 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			System.out.println("Update my userinfo.");
 			//セッションを更新
 			s.setAttribute("userInfoBean", uib);
+			//プロフィール更新の通知
+			req.setAttribute("notice", "edited");
 			//記事情報の取得
 			PostInfoBean[] pib = d.GetMyPosts(uib.getUserID());
 			s.setAttribute("postInfoBean", pib);
 
-			url = "src/jsp/login.jsp";
+			url = "src/jsp/my_page.jsp";
 		}
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);

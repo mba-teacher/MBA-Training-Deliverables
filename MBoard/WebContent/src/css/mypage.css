@@ -4,6 +4,17 @@
 	clear:both;
 }
 
+/* プロフィール更新後の表示 */
+.alarm{
+	position:absolute;
+	 margin-left:50%;
+	 margin-top:2%;
+	 padding:3px 20px;
+	 transform: translate(-50%, -50%); /*基準を中央にする*/
+	 background-color:#252525;
+	 color:#fff;
+}
+
 .profile_area{
 	position:relative;
 	background-color:#fff;

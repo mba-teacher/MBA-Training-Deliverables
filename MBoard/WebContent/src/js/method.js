@@ -2,9 +2,18 @@
  * 遷移処理の関数
  */
 
-function setAndSubmit(id) {
+function setMemberAndSubmit(id) {
     document.postIconForm.memberId.value = id;
     document.postIconForm.submit();
+}
+
+function setBoardAndSubmit(id) {
+    document.sendIdForm.boardId.value = id;
+    document.sendIdForm.submit();
+}
+
+function hiddenSubmit() {
+    document.hiddenForm.submit();
 }
 
 
@@ -23,3 +32,4 @@ function setAndSubmit(id) {
 		document.getElementById('before').style.display = "none";
 	}
 }
+

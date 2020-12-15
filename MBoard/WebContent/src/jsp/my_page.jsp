@@ -3,17 +3,14 @@
 	import = "data.UserInfoBean,data.PostInfoBean"%>
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
-<title>マイページ</title>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/mypage.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
-</head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<head>
+	<meta charset="UTF-8">
+	<title>マイページ</title>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/mypage.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
 </head>
 <body>
 <!-- ユーザー自身のユーザー情報をセッションから受け取る -->
@@ -23,6 +20,9 @@
 <% session.setAttribute("count", 0); %>
 <% int count = (int)session.getAttribute("count"); %>
 
+	<% if (request.getAttribute("notice") != null && (String)request.getAttribute("notice") == "edited") { %>
+		<header class="alarm">プロフィール を更新しました。</header>
+	<% } %>
 	<div class="flex_container">
 		<div class="nav-area">
 
@@ -65,7 +65,7 @@
 					<p class="address"><%= uib.getEmailAdress() %></p>
 					<a href="profile_edit.jsp"><div class="profile_edit">プロフィール編集</div></a>
 					<% if (uib.isAdmin()) { %>
-						<div class="admin">管理者画面</div>
+						<a href="admin_top.jsp"><div class="admin">管理者画面</div></a>
 					<% } %>
 				</div>
 
