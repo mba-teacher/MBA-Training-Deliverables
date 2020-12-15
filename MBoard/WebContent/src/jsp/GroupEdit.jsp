@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*" import="data.GroupInfoBean"%>
 
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
