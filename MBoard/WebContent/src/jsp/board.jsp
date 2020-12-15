@@ -160,7 +160,7 @@
 							<%-- <a href="<%=request.getContextPath()%>/member"></a> --%>
 							<%-- <%=request.getContextPath()%>/member --%>
 							<form name="postIconForm" action="<%=request.getContextPath()%>/member" method="post">
-								<a href="javascript:setAndSubmit('1')">
+								<a href="javascript:setMemberAndSubmit('1')">
 									<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 								</a>
 								<input type="hidden" name="memberId" value="" />
@@ -212,9 +212,7 @@
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
 						<input type="text" placeholder="検索" class="popup-board-search">
-						<a href="<%=request.getContextPath()%>/createBoard" class="popup-board-add">
-							<!-- <div class="popup-board-add"> -->新規追加<!-- </div> -->
-						</a>
+						<a href="javascript:hiddenSubmit()" class="popup-board-add">新規追加</a>
 					</div>
 					<div class="popup-board-close">
 						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
@@ -274,6 +272,9 @@
 					</div>
 
 				</div>
+				<form name="hiddenForm" action="<%=request.getContextPath()%>/createBoard" method="post">
+					<input type="hidden" name="pageType" value="create">
+				</form>
 			</div>
 		</div>
 

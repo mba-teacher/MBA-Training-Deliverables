@@ -5,12 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>掲示板修正・削除</title>
-<link rel="stylesheet" href="../css/account_fix.css">
-<link rel="stylesheet" href="../css/cansel_modal.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/account_fix.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/cansel_modal.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="../js/account_fix.js"></script>
-<script src="../js/account_fix_modal.js"></script>
 </head>
 <body>
 	<a href="" class="backbtn"> 戻る </a>
@@ -37,8 +35,8 @@
 		<div class="user_name">
 			<div class="user_list">
 				<P>掲示板</P>
-				<a href="" class="fix"> 修正 </a> <a href=""
-					class="delete js-modal-open2"> 削除 </a>
+				<a href="javascript:setBoardAndSubmit('1')" class="fix"> 修正 </a>
+				<a href="" class="delete js-modal-open2"> 削除 </a>
 			</div>
 
 			<div class="user_list">
@@ -111,9 +109,12 @@
 				<P>１２３４５６
 			</div>
 
-
-
 		</div>
+		<form name="sendIdForm" action="<%=request.getContextPath()%>/editBoard" method="post">
+			<input type="hidden" name="pageType" value="edit">
+			<input type="hidden" name="boardId" value="">
+			<!-- <input type="submit" value="修正"> -->
+		</form>
 	</div>
 
 
@@ -135,8 +136,9 @@
 	</div>
 	<!--modal-->
 
-
-
+<script src="<%=request.getContextPath()%>/src/js/account_fix.js"></script>
+<script src="<%=request.getContextPath()%>/src/js/account_fix_modal.js"></script>
+<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
 
 </body>
 </html>
