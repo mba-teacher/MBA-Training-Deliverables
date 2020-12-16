@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import data.DAO;
 import data.TemplateInfoBean;
 
-public class templateServlet extends HttpServlet {
+public class TemplateServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

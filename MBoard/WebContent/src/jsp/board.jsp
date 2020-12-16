@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean"%>
+    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>掲示板</title>
-	<link rel="stylesheet" href="../css/nav.css" />
-	<link rel="stylesheet" href="../css/board.css" />
-	<link rel="stylesheet" href="../css/scroll.css" />
+	<link rel="stylesheet" href="src/css/nav.css" />
+	<link rel="stylesheet" href="src/css/board22.css" />
+	<link rel="stylesheet" href="src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
@@ -16,34 +16,35 @@
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
 <%-- 掲示板情報を受け取る --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
-<% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %>
+<% ArrayList<PostInfoBean[]> pibList=(ArrayList<PostInfoBean[]>)session.getAttribute("postInfoBeanList");  %>
+<%-- <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %> --%>
 
 	<div class="flex_container">
 		<div class="nav-area">
 
 			<div class="logo-area">
-				<img src="../img/logo_white.png">
+				<img src="src/img/logo_white.png">
 			</div>
 
 			<a href="#">
 				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"> --%>
 			</a>
 			<a href="#">
-				<img src="../img/mb_0_boad.png" class="nav-icon">
+				<img src="src/img/mb_0_boad.png" class="nav-icon">
 			</a>
 			<a href="#">
-				<img src="../img/mb_0_address.png" class="nav-icon">
+				<img src="src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">
-				<img src="../img/mb_0_link.png" class="nav-icon" id="link-show">
+				<img src="src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
 
 			<div class="nav-bottom">
 				<a href="#">
-				<img src="../img/mb_0_notice.png" class="nav-icon">
+				<img src="src/img/mb_0_notice.png" class="nav-icon">
 				</a>
 				<a href="#">
-				<img src="../img/mb_0_other.png" class="nav-icon">
+				<img src="src/img/mb_0_other.png" class="nav-icon">
 				</a>
 			</div>
 
@@ -59,69 +60,24 @@
 					</div>
 					<div class="board-list">
 
-						<% for (int i = 0; i < bib.length; i++ ) { %>
+<%-- 						<% for (int i = 0; i < bib.length; i++ ) { %>
 						<div class="board-item">
 							<div class="board-color<%= bib[i].getBoardColor() %>"></div>
 							<p>掲示板名:<%= bib[i].getBoardCategory() %></p>
 						</div>
-						<% } %>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<!-- <div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div> -->
+						<% } %> --%>
+
+						<!--タブ-->
+						<ul id="tabGroup" class="tab-group">
+							<% for (int i = 0; i < bib.length; i++ ) { %>
+								<li class="tab">掲示板名:<%= bib[i].getBoardCategory() %></li>
+							<% } %>
+						</ul>
 
 					</div>
 					<div class="board-list-footer">
 						<div class="show-board-list">掲示板を登録</div>
-						<img src="../img/mb_e_plus.png" class="add_button show-board-list">
+						<img src="src/img/mb_e_plus.png" class="add_button show-board-list">
 					</div>
 				</div>
 
@@ -129,9 +85,9 @@
 
 					<div class="board-header">
 						<div class="board-name-area">
-							<img src="../img/mb_e_plus.png" class="board-icon">
+							<img src="src/img/mb_e_plus.png" class="board-icon">
 							<div class="board-name">掲示板名</div>
-							<img src="../img/mb_2_syousai.png" class="board-menu">
+							<img src="src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
 
@@ -142,10 +98,10 @@
 								<textarea class="post-form-content" name="post-content" placeholder="なんでも投稿できます"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
+										<img src="src/img/mb_g_letteredit.png">
+										<img src="src/img/mb_g_letteredit.png">
+										<img src="src/img/mb_g_letteredit.png">
+										<img src="src/img/mb_g_letteredit.png">
 									</div>
 									<input type="submit" value="送信" class="post-submit">
 								</div>
@@ -154,26 +110,38 @@
 
 						<textarea class="search"></textarea>
 
-						<div class="post">
-							<img src="../img/mb_e_plus.png" class="post-icon">
-							<div class="post-board-name">掲示板名</div>
-							<div class="post-user-name">投稿者名</div>
-							<div class="post-date">投稿日時</div>
-							<div class="clear"></div>
-							<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
-							<div class="post-icon-area">
-								<div class="comment">
-									<img src="../img/mb_i_comment.png">
-									<span class="number">100</span>コメント
+						<!--タブを切り替えて表示するコンテンツ-->
+						<div id="panelGroup" class="panel-group">
+						<% for (int i = 0; i < pibList.size(); i++ ) { %>
+								<div class="panel">
+									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
+								<div class="post">
+								<img src="src/img/mb_e_plus.png" class="post-icon">
+								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
+								<div class="post-user-name">投稿者名</div>
+								<div class="post-date">投稿日時</div>
+								<div class="clear"></div>
+								<div class="post-letter"><%= pibList.get(i)[x].getPostContents() %></div>
+								<div class="post-icon-area">
+									<div class="comment">
+										<img src="src/img/mb_i_comment.png">
+										<span class="number">100</span>コメント
+									</div>
+									<div class="good">
+										<img src="src/img/mb_j_good.png">
+										<span class="number">100</span>確認済
+									</div>
 								</div>
-								<div class="good">
-									<img src="../img/mb_j_good.png">
-									<span class="number">100</span>確認済
+								<div class="post-detail-button">
+									<img src="src/img/mb_2_syousai.png">
 								</div>
-							</div>
-							<div class="post-detail-button">
-								<img src="../img/mb_2_syousai.png">
-							</div>
+								</div>
+									<% } %>
+								</div>
+							<% } %>
+
+
+
 						</div>
 
 					</div>
@@ -187,11 +155,11 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
+					<img src="src/img/mb_0_attendance.png">
+					<img src="src/img/mb_0_attendance.png">
+					<img src="src/img/mb_0_attendance.png">
+					<img src="src/img/mb_0_attendance.png">
+					<img src="src/img/mb_0_attendance.png">
 				</div>
 			</div>
 		</div>
@@ -206,58 +174,58 @@
 						<div class="popup-board-add">新規追加</div>
 					</div>
 					<div class="popup-board-close">
-						<img src="../img/mb_f_close.png">
+						<img src="src/img/mb_f_close.png">
 					</div>
 				</div>
 				<div class="popup-board-content">
 
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-leave">参加する</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
@@ -277,7 +245,29 @@
 
 	</div>
 
-	<script src="../js/nav.js"></script>
-	<script src="../js/board.js"></script>
+<script>
+//要素を取得 ( → <ul id="target"> ... </ul> )
+var ulElement = document.getElementById( "tabGroup" ) ;
+var panelGroup = document.getElementById( "panelGroup" ) ;
+// 最初の子要素を取得 ( → <li>要素1</li> )
+var tabFirstLi = ulElement.firstElementChild ;
+var panelFirst = panelGroup.firstElementChild ;
+tabFirstLi.className="tab is-active";
+panelFirst.className="panel is-show";
+
+jQuery(function($){
+	$('.tab').click(function(){
+		$('.is-active').removeClass('is-active');
+		$(this).addClass('is-active');
+		$('.is-show').removeClass('is-show');
+        // クリックしたタブからインデックス番号を取得
+		const index = $(this).index();
+        // クリックしたタブと同じインデックス番号をもつコンテンツを表示
+		$('.panel').eq(index).addClass('is-show');
+	});
+});
+</script>
+	<script src="src/js/nav.js"></script>
+	<script src="src/js/board.js"></script>
 </body>
 </html>

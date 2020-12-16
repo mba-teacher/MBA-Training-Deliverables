@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1 align="center">テスト</h1>
-	<form action="template" method="post">
+	<form action="board" method="post">
 		<p align="center">
 			<input type="text" name="ID">
 		</p>
