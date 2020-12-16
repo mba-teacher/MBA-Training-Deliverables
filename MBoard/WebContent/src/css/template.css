@@ -1,0 +1,158 @@
+@charset "UTF-8";
+
+p {
+  white-space: pre-wrap;
+}
+
+input[type="text"]{
+	border-right:none;
+	border-left:none;
+	border-top:none;
+	border-bottom:none;
+	outline: none;
+}
+
+
+.top {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.title{
+	position:absolute;
+	top:15px;
+	left:100px;
+}
+
+.notice{
+	position:absolute;
+	top:20px;
+	left:700px;
+	background-color:black;
+	color:White;
+}
+
+.back_button{
+	position:absolute;
+	top:20px;
+	left:1300px;
+}
+
+.template {
+	display: flex;
+  	justify-content: center;
+
+}
+
+.template_list{
+	position:relative;
+	top :100px;
+	left:60px;
+}
+
+#table{
+	width: 300px;
+	height:50px;
+/* 	margin:0px auto; */
+    background-color:#fff;
+
+	padding: 10px;
+	text-align: right;
+	border: 1px solid #cccccc;
+}
+
+ .change_area{
+ 	position:relative;
+ 	top :100px;
+	left:150px;
+	background-color:#fff;
+	width:800px;
+	height:600px;
+	border-radius: 10px;
+}
+
+#template_title{
+	margin:10px 10px;
+	border-right:none;
+	border-left:none;
+	border-top:none;
+    border-bottom:solid 1px;
+	outline: none;
+	width: 780px;
+	height:30px;
+}
+
+#template_content{
+	margin:10px 10px;
+	resize: none;
+	border-right:none;
+	border-left:none;
+	border-top:none;
+	outline: none;
+	vertical-align: top;
+	width: 780px;
+	height:500px;
+	white-space: pre-wrap;
+}
+
+.template_soufu{
+   	position:relative;
+	bottom:5px;
+	right:40px;
+}
+
+.template_kakou{
+   	position:relative;
+	bottom:5px;
+	right:30px;
+}
+
+.template_save{
+   	position:relative;
+	bottom:5px;
+	left:750px;
+}
+
+.template_Column{
+	width:200px;
+	text-align: left;
+}
+
+ table, th, td {
+     background-color:#fff;
+     border: 1px solid #cccccc;
+    border:none;
+    border-bottom:solid 1px silver;
+    border-collapse: collapse;
+}
+
+.foot{
+	text-align: right;
+}
+
+.modal{
+    display: none;
+    position:relative;
+	bottom:5px;
+	right:40px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+.modal__bg{
+    background: rgba(0,0,0,0.8);
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+}
+.modal__content{
+    background: #fff;
+    left: 50%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 60%;
+}
