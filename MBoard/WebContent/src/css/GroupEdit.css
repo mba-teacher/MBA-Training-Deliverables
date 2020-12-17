@@ -13,7 +13,6 @@
 	display: flex;
 /*  	justify-content: center;*/ /* コンテナ内全体の主軸方向(初期値は横方向)の揃え位置を指定する */
   	align-items: center;
-
 }
 
 .pos{
@@ -26,8 +25,10 @@
 p#tx{
 	display: block;
 	margin: 0 0 0 35px;
+	/* 文字サイズを1.3emに指定 */
 	font-size:1.3em;
 }
+
 .bottonEdit{
 	display: block;
 	margin: 0 50px 0 auto;
@@ -36,19 +37,16 @@ p#tx{
 	display: block;
 	margin: 0 30px 0 0;
 }
-
-#groupNew{
-	position:absolute;
-	display: block;
-	margin: 30px auto auto 580px;
-
-}
-
 .bottonBack{
 	display: block;
 	margin: -50px auto 30px 700px;
 }
 
+#groupNew{
+	position:absolute;
+	display: block;
+	margin: 30px auto auto 580px;
+}
 
 #layer {
     display: none;  /* 初期表示は非表示 */
@@ -79,30 +77,24 @@ p#tx{
 #popup p{
 	/* 文字サイズを1.2emに指定 */
     font-size: 1.2em;
-
     /* 文字の太さを指定 */
     font-weight: bold;
-
 	/* 文字の配置指定*/
     margin-right: 200px;
 }
 #popup g{
 	/* 文字サイズを1.1emに指定 */
     font-size: 1.1em;
-
     /* 文字の太さを指定 */
     font-weight: bold;
-
 	/* 文字の配置指定*/
     margin-right: 230px;
 }
 #popup t{
 	/* 文字サイズを0.8emに指定 */
     font-size: 0.8em;
-
     /* 文字の太さを指定 */
     font-weight: 400;
-
 	/* 文字の配置指定*/
     margin-left: 250px;
 }
@@ -125,34 +117,42 @@ p#tx{
 #popupCre p{
 	/* 文字サイズを1.2emに指定 */
     font-size: 1.2em;
-
     /* 文字の太さを指定 */
     font-weight: bold;
-
 	/* 文字の配置指定*/
     margin-right: 200px;
 }
 #popupCre g{
 	/* 文字サイズを1.1emに指定 */
     font-size: 1.1em;
-
     /* 文字の太さを指定 */
     font-weight: bold;
-
 	/* 文字の配置指定*/
     margin-right: 230px;
 }
 #popupCre t{
 	/* 文字サイズを0.8emに指定 */
     font-size: 0.8em;
-
     /* 文字の太さを指定 */
     font-weight: 400;
-
 	/* 文字の配置指定*/
     margin-left: 250px;
 }
 
+#noNameEdit{ /*編集欄での空白時のエラーメッセージ*/
+	display: none;
+	color:red ;
+	/* 文字サイズを0.8emに指定 */
+	font-size: 0.8em;
+	margin-right: 150px;
+}
+#noNameNew{ /*新規作成欄での空白時のエラーメッセージ*/
+	display: none;
+	color:red ;
+	/* 文字サイズを0.8emに指定 */
+	font-size: 0.8em;
+	margin-right: 150px;
+}
 
 #delepop {
     display: none;  /* 初期表示は非表示 */
@@ -173,13 +173,9 @@ p#tx{
 	line-height: 80px;
 }
 
-
 input.button1 {
     /* 文字サイズを1.2emに指定 */
     font-size: 1.2em;
-
-    /* 文字の太さを指定 */
-
 	/* ボタンの大きさを固定指定*/
    	width: 60px;
     height: 32px;
@@ -187,9 +183,6 @@ input.button1 {
 input.button2 {
     /* 文字サイズを0.9emに指定 */
     font-size: 0.9em;
-
-    /* 文字の太さを指定 */
-
 	/* ボタンの大きさを固定指定 */
    	width: 100px;
     height: 40px;
@@ -197,9 +190,6 @@ input.button2 {
 input.button3 {
     /* 文字サイズを0.9emに指定 */
     font-size: 1.5em;
-
-    /* 文字の太さを指定 */
-
 	/* ボタンの大きさを固定指定 */
    	width: 130px;
     height: 40px;
@@ -207,23 +197,27 @@ input.button3 {
 input.button4 {
     /* 文字サイズを0.9emに指定 */
     font-size: 1.2em;
-
-    /* 文字の太さを指定 */
-
 	/* ボタンの大きさを固定指定 */
    	width: 65px;
     height: 40px;
 }
+
 .inner {
+ /* ポップアップしたボタンの位置調整*/
   padding-top: 0px;
   margin-top:20px;
   display: flex;
   justify-content: space-evenly;
 }
 
-/*.scroll {
-	overflow-y:scroll;
-	width:700px;
-	height:420px;
-}*/
+.alarm{
+	/* 重複判定で戻された時のポップアップメッセージの配置・文字調整など*/
+	position:absolute;
+	 margin-left:50%;
+	 margin-top:2%;
+	 padding:3px 20px;
+	 transform: translate(-50%, -50%); /*基準を中央にする*/
+	 background-color:#252525;
+	 color:#fff;
+}
 
