@@ -21,6 +21,9 @@ public class CreateAccountServlet extends HttpServlet {
 			url = "http://localhost:8080/MBoard/src/html/login.jsp";
 		} else {
 			DAO d = new DAO();
+			//更新通知用
+			String[] notice = new String[2];
+			//管理署権限の設定
 			int admin = Integer.parseInt(req.getParameter("Admin"));
 			boolean bool = false;
 			if (admin == 1) {
@@ -39,6 +42,10 @@ public class CreateAccountServlet extends HttpServlet {
 			d.CreateUser(uib);
 			System.out.println("CreateUser.");
 
+			//管理者画面本体の通知
+			notice[0] = "edited";
+			notice[1] = "アカウント情報";
+			req.setAttribute("notice", notice);
 			url = "/src/jsp/admin_top.jsp";
 		}
 
