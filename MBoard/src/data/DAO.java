@@ -1596,7 +1596,7 @@ public class DAO {
 	//㊴対象ユーザーにおける複数のグループ情報を取得
 	/*メソッド名:GetMyGroups()
 	 *引数:int userId
-	 *戻り値:ArrayList<GroupInfoBean>型 list
+	 *戻り値:ArrayList<GroupMemberInfoBean>型 list
 	 *処理:Group_Member_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を取得する。
 	*/
 
@@ -1914,7 +1914,7 @@ public class DAO {
 		}
 		try {
 			//サブクエリを使い、グループに所属しているユーザー情報を取得するためのSQL文を発行する
-			String query = "SELECT * FROM User_Info WHERE User_ID IN (SELECT User_ID FROM Group_Info WHERE Group_ID = ?)";
+			String query = "SELECT * FROM User_Info WHERE User_ID IN (SELECT User_ID FROM Group_Member_Info WHERE Group_ID = ?)";
 			pst = conn.prepareStatement(query);
 			//?に引数（グループID）を代入
 			pst.setInt(1, groupId);
@@ -1937,6 +1937,51 @@ public class DAO {
 		return null;
 	}
 
+	/* ㊽メンバーごとの所属しているグループの取得
+	 * メソッド名：GetMemberGroups()
+	 * 引数      ：int userId
+	 * 戻り値    ：ArrayList<GroupInfoBean> list
+	 * 処理      ：サブクエリを使い、DB(Group_Member_Info)に引数(ユーザーID)を指定してグループIDを取得し、
+	 * 		      :DB(Group_Info)に取得したグループIDを代入してSQL文を発行し、グループID,グループ名を取得する
+	*/
+
+	public ArrayList<GroupInfoBean> GetMemberGroups(int userId) {
+		//戻り値として返すようの配列を定義
+		ArrayList<GroupInfoBean> list = new ArrayList<GroupInfoBean>();
+		//DBから取得した情報を格納するようのGroupInfoBeanを宣言
+		GroupInfoBean gib;
+		if(conn == null) {
+			try {
+				//DBに接続する
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			//サブクエリを使い、ユーザーが所属しているグループ情報を取得するためのSQL文を発行する
+			String query = "SELECT * FROM Group_Info WHERE Group_ID IN (SELECT Group_ID FROM Group_Member_Info WHERE User_ID =?)";
+			pst = conn.prepareStatement(query);
+			//?に引数（グループID）を代入
+			pst.setInt(1, userId);
+			ResultSet rs = pst.executeQuery();
+
+			while(rs.next()) {
+				gib = new GroupInfoBean();
+				gib.setGroupId(rs.getInt(GroupInfoBean.GROUP_ID_COLUMN));
+				gib.setGroupName(rs.getString(GroupInfoBean.GROUP_NAME_COLUMN));
+				//グループID,グループ名を入れたBeanをリストに追加する
+				list.add(gib);
+			}
+			//データ格納したリストを返す
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//問題があったらnullを返す
+		return null;
+	}
 
 //--------------以下SQL基本構文(select、insert、update、delete)のメソッド。---------
 

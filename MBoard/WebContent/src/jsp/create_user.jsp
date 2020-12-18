@@ -66,7 +66,7 @@
 		<p>編集内容は保持されませんが<br>よろしいですか？</p>
 		<ul class="button">
 			<li><button id="modalCancel" value="キャンセル">キャンセル</button></li>
-			<li><button id="modalOK" value="OK" onclick="location.href='<%=request.getContextPath()%>/src/jsp/board.jsp'">OK</button></li>
+			<li><button id="modalOK" value="OK" onclick="location.href='<%=request.getContextPath()%>/src/jsp/admin_top.jsp'">OK</button></li>
 		</ul>
 	</div>
 </section>

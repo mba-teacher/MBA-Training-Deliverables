@@ -3,17 +3,14 @@
 	import = "data.UserInfoBean,data.PostInfoBean"%>
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
-<title>マイページ</title>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/mypage.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
-</head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<head>
+	<meta charset="UTF-8">
+	<title>マイページ</title>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/mypage.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
 </head>
 <body>
 <!-- ユーザー自身のユーザー情報をセッションから受け取る -->
@@ -23,6 +20,9 @@
 <% session.setAttribute("count", 0); %>
 <% int count = (int)session.getAttribute("count"); %>
 
+	<% if (request.getAttribute("notice") != null && (String)request.getAttribute("notice") == "edited") { %>
+		<header class="alarm">プロフィール を更新しました。</header>
+	<% } %>
 	<div class="flex_container">
 		<div class="nav-area">
 
@@ -30,14 +30,13 @@
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<!-- <a href=""> --> <%-- リンク先：<%=request.getContextPath()%>/src/jsp/my_page.jsp --%>
+			<%-- 同一ページには遷移しない設定のためaタグをはずす --%>
 				<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon" id="my-icon">
-				<%-- <img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon"> --%>
-			<!-- </a> -->
+
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
 			</a>
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">
@@ -56,16 +55,18 @@
 			<div class="mypage_content">
 				<div class="profile_area">
 					<div>
-						<% if (uib.getProfileImgPath() == null)  { %>
-							<span class="profile_icon">高</span>
+						<% if (uib.getProfileImgPath() == null || uib.getProfileImgPath().isEmpty())  { %>
+							<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="profile_icon">
 						<% } else { %>
 							<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="profile_icon">
 						<% } %>
 					</div>
 					<h2><%= uib.getUserName() %></h2>
 					<p class="address"><%= uib.getEmailAdress() %></p>
-					<div class="profile_edit">プロフィール編集</div>
-					<div class="admin">管理者画面</div>
+					<a href="profile_edit.jsp"><div class="profile_edit">プロフィール編集</div></a>
+					<% if (uib.isAdmin()) { %>
+						<a href="admin_top.jsp"><div class="admin">管理者画面</div></a>
+					<% } %>
 				</div>
 
 				<div class="tabs">

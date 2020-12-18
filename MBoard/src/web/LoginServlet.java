@@ -26,12 +26,20 @@ public class LoginServlet extends HttpServlet {
 			session = req.getSession(true);
 			session.setAttribute("userInfoBean", uib);
 
+			//DBからGETするデータは後で編集します
 			BoardInfoBean[] bib = dao.GetMyBoards(uib.getUserID());
+			//今のところユーザーの投稿した記事のみ所得しています
 			PostInfoBean[] pib = dao.GetMyPosts(uib.getUserID());
-			req.setAttribute("boardInfoBean", bib);
-			req.setAttribute("postInfoBean", pib);
 
-			RequestDispatcher rd = req.getRequestDispatcher("/src/jsp/my_page.jsp");
+			//記事情報を全部取得する　か　掲示板ごとに取得するか
+			/*for (int i = 0; i < bib.length; i++) {
+				PostInfoBean[] pib2 = dao.GetBoardPosts(bib[i].getBoardId());
+			}*/
+
+			req.setAttribute("boardInfoBean", bib);
+			session.setAttribute("postInfoBean", pib);  //req から session に変更
+
+			RequestDispatcher rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);
 		}else {
 			//ログイン失敗

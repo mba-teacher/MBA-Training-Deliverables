@@ -36,7 +36,7 @@
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
 			</a>
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">

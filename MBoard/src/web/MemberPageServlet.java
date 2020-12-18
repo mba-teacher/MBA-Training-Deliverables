@@ -20,7 +20,7 @@ public class MemberPageServlet extends HttpServlet {
 		HttpSession s = req.getSession(true);
 		String url = "";
 		if (s == null) {
-			url = "http://localhost:8080/MBoard/src/html/login.jsp";
+			url = "http://localhost:8080/MBoard/src/jsp/login.jsp";
 		} else {
 			DAO dao = new DAO();
 			int memberId = Integer.parseInt(req.getParameter("memberId"));
