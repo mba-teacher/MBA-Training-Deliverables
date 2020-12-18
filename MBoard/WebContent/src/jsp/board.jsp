@@ -6,9 +6,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>掲示板</title>
-	<link rel="stylesheet" href="../css/nav.css" />
-	<link rel="stylesheet" href="../css/board.css" />
-	<link rel="stylesheet" href="../css/scroll.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
@@ -22,28 +22,29 @@
 		<div class="nav-area">
 
 			<div class="logo-area">
-				<img src="../img/logo_white.png">
+				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="#">
-				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"> --%>
+			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
+			<%-- <%=request.getContextPath()%>/mypage --%>
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
+				<%-- <img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon"> --%>
+			</a>
+			<%-- 同ページには遷移しない設定にしています --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
+			<a href="<%=request.getContextPath()%>/addressbook">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">
-				<img src="../img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="../img/mb_0_address.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="../img/mb_0_link.png" class="nav-icon" id="link-show">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
 
 			<div class="nav-bottom">
 				<a href="#">
-				<img src="../img/mb_0_notice.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
 				</a>
 				<a href="#">
-				<img src="../img/mb_0_other.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
 				</a>
 			</div>
 
@@ -59,17 +60,14 @@
 					</div>
 					<div class="board-list">
 
-						<% for (int i = 0; i < bib.length; i++ ) { %>
-						<div class="board-item">
-							<div class="board-color<%= bib[i].getBoardColor() %>"></div>
-							<p>掲示板名:<%= bib[i].getBoardCategory() %></p>
-						</div>
-						<% } %>
+						<%-- <% for (int i = 0; i < bib.length; i++ ) { %> --%>
 						<div class="board-item">
 							<div class="board-color"></div>
-							<p>掲示板名</p>
+							<%-- <%= bib[i].getBoardColor() %> --%>
+							<p>掲示板名<%-- <%= bib[i].getBoardCategory() %> --%></p>
 						</div>
-						<!-- <div class="board-item">
+						<%-- <% } %> --%>
+						<div class="board-item">
 							<div class="board-color"></div>
 							<p>掲示板名</p>
 						</div>
@@ -116,12 +114,16 @@
 						<div class="board-item">
 							<div class="board-color"></div>
 							<p>掲示板名</p>
-						</div> -->
+						</div>
+						<div class="board-item">
+							<div class="board-color"></div>
+							<p>掲示板名</p>
+						</div>
 
 					</div>
 					<div class="board-list-footer">
 						<div class="show-board-list">掲示板を登録</div>
-						<img src="../img/mb_e_plus.png" class="add_button show-board-list">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="add_button show-board-list">
 					</div>
 				</div>
 
@@ -129,9 +131,9 @@
 
 					<div class="board-header">
 						<div class="board-name-area">
-							<img src="../img/mb_e_plus.png" class="board-icon">
+							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon">
 							<div class="board-name">掲示板名</div>
-							<img src="../img/mb_2_syousai.png" class="board-menu">
+							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
 
@@ -142,10 +144,10 @@
 								<textarea class="post-form-content" name="post-content" placeholder="なんでも投稿できます"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
-										<img src="../img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 									</div>
 									<input type="submit" value="送信" class="post-submit">
 								</div>
@@ -155,7 +157,14 @@
 						<textarea class="search"></textarea>
 
 						<div class="post">
-							<img src="../img/mb_e_plus.png" class="post-icon">
+							<%-- <a href="<%=request.getContextPath()%>/member"></a> --%>
+							<%-- <%=request.getContextPath()%>/member --%>
+							<form name="postIconForm" action="<%=request.getContextPath()%>/member" method="post">
+								<a href="javascript:setMemberAndSubmit('1')">
+									<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
+								</a>
+								<input type="hidden" name="memberId" value="" />
+							</form>
 							<div class="post-board-name">掲示板名</div>
 							<div class="post-user-name">投稿者名</div>
 							<div class="post-date">投稿日時</div>
@@ -163,16 +172,16 @@
 							<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
 							<div class="post-icon-area">
 								<div class="comment">
-									<img src="../img/mb_i_comment.png">
+									<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
 									<span class="number">100</span>コメント
 								</div>
 								<div class="good">
-									<img src="../img/mb_j_good.png">
+									<img src="<%=request.getContextPath()%>/src/img/mb_j_good.png">
 									<span class="number">100</span>確認済
 								</div>
 							</div>
 							<div class="post-detail-button">
-								<img src="../img/mb_2_syousai.png">
+								<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
 							</div>
 						</div>
 
@@ -187,82 +196,85 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
-					<img src="../img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
 				</div>
 			</div>
 		</div>
 
-		<div class="popup-board-list">
+		<div class="popup-board-list"><a id="board-list-link"></a>
 			<div class="link-hide popup-board-bg"></div>
 			<div class="popup-board-area">
 				<div class="popup-board-header">
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
 						<input type="text" placeholder="検索" class="popup-board-search">
-						<div class="popup-board-add">新規追加</div>
+						<a href="javascript:hiddenSubmit()" class="popup-board-add">新規追加</a>
 					</div>
 					<div class="popup-board-close">
-						<img src="../img/mb_f_close.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
 					</div>
 				</div>
 				<div class="popup-board-content">
 
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-leave">参加する</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="../img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 
 				</div>
+				<form name="hiddenForm" action="<%=request.getContextPath()%>/createBoard" method="post">
+					<input type="hidden" name="pageType" value="create">
+				</form>
 			</div>
 		</div>
 
@@ -277,7 +289,8 @@
 
 	</div>
 
-	<script src="../js/nav.js"></script>
-	<script src="../js/board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="data.UserInfoBean,java.util.ArrayList"%>
+    pageEncoding="UTF-8"
+    import="data.UserInfoBean,data.BoardInfoBean,java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>掲示板作成</title>
+<title>掲示板修正</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/create_board.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
@@ -17,6 +17,9 @@
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
 <%-- --%>
 <% ArrayList<UserInfoBean> ulist = (ArrayList<UserInfoBean>)request.getAttribute("allMembers"); %>
+<% BoardInfoBean bib = (BoardInfoBean)request.getAttribute("editBoardInfo"); %>
+<% boolean[] member = (boolean[])request.getAttribute("checkedMember"); %>
+<% boolean all = (boolean)request.getAttribute("all"); %>
 	<div class="flex_container">
 		<div class="nav-area">
 
@@ -25,7 +28,7 @@
 			</div>
 
 			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
-				<img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon">
+				<%-- <img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon"> --%>
 			</a>
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
@@ -49,10 +52,11 @@
 
 			<div class="mypage_content">
 				<div class="create-area">
-				<h1 class="page-title">掲示板作成</h1>
-					<form action="<%=request.getContextPath()%>/createBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
+				<h1 class="page-title">掲示板修正</h1>
+					<form action="editBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
 						<div class="create-icon-area">
 							<div class="create-icon">
+							<img id="before" src="<%=request.getContextPath()%><%=bib.getBoardImgPath()%>">
 							<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 							</div>
 							<input type="file" name="board-icon" id="board-icon" value="参照" onchange="previewImage(this)">
@@ -60,14 +64,27 @@
 						</div>
 						<div class="board-name-area">
 							<p>掲示板名<span class="requierdItem">*</span></p>
-							<input type="text" name="Board_Category" placeholder="例：日報"	>
+							<input type="text" name="Board_Category" value="<%=bib.getBoardCategory()%>" placeholder="例：日報">
 						</div>
 						<div>
 							<p>掲示板色選択</p>
 							<select name="Board_Color" class="board-color">
-								<option value="1">レッド</option>
-								<option value="2">ブルー</option>
-								<option value="3">グリーン</option>
+								<% if (bib.getBoardColor() == 1) { %>
+									<option value="1" selected>レッド</option>
+								<% } else { %>
+									<option value="1">レッド</option>
+								<% } %>
+								<% if (bib.getBoardColor() == 2) { %>
+									<option value="2" selected>ブルー</option>
+								<% } else { %>
+									<option value="2">ブルー</option>
+								<% } %>
+								<% if (bib.getBoardColor() == 3) { %>
+									<option value="3" selected>グリーン</option>
+								<% } else { %>
+									<option value="3">グリーン</option>
+								<% } %>
+
 							</select>
 						</div>
 						<p>アクセス制限<span class="requierdItem">*</span></p>
@@ -85,7 +102,11 @@
 								</div>
 								<ul class="access-ul">
 								<li class="access-list-item">
+									<%if(all) { %>
 									<input type="checkbox" id="userall" name="allChecked" checked>
+									<% } else { %>
+									<input type="checkbox" id="userall" name="allChecked">
+									<% } %>
 									<label for="userall" class="access-item">
 										<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="access-user-icon">
 										<div class="access-user-name">全員</div>
@@ -95,7 +116,11 @@
 								<li><ul id="sub">
 								<% for (int i = 0; i < ulist.size(); i++) { %>
 								<li class="access-list-item">
-									<input type="checkbox" id="user<%=ulist.get(i).getUserID()%>" name="accessList" value="<%=ulist.get(i).getUserID()%>" checked>
+									<% if (member[i]) { %>
+										<input type="checkbox" id="user<%=ulist.get(i).getUserID()%>" name="accessList" value="<%=ulist.get(i).getUserID()%>" checked>
+									<% } else { %>
+										<input type="checkbox" id="user<%=ulist.get(i).getUserID()%>" name="accessList" value="<%=ulist.get(i).getUserID()%>" >
+									<% } %>
 									<label for="user<%=ulist.get(i).getUserID()%>" class="access-item">
 										<% if (ulist.get(i).getProfileImgPath() == null || ulist.get(i).getProfileImgPath() == "") { %>
 										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="access-user-icon">
@@ -112,11 +137,12 @@
 							</div>
 						</div>
 						<p>掲示板詳細</p>
-						<textarea class="create-detail" name="Board_Content" placeholder="例：日報の提出用の掲示板です。"></textarea>
-						<input type="hidden" name="pageType" value="create">
+						<textarea class="create-detail" name="Board_Content" placeholder="例：日報の提出用の掲示板です。"><%=bib.getBoardContents()%></textarea>
+						<input type="hidden" name="Board_ID" value="<%=bib.getBoardId()%>">
+						<input type="hidden" name="pageType" value="edit">
 						<div class="submit-area">
-							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/src/jsp/board.jsp'">
-							<input type="submit" name="" value="作成" class="submit">
+							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/src/jsp/board_fix.jsp'">
+							<input type="submit" name="" value="更新" class="submit">
 						</div>
 					</form>
 					<p id="errortext" style="display: none; color: red;">未入力項目があります</p>

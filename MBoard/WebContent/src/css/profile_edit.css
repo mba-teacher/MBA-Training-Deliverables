@@ -11,3 +11,25 @@ input {
 	width:400px;
 }
 
+#profile-icon {
+	display:none;
+}
+
+#before {
+	display: block;
+}
+
+/*-----------↓バリデーションチェック用CSS-------------*/
+.alertarea {
+	color: red;                  /* 文字色 */
+	background-color: #fee;      /* 背景色 */
+	display: inline-block;       /* インラインブロック化 */
+	border-radius: 0.5em;        /* 角丸 */
+	margin-left: 0.5em;          /* 外側左端の余白 */
+	padding: 2px;                /* 内側の余白 */
+	font-size: 12px;
+}
+/* ▼入力チェック結果でエラーがない場合は非表示にする */
+.alertarea:empty {
+	display: none;
+}
