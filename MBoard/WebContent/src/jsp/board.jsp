@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<title>掲示板</title>
 	<link rel="stylesheet" href="src/css/nav.css" />
-	<link rel="stylesheet" href="src/css/board22.css" />
+	<link rel="stylesheet" href="src/css/board.css" />
 	<link rel="stylesheet" href="src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
@@ -18,6 +18,12 @@
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
 <% ArrayList<PostInfoBean[]> pibList=(ArrayList<PostInfoBean[]>)session.getAttribute("postInfoBeanList");  %>
 <%-- <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %> --%>
+<script>
+var int boardNameList;
+<% for (int i = 0; i < bib.length; i++ ) { %>
+var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
+<% } %>
+</script>
 
 	<div class="flex_container">
 		<div class="nav-area">
@@ -86,7 +92,7 @@
 					<div class="board-header">
 						<div class="board-name-area">
 							<img src="src/img/mb_e_plus.png" class="board-icon">
-							<div class="board-name">掲示板名</div>
+							<div id="boardName" class="board-name">掲示板名</div>
 							<img src="src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
@@ -262,8 +268,12 @@ jQuery(function($){
 		$('.is-show').removeClass('is-show');
         // クリックしたタブからインデックス番号を取得
 		const index = $(this).index();
+		boardNum=parseInt(index, 10);
         // クリックしたタブと同じインデックス番号をもつコンテンツを表示
 		$('.panel').eq(index).addClass('is-show');
+		var boardName = document.getElementById( "boardName" ) ;
+		boardName.textContent="<%out.print(pibList.get(1)[1].getPostTitle());%>";
+
 	});
 });
 </script>

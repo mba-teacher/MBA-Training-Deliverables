@@ -429,12 +429,12 @@ public class DAO {
 	}
 
 	/*⑫記事のコメント情報取得
-	 *メソッド名：GetBoards()
+	 *メソッド名：GetCommentInfo()
 	 * 引数      ：int postId
 	 * 戻り値    ：ArrayList<CommentInfoBean>型 CommentInfoList
 	 * 処理      ：DB(Comment_Info)に記事IDを指定してSQL文を発行し、コメント情報を取得する
 	 */
-	public ArrayList<CommentInfoBean> GetBoards(int postId) {
+	public ArrayList<CommentInfoBean> GetCommentInfo(int postId) {
 		//戻り値として返すようの配列を定義
 		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
 		try {
