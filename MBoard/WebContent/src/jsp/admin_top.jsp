@@ -40,7 +40,7 @@
 			<a class="js-modal-open2" href="">
 				<img class="box" src="<%=request.getContextPath()%>/src/img/mb_3_group.png" width="100%" height="100%">
 			</a>
-			<a href="<%=request.getContextPath()%>/src/jsp/login_log.jsp">
+			<a href="<%=request.getContextPath()%>/loginLog">
 				<img class="box" src="<%=request.getContextPath()%>/src/img/mb_3_log.png" width="100%" height="100%">
 			</a>
 		</div>
@@ -52,7 +52,7 @@
 				<p class="js-modal-close">×</p>
 				<p>アカウント関連</p>
 				<div class="btn_box">
-					<a href="<%=request.getContextPath()%>/loginLog">
+					<a href="<%=request.getContextPath()%>/src/jsp/create_user.jsp">
 					<div class="mobal_btn1">アカウント作成</div></a>
 				<a href="<%=request.getContextPath()%>/editAccount">
 					<div class="mobal_btn2">アカウント修正・削除</div></a>
