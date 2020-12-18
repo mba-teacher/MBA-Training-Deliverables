@@ -59,13 +59,13 @@ public class BoardServlet extends HttpServlet {
 			for(int x=0;x<PostInfoList.get(i).length;x++) {
 				var postId=PostInfoList.get(i)[x].getPostId();
 				readCount.put(postId, dao.GetReadCount(postId));
-				//comentCount.put(postId, dao.GetReadCount(postId));
+				comentCount.put(postId, dao.GetCommentInfo(postId).size());
 			}
 		}
 		//セッションに格納
 		session.setAttribute("readCount",readCount);
 		//セッションに格納
-		//session.setAttribute("readCount",comentCount);
+		session.setAttribute("comentCount",comentCount);
 
 		//掲示板本体画面に遷移
 		rd = req.getRequestDispatcher("/src/jsp/board.jsp");
