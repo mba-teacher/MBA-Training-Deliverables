@@ -582,14 +582,14 @@ public class DAO {
 	}
 
 	/*[14-2]記事のいいね数取得
-	 * メソッド名：GetReadCount()
+	 * メソッド名：GetReadInfo()
 	 * 引数      ：int postId
-	 * 戻り値    ：int型 readCount
-	 * 処理      ：DB(Read_Info)に記事IDを指定してSQL文を発行し、いいね数を取得する
+	 * 戻り値    ：ArrayList<ReadInfoBean>型 ReadInfoBean
+	 * 処理      ：DB(Read_Info)に記事IDを指定してSQL文を発行し、いいね情報を取得する
 	 */
-	public int GetReadCount(int postId) {
+	public ArrayList<ReadInfoBean> GetReadInfo(int postId) {
 		//戻り値として返すようの変数を定義
-		int readCount=0;
+		ArrayList<ReadInfoBean> ReadInfoBean=new ArrayList<ReadInfoBean>();
 		try {
 			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
@@ -602,8 +602,16 @@ public class DAO {
 
 			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
-				//戻り値として返すいいねの合計値を加算
-				readCount++;
+				//CommentInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
+				ReadInfoBean b = new ReadInfoBean();
+				b.setReadId(rs.getInt("Read_ID"));
+				b.setReadDate(rs.getString("Read_Date"));
+				b.setReadUserId(rs.getInt("Read_User_ID"));
+				b.setPostId(rs.getInt("Post_ID"));
+				b.setCommentId(rs.getInt("Comment_ID"));
+				//最初に定義した配列にBeanのインスタンスを格納する
+				ReadInfoBean.add(b);
 			}
 
 			//下記catchはエラーハンドリング用
@@ -613,8 +621,9 @@ public class DAO {
 			e.printStackTrace();
 		}
 		//データを格納した配列を返す
-		return readCount;
+		return ReadInfoBean;
 	}
+
 
 	/*⑮いいね情報追加(コメントのいいね)
 	 * メソッド名：InsertCommentRead()

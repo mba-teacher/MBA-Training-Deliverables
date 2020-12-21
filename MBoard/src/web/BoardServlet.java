@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import data.BoardInfoBean;
 import data.DAO;
 import data.PostInfoBean;
+import data.ReadInfoBean;
 import data.UserInfoBean;
 
 public class BoardServlet extends HttpServlet {
@@ -52,16 +53,28 @@ public class BoardServlet extends HttpServlet {
 
 		//記事IDをキーにして、そのいいね数を取得する連想配列
 		HashMap<Integer, Integer> readCount = new HashMap<Integer, Integer>();
+		//記事IDをキーにして、ログインユーザーがいいねしてるかを取得する連想配列
+		HashMap<Integer, Boolean> userRead = new HashMap<Integer, Boolean>();
 		//記事IDをキーにして、そのコメント数を取得する連想配列
 		HashMap<Integer, Integer> comentCount= new HashMap<Integer, Integer>();
 		//所属する掲示板のすべての記事のコメント数、良いね数を連想配列に格納
 		for(int i=0;i<PostInfoList.size();i++) {
 			for(int x=0;x<PostInfoList.get(i).length;x++) {
-				var postId=PostInfoList.get(i)[x].getPostId();
-				readCount.put(postId, dao.GetReadCount(postId));
+				int postId=PostInfoList.get(i)[x].getPostId();
+				ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
+				readCount.put(postId, readInfo.size());
 				comentCount.put(postId, dao.GetCommentInfo(postId).size());
+				//ログインユーザーが記事にいいねしてるかを取得する連想配列に格納
+				userRead.put(postId, false);
+				for(int y=0;y<readInfo.size();y++) {
+					if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
+						userRead.put(postId, true);
+					}
+				}
 			}
 		}
+		//セッションに格納
+		session.setAttribute("userRead",userRead);
 		//セッションに格納
 		session.setAttribute("readCount",readCount);
 		//セッションに格納
