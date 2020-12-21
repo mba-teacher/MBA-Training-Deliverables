@@ -36,6 +36,20 @@ public class BoardServlet extends HttpServlet {
 		UserInfoBean userInfo=dao.Login("id1", "pass1");
 		session.setAttribute("userInfoBean",userInfo);
 
+		String insertRead[] = req.getParameterValues("insertRead");
+		String deleteRead[] = req.getParameterValues("deleteRead");
+
+		if(insertRead!=null) {
+			for(int i=0;i<insertRead.length;i++) {
+				dao.InsertRead(userInfo.getUserID(),Integer.parseInt(insertRead[i]));
+			}
+		}
+		if(deleteRead!=null) {
+			for(int i=0;i<deleteRead.length;i++) {
+				dao.DeleteRead(userInfo.getUserID(),Integer.parseInt(deleteRead[i]));
+			}
+		}
+
 		//ログインユーザーが所属する掲示板情報をDBから取得
 		//セッションに格納
 		BoardInfoBean[] boardInfo=dao.GetMyBoards(userInfo.getUserID());

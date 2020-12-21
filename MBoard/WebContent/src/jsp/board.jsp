@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,java.util.ArrayList"%>
+    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,java.util.ArrayList,java.util.HashMap"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +17,9 @@
 <%-- 掲示板情報を受け取る --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
 <% ArrayList<PostInfoBean[]> pibList=(ArrayList<PostInfoBean[]>)session.getAttribute("postInfoBeanList");  %>
+<% HashMap<Integer, Integer> readCount = (HashMap<Integer, Integer>)session.getAttribute("readCount");%>
+<% HashMap<Integer, Integer> commentCount = (HashMap<Integer, Integer>)session.getAttribute("comentCount"); %>
+<% HashMap<Integer, Boolean> userRead = (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
 <%-- <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %> --%>
 <script>
 var int boardNameList;
@@ -94,6 +97,11 @@ var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
 							<img src="src/img/mb_e_plus.png" class="board-icon">
 							<div id="boardName" class="board-name">掲示板名</div>
 							<img src="src/img/mb_2_syousai.png" class="board-menu">
+
+							<form action="board" method="post" name="form" id="testForm">
+							 <input class="board_test" name="action" type="submit" value="テスト" >
+							</form>
+
 						</div>
 					</div>
 
@@ -131,11 +139,20 @@ var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
 								<div class="post-icon-area">
 									<div class="comment">
 										<img src="src/img/mb_i_comment.png">
-										<span class="number">100</span>コメント
+										<span class="number"><%= commentCount.get(pibList.get(i)[x].getPostId()) %></span>コメント
 									</div>
 									<div class="good">
-										<img src="src/img/mb_j_good.png">
-										<span class="number">100</span>確認済
+										<img src="src/img/mb_j_good.png" onclick="imgwin('<%out.print(pibList.get(i)[x].getPostId());%>')">
+										<span id="count<%out.print(pibList.get(i)[x].getPostId());%>"><%= readCount.get(pibList.get(i)[x].getPostId()) %></span>
+										<div id="read<%out.print(pibList.get(i)[x].getPostId());%>" >
+											<div class="<%out.print(userRead.get(pibList.get(i)[x].getPostId()));%>">
+											<% if(userRead.get(pibList.get(i)[x].getPostId())){ %>
+											確認済
+											<% }else{ %>
+											未確認
+											<% } %>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="post-detail-button">
@@ -271,11 +288,64 @@ jQuery(function($){
 		boardNum=parseInt(index, 10);
         // クリックしたタブと同じインデックス番号をもつコンテンツを表示
 		$('.panel').eq(index).addClass('is-show');
-		var boardName = document.getElementById( "boardName" ) ;
-		boardName.textContent="<%out.print(pibList.get(1)[1].getPostTitle());%>";
+		//var boardName = document.getElementById( "boardName" ) ;
+		<%-- boardName.textContent="<%out.print(pibList.get(1)[1].getPostTitle());%>"; --%>
 
 	});
 });
+
+function imgwin(img){
+	var read = document.getElementById( "read"+img ) ;
+	var readCount = document.getElementById( "count"+img ) ;
+	// 最初の子要素を取得
+	var userRead = read.firstElementChild ;
+
+	if(userRead.className==="true"){
+		var i=parseInt(readCount.textContent);
+		i--;
+		readCount.textContent=""+i;
+		userRead.className="false";
+		userRead.textContent="未確認";
+
+	 	readAction(img,"deleteRead");
+	}else{
+		/* var test1 = document.getElementsByName( "test111");
+		test1[0].remove(); */
+ 		var i=parseInt(readCount.textContent);
+		i++;
+		readCount.textContent=""+i;
+		userRead.className="true";
+		userRead.textContent="確認済";
+
+		readAction(img,"insertRead");
+	}
+}
+
+function readAction(postId, name) {
+	var ele=document.getElementsByClassName("hidden"+postId);
+	if(ele[0]){
+		var len=ele.length
+ 		for(var i=0;i<len;i++){
+ 			ele[0].remove();
+		}
+
+	}else{
+		insertHidden(postId, name);
+	}
+	//alert(ele[0]);
+	}
+
+function insertHidden(postId, name) {
+	var form = document.getElementById("testForm") ;
+	var input = document.createElement('input');
+	input.type="hidden";
+	input.name=name;
+	input.className="hidden"+postId;
+	input.value=postId;
+	form.insertAdjacentElement('beforeend',input);
+}
+
+
 </script>
 	<script src="src/js/nav.js"></script>
 	<script src="src/js/board.js"></script>
