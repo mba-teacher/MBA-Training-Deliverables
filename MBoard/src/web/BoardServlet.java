@@ -1,6 +1,8 @@
 package web;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,6 +40,33 @@ public class BoardServlet extends HttpServlet {
 
 		String insertRead[] = req.getParameterValues("insertRead");
 		String deleteRead[] = req.getParameterValues("deleteRead");
+
+		String boardId = req.getParameter("boardId");
+		String postTitle = req.getParameter("postTitle");
+		String postContent = req.getParameter("postContent");
+
+
+
+		if(boardId!=null) {
+			System.out.println("けいじばんID："+boardId);
+			var id=Integer.parseInt(boardId);
+			postContent=postContent.replace("\r\n", "<br>");
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = sdf.format(timestamp);
+
+			PostInfoBean bean=new PostInfoBean();
+			bean.setPostDate(date);
+			bean.setPostTitle(postTitle);
+			bean.setPostContents(postContent);
+			bean.setPostUserId(userInfo.getUserID());
+			bean.setPostCategory("カテゴリ(削除予定)");
+			bean.setPostImgPath("test");
+			bean.setBoardId(id);
+
+			dao.MakePost(bean);
+
+		}
 
 		if(insertRead!=null) {
 			for(int i=0;i<insertRead.length;i++) {
@@ -94,9 +123,13 @@ public class BoardServlet extends HttpServlet {
 		//セッションに格納
 		session.setAttribute("comentCount",comentCount);
 
-		//掲示板本体画面に遷移
-		rd = req.getRequestDispatcher("/src/jsp/board.jsp");
-		rd.forward(req, resp);
+
+
+
+			//掲示板本体画面に遷移
+			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
+			rd.forward(req, resp);
+
 	}
 
 }

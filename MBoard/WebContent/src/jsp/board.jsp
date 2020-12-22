@@ -22,9 +22,11 @@
 <% HashMap<Integer, Boolean> userRead = (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
 <%-- <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %> --%>
 <script>
-var int boardNameList;
+var boardName=[];
+var boardId=[];
 <% for (int i = 0; i < bib.length; i++ ) { %>
-var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
+boardId.push('<%out.print(bib[i].getBoardId());%>');
+boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 <% } %>
 </script>
 
@@ -95,21 +97,21 @@ var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
 					<div class="board-header">
 						<div class="board-name-area">
 							<img src="src/img/mb_e_plus.png" class="board-icon">
-							<div id="boardName" class="board-name">掲示板名</div>
+							<div id="boardName" class="board-name"><%= bib[0].getBoardCategory() %></div>
 							<img src="src/img/mb_2_syousai.png" class="board-menu">
-
+							<!-- テスト -->
 							<form action="board" method="post" name="form" id="testForm">
-							 <input class="board_test" name="action" type="submit" value="テスト" >
+							 <input id="testSubmit" class="board_test" name="action" type="submit" value="テスト" >
 							</form>
 
 						</div>
 					</div>
 
 					<div class="board-content">
-						<form action="#" method="post" class="form">
-							<input class="post-form" name="post" placeholder="なんでも投稿できます">
+						<form action="board" method="post" class="form">
+							<input class="post-form" name="postTitle" placeholder="なんでも投稿できます">
 							<div class="post-detail">
-								<textarea class="post-form-content" name="post-content" placeholder="なんでも投稿できます"></textarea>
+								<textarea class="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
 										<img src="src/img/mb_g_letteredit.png">
@@ -117,6 +119,7 @@ var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
 										<img src="src/img/mb_g_letteredit.png">
 										<img src="src/img/mb_g_letteredit.png">
 									</div>
+									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
 									<input type="submit" value="送信" class="post-submit">
 								</div>
 							</div>
@@ -129,7 +132,7 @@ var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
 						<% for (int i = 0; i < pibList.size(); i++ ) { %>
 								<div class="panel">
 									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
-								<div class="post">
+								<div class="post" name='<%out.print(pibList.get(i)[x].getPostId());%>'>
 								<img src="src/img/mb_e_plus.png" class="post-icon">
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
 								<div class="post-user-name">投稿者名</div>
@@ -269,6 +272,11 @@ var a="<%out.print(pibList.get(1)[1].getPostTitle());%>";
 	</div>
 
 <script>
+$('.post').click(function() {
+	   alert($(this).attr('name'));
+	});
+
+
 //要素を取得 ( → <ul id="target"> ... </ul> )
 var ulElement = document.getElementById( "tabGroup" ) ;
 var panelGroup = document.getElementById( "panelGroup" ) ;
@@ -285,12 +293,15 @@ jQuery(function($){
 		$('.is-show').removeClass('is-show');
         // クリックしたタブからインデックス番号を取得
 		const index = $(this).index();
-		boardNum=parseInt(index, 10);
         // クリックしたタブと同じインデックス番号をもつコンテンツを表示
 		$('.panel').eq(index).addClass('is-show');
-		//var boardName = document.getElementById( "boardName" ) ;
-		<%-- boardName.textContent="<%out.print(pibList.get(1)[1].getPostTitle());%>"; --%>
-
+        //掲示板の名前を上に表示
+        //掲示板IDを送信ボタンのhiddenのvalueに代入
+		var name = document.getElementById( "boardName" ) ;
+		var hidden = document.getElementById( "boardNameHidden" ) ;
+		var i= parseInt($(this).index());
+		name.textContent=boardName[i];
+		hidden.value=boardId[i];
 	});
 });
 
@@ -345,7 +356,9 @@ function insertHidden(postId, name) {
 	form.insertAdjacentElement('beforeend',input);
 }
 
-
+$('#testSubmit').on('click', function () {
+	  $(this).css('pointer-events','none');
+	});
 </script>
 	<script src="src/js/nav.js"></script>
 	<script src="src/js/board.js"></script>
