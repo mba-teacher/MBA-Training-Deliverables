@@ -1,7 +1,16 @@
 ﻿@charset "UTF-8";
 
-a {text-decoration: none;
-   color:#000;}
+a {
+	text-decoration: none;
+	color:#000;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 body{
 	width:100%;
 	height:auto;
@@ -29,7 +38,9 @@ body{
 }
 
 
-.title{padding:0px 7%;}
+.title{
+	padding:0px 7%;
+}
 
 .backbtn{
 	position:fixed;
@@ -46,11 +57,13 @@ body{
 	white-space: nowrap; /*改行しない*/
 }
 
+/*------修正ボタン------*/
 .okbtn{
 	position:fixed;
-    margin-bottom:3%;
+    margin-bottom: 0;  /* 3% */
     bottom:0;
-    margin-left:93%;
+    right: -10%;
+    /* margin-left:93%; */
     transform: translateX(-100%);
 
 	font-size:1.5rem;
@@ -61,6 +74,10 @@ body{
 	border-radius:8px;
 	text-align:center;
 	white-space: nowrap; /*改行しない*/
+
+	/**/
+	border: none;
+	cursor: pointer;
 }
 
 .textbox{
@@ -72,7 +89,7 @@ body{
 	transform: translateX(-50%);
     border-radius:8px;
 
-	background-image:url(img/mb_d_search2.png);
+	background-image:url(../img/mb_d_search2.png);
 	background-repeat:  no-repeat;
 	background-position:right;
 }
@@ -81,32 +98,83 @@ body{
 .test {
   position:fixed;
   width: 1000px;
-  height: 65%;
-  margin-top:100px;
+	height: 75%;
+	max-height: 700px;
+  margin-top:60px;
   left:50%;
   transform: translateX(-50%);
-  border-radius:8px;
-  font-size:20px;
-  overflow: scroll;
-
-  border: #000 1.5px solid;
-  white-space: nowrap; /*改行しない*/
 }
 
-.user_list p{
+.user_name {
+	position:fixed;
+	width: 1000px;
+	height: 80%;
+	left:50%;
+	transform: translateX(-50%);
+}
+
+.user_list_header {
+	width: 100%;
+	display: flex;
+}
+
+.user_list_header p {
+	padding-left: 35px;
+}
+
+.user_name .ul, .search-result {
+	height: 100%;
+	border-radius:8px;
+	font-size:20px;
+	overflow: scroll;
+	overflow-x: hidden;
+
+	border: #000 1.5px solid;
+	white-space: nowrap; /*改行しない*/
+	padding: 0;
+	margin-block-start: 0;
+}
+
+.user_list {
 	border-bottom:#909090 1px solid;
 	padding:10px 20px 10px 20px;
 	margin:0;
 }
 
-.delete{
-	position:absolute;
+.user_list:last-of-type {
+	border-bottom: none;
+}
+
+.user_list p {
+	display: inline-block;
+	margin: 0;
+	padding-left: 15px;
+	width: 57%;
+}
+
+.user_list .adminChoise {
+	display: inline-block;
+	width: 20%
+}
+
+.changed {
+	color: #ff2121;
+}
+
+.edit, .delete {
+	position:relative;
 	right:0;
-	margin-right:35px;
-	margin-top:10px;
+	width: 50px;
+	height: 32px;
+	font-size: 16px;
 	background:#fff;
 	border:solid #000 1px;
 	border-radius:8px;
+	cursor: pointer;
+}
+
+.delete {
+	margin-left:50px;
 }
 
 .fix{
@@ -130,7 +198,7 @@ body{
 span{
     position:absolute;
 	right:0;
-	margin-right:350px;
+	margin-right:440px;
     transform: translateX(100%);
 }
 
@@ -149,18 +217,115 @@ span2{
     transform: translateX(100%);
 }
 
+/*--------全登録者表示ボタン--------*/
 .all_btn{
 	position:absolute;
 	left:0;
 	margin-left:150px;
 	top:10px;
-	padding:0px 20px;
+	padding:3px 20px;
 	background:#fff;
 	border-radius:8px;
 	color:#fff;
 	background-color:#FF9100;
+	border: 1px solid #003;
+	font-size: 15px;
+}
+
+
+/*--------↓検索用--------*/
+#noResult {
+	display:none;
+}
+
+.search-result {
+	display: none;
+}
+
+
+/*-----------↓管理者権限編集画面-----------*/
+.edit_main {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 20px;
+}
+
+.edit_choice {
+	display: table;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#edit_name {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	padding-right: 5px;
+	font-size: 24px;
+}
+
+.submit {
+	width: 50px;
+	height: 32px;
+	font-size: 16px;
+	background:#fff;
+	border:solid #000 1px;
+	border-radius:8px;
+	cursor: pointer;
+}
+
+/*-----------↓管理者権限のラジオボタン-----------*/
+input[type=radio] {
+	display: none;
+	/* margin-left: 40%; */
+}
+
+.radioLabel {
+	position: relative;
+	padding: 0 30px 0 42px;
+}
+
+.radioLabel:after, .radioLabel:before {
+	position: absolute;
+	content: "";
+	display: block;
+	top: 50%;
+}
+
+.radioLabel:after {
+	left: 14px;
+	margin-top: -14px;
+	width: 20px;
+	height: 20px;
+	border: 1.5px solid #000;
+	border-radius: 50%;
+}
+
+.radioLabel:before {
+	left: 18px;
+	margin-top: -10px;
+	width: 15px;
+	height: 15px;
+	background: #0f0f0f;
+	border-radius: 50%;
+	opacity: 0;
+}
+
+input[type=radio]:checked + .radioLabel:before {
+	opacity: 1;
 }
 
 
 
+/*-----------↓ログインログ画面-----------*/
+#log_title {
+	margin-right: 400px;
+}
+
+.log {
+	display: inline-block;
+	width: 40%;
+}
 

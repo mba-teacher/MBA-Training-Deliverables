@@ -12,9 +12,21 @@ function setBoardAndSubmit(id) {
     document.sendIdForm.submit();
 }
 
+function setAdminAndSubmit(id) {
+    document.editSendForm.memberId.value = id;
+    document.editSendForm.submit();
+}
+/*
+	//引数に追加するか否か(name, admin)
+    document.editSendForm.memberName.value = name;
+    document.editSendForm.isAdmin.value = admin;
+*/
+
+
 function hiddenSubmit() {
     document.hiddenForm.submit();
 }
+
 
 
 /**

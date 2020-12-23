@@ -1,31 +1,18 @@
 /**
  *
  */
-/*
-jQuery("#realText input:text").on('click blur keydown keyup keypress change'
-,function(){
-var textWrite = jQuery("#realText input:text").val();
-jQuery("#realWrite p").html(textWrite);
-});
-*/
-
-
 $(function () {
     searchWord = function(){
       var searchResult,
           searchText = $(this).val(), // 検索ボックスに入力された値
           targetText,
           hitNum;
-		var searchAdmin,
-			searchEdit,
-			searchDelete;
+		var searchLog;
 
       // 検索結果を格納するための配列を用意
       searchResult = [];
-      //検索結果のボタンなどを格納するための配列
-      searchAdmin = [];
-      searchEdit = [];
-      searchDelete = [];
+      //検索結果のログインログを格納するための配列
+      searchLog = [];
 
       // 検索結果エリアの表示を空にする
       $('#search-result__list').empty();
@@ -42,9 +29,7 @@ $(function () {
             // 存在する場合はそのリストのテキストを用意した配列に格納
             searchResult.push(targetText);
             //同階層の要素（兄弟要素）を検索してコピー
-            searchAdmin.push($(this).nextAll('.adminChoise').clone());
-            searchEdit.push($(this).nextAll('.edit').clone(true));
-			searchDelete.push($(this).nextAll('.delete').clone(true));
+            searchLog.push($(this).nextAll('.log').clone());
             console.log(searchResult.length);
           }else{
             //検索該当なし
@@ -62,25 +47,22 @@ $(function () {
         	//リストアイテムの作成  IDに「result＋検索数番号」を設定
 			$('<li class="user_list"></li>').appendTo('#search-result__list ul').attr('id', 'result'+i);
 			$('<p>').text(searchResult[i]).appendTo('#result'+i);
-			$(searchAdmin[i]).appendTo('#result'+i);
-			$(searchEdit[i]).appendTo('#result'+i);
-			$(searchDelete[i]).appendTo('#result'+i);
+			$(searchLog[i]).appendTo('#result'+i);
         }
+        document.getElementById("search-result").style.display = "block";
+
         //検索対象に該当した場合
 		if (searchResult.length > 0) {
 			document.getElementById("noResult").style.display = "none";        //該当なし非表示
-        	document.getElementById("search-result").style.display = "block";  //検索結果表示
         }
         //該当なしの場合
         else {
         	document.getElementById("noResult").style.display = "block";       //該当なし表示
-            document.getElementById("search-result").style.display = "none";   //検索結果非表示
         }
 
       }else{
         //初期の状態に戻す
         document.getElementById("target-area").style.display = "block";
-        document.getElementById("noResult").style.display = "none";
         document.getElementById("search-result").style.display = "none";
       }
     };
@@ -88,3 +70,8 @@ $(function () {
     // searchWordの実行
     $('#search-text').on('input', searchWord);
   });
+
+  function ReDisplay(){
+	document.getElementById("target-area").style.display = "block";
+	document.getElementById("search-result").style.display = "none";
+  }

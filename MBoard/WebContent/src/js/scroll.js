@@ -4,7 +4,6 @@
 
 //jScrollの使用
 $(function(){
-    /*$('.flex_container').jscroll();*/
     $('.scroll').jscroll();
 });
 
@@ -12,8 +11,7 @@ var scrollOption = {
 	loadingHtml: 'now loading',
     autoTrigger: true,
     padding: 20,
-    nextSelector: 'a.jscroll-next'/*,
-    contentSelector: '#post_content'*/
+    nextSelector: 'a.jscroll-next'
 };
 $('.scroll').jscroll(scrollOption);
 
