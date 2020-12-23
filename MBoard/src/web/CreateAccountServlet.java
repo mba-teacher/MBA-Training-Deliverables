@@ -46,7 +46,7 @@ public class CreateAccountServlet extends HttpServlet {
 
 			//管理者画面本体の通知
 			notice[0] = "edited";
-			notice[1] = "アカウント情報";
+			notice[1] = "アカウント";
 			req.setAttribute("notice", notice);
 			url = "/src/jsp/admin_top.jsp";
 		}

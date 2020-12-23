@@ -1,5 +1,5 @@
 /**
- *
+ * ログインログ画面の検索
  */
 $(function () {
     searchWord = function(){

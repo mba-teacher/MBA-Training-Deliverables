@@ -53,6 +53,7 @@ body{
 	width:320px;
 	height:320px;
 	padding:10px;
+	cursor: pointer;
 }
 
 .box:hover{
