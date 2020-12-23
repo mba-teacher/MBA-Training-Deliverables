@@ -70,15 +70,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 						<input type="text" class="">
 					</div>
 					<div class="board-list">
-
-<%-- 						<% for (int i = 0; i < bib.length; i++ ) { %>
-						<div class="board-item">
-							<div class="board-color<%= bib[i].getBoardColor() %>"></div>
-							<p>掲示板名:<%= bib[i].getBoardCategory() %></p>
-						</div>
-						<% } %> --%>
-
-						<!--タブ-->
+						<!--切り替え可能な掲示板タブ-->
 						<ul id="tabGroup" class="tab-group">
 							<% for (int i = 0; i < bib.length; i++ ) { %>
 								<li class="tab">掲示板名:<%= bib[i].getBoardCategory() %></li>
@@ -93,22 +85,16 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 				</div>
 
 				<div class="board-content-area">
-
 					<div class="board-header">
 						<div class="board-name-area">
 							<img src="src/img/mb_e_plus.png" class="board-icon">
 							<div id="boardName" class="board-name"><%= bib[0].getBoardCategory() %></div>
 							<img src="src/img/mb_2_syousai.png" class="board-menu">
-							<!-- テスト -->
-							<form action="board" method="post" name="form" id="testForm">
-							 <input id="testSubmit" class="board_test" name="action" type="submit" value="テスト" >
-							</form>
-
 						</div>
 					</div>
 
 					<div class="board-content">
-						<form action="board" method="post" class="form">
+						<form action="board" method="post" class="form" id="postForm">
 							<input class="post-form" name="postTitle" placeholder="なんでも投稿できます">
 							<div class="post-detail">
 								<textarea class="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
@@ -120,14 +106,15 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 										<img src="src/img/mb_g_letteredit.png">
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
-									<input type="submit" value="送信" class="post-submit">
+									<input type="hidden" name="formName" value="makePost" >
+									<input type="submit" value="送信" class="submit">
 								</div>
 							</div>
 						</form>
 
 						<textarea class="search"></textarea>
 
-						<!--タブを切り替えて表示するコンテンツ-->
+						<!--掲示板タブを切り替えて表示する記事一覧-->
 						<div id="panelGroup" class="panel-group">
 						<% for (int i = 0; i < pibList.size(); i++ ) { %>
 								<div class="panel">
@@ -136,7 +123,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 								<img src="src/img/mb_e_plus.png" class="post-icon">
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
 								<div class="post-user-name">投稿者名</div>
-								<div class="post-date">投稿日時</div>
+								<div id="aaaaaaa" class="post-date">投稿日時</div>
 								<div class="clear"></div>
 								<div class="post-letter"><%= pibList.get(i)[x].getPostContents() %></div>
 								<div class="post-icon-area">
@@ -145,7 +132,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 										<span class="number"><%= commentCount.get(pibList.get(i)[x].getPostId()) %></span>コメント
 									</div>
 									<div class="good">
-										<img src="src/img/mb_j_good.png" onclick="imgwin('<%out.print(pibList.get(i)[x].getPostId());%>')">
+										<img class="readButton" src="src/img/mb_j_good.png" onclick="imgwin('<%out.print(pibList.get(i)[x].getPostId());%>')">
 										<span id="count<%out.print(pibList.get(i)[x].getPostId());%>"><%= readCount.get(pibList.get(i)[x].getPostId()) %></span>
 										<div id="read<%out.print(pibList.get(i)[x].getPostId());%>" >
 											<div class="<%out.print(userRead.get(pibList.get(i)[x].getPostId()));%>">
@@ -271,22 +258,29 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 
 	</div>
 
+<!-- 記事投稿以外の遷移イベントはすべてこのフォームを通る。
+	いいねボタン(確認済みボタン)押下時に数値は変わるが、実際にDB更新されるのは遷移される時なので、
+	遷移時に毎回BoardServletを通り、いいねテーブル更新後に、サーブレットから別ページに飛ぶようにしている。 -->
+	<form action="board" method="post" id="hiddenForm">
+		<input type="hidden" name="formName" id="formNameHidden">
+		<input type="hidden" name="postId" id="postIdHidden">
+	</form>
+
 <script>
-$('.post').click(function() {
-	   alert($(this).attr('name'));
-	});
-
-
 //要素を取得 ( → <ul id="target"> ... </ul> )
 var ulElement = document.getElementById( "tabGroup" ) ;
 var panelGroup = document.getElementById( "panelGroup" ) ;
 // 最初の子要素を取得 ( → <li>要素1</li> )
 var tabFirstLi = ulElement.firstElementChild ;
 var panelFirst = panelGroup.firstElementChild ;
+//一番上の掲示板タブを表示させる
 tabFirstLi.className="tab is-active";
 panelFirst.className="panel is-show";
 
+
+//掲示板タブを切り替えて、記事一覧パネルを切り替える
 jQuery(function($){
+	//掲示板タブクリック時
 	$('.tab').click(function(){
 		$('.is-active').removeClass('is-active');
 		$(this).addClass('is-active');
@@ -295,59 +289,92 @@ jQuery(function($){
 		const index = $(this).index();
         // クリックしたタブと同じインデックス番号をもつコンテンツを表示
 		$('.panel').eq(index).addClass('is-show');
-        //掲示板の名前を上に表示
-        //掲示板IDを送信ボタンのhiddenのvalueに代入
+
+        //掲示板の名前を表示している要素取得
 		var name = document.getElementById( "boardName" ) ;
+        //記事作成フォームの中のhidden要素取得
 		var hidden = document.getElementById( "boardNameHidden" ) ;
+		//インデックス番号をint型にする
 		var i= parseInt($(this).index());
+		//掲示板の名前を上に表示
 		name.textContent=boardName[i];
+		//掲示板IDを記事作成フォームのhiddenのvalueに代入
+		//サーブレット側で受け取って、該当の掲示板に記事を追加
 		hidden.value=boardId[i];
 	});
 });
 
+
+//フォームのサブミット二重処理防止
+$('.submit').on('click', function () {
+	  $(this).css('pointer-events','none');
+	});
+
+
+//記事をクリック時
+$('.post').click(function(event){
+	var target = $(event.target);
+	if(target.attr('class')!=="readButton"){
+		var hiddenForm = document.getElementById( "hiddenForm" ) ;
+		var postIdHidden = document.getElementById( "postIdHidden" ) ;
+		var formNameHidden = document.getElementById( "formNameHidden" ) ;
+		postIdHidden.value=$(this).attr('name');
+		formNameHidden.value="postDetail";
+		hiddenForm.submit();
+	}
+});
+
+
+//確認済みボタンクリック時
 function imgwin(img){
 	var read = document.getElementById( "read"+img ) ;
 	var readCount = document.getElementById( "count"+img ) ;
 	// 最初の子要素を取得
 	var userRead = read.firstElementChild ;
-
+	//
 	if(userRead.className==="true"){
 		var i=parseInt(readCount.textContent);
 		i--;
 		readCount.textContent=""+i;
 		userRead.className="false";
 		userRead.textContent="未確認";
-
+		//押されたボタンの記事IDをhiddenでわたすメソッド呼び出し
+		//サーブレット側でdeleteReadを受け取ると該当の記事のログインユーザーの確認済みを削除
 	 	readAction(img,"deleteRead");
 	}else{
-		/* var test1 = document.getElementsByName( "test111");
-		test1[0].remove(); */
  		var i=parseInt(readCount.textContent);
 		i++;
 		readCount.textContent=""+i;
 		userRead.className="true";
 		userRead.textContent="確認済";
-
+		//押されたボタンの記事IDをhiddenでわたすメソッド呼び出し
+		//サーブレット側でinsertReadを受け取ると該当の記事のログインユーザーの確認済みを追加
 		readAction(img,"insertRead");
 	}
 }
 
+
+//確認済みボタンのhidden処理
 function readAction(postId, name) {
+	//押された記事IDの確認済みhiddenを取得
 	var ele=document.getElementsByClassName("hidden"+postId);
 	if(ele[0]){
+		//確認済みhiddenが既に存在した場合hidden削除
+		//(ページにきて２回目に確認ボタン押していた場合取り消し。DB情報は変更しなくていいため。)
 		var len=ele.length
  		for(var i=0;i<len;i++){
  			ele[0].remove();
 		}
-
 	}else{
-		insertHidden(postId, name);
+		//押された確認済みボタンがページにきて初めての場合はその情報をhiddenでフォームに追加
+		//フォームの数分hidden追加メソッド呼び出し
+		insertHidden("postForm",postId, name);
 	}
-	//alert(ele[0]);
 	}
 
-function insertHidden(postId, name) {
-	var form = document.getElementById("testForm") ;
+//フォームにhidden追加メソッド
+function insertHidden(formName,postId, name) {
+	var form = document.getElementById(formName) ;
 	var input = document.createElement('input');
 	input.type="hidden";
 	input.name=name;
@@ -355,10 +382,6 @@ function insertHidden(postId, name) {
 	input.value=postId;
 	form.insertAdjacentElement('beforeend',input);
 }
-
-$('#testSubmit').on('click', function () {
-	  $(this).css('pointer-events','none');
-	});
 </script>
 	<script src="src/js/nav.js"></script>
 	<script src="src/js/board.js"></script>

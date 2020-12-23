@@ -38,47 +38,6 @@ public class BoardServlet extends HttpServlet {
 		UserInfoBean userInfo=dao.Login("id1", "pass1");
 		session.setAttribute("userInfoBean",userInfo);
 
-		String insertRead[] = req.getParameterValues("insertRead");
-		String deleteRead[] = req.getParameterValues("deleteRead");
-
-		String boardId = req.getParameter("boardId");
-		String postTitle = req.getParameter("postTitle");
-		String postContent = req.getParameter("postContent");
-
-
-
-		if(boardId!=null) {
-			System.out.println("けいじばんID："+boardId);
-			var id=Integer.parseInt(boardId);
-			postContent=postContent.replace("\r\n", "<br>");
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String date = sdf.format(timestamp);
-
-			PostInfoBean bean=new PostInfoBean();
-			bean.setPostDate(date);
-			bean.setPostTitle(postTitle);
-			bean.setPostContents(postContent);
-			bean.setPostUserId(userInfo.getUserID());
-			bean.setPostCategory("カテゴリ(削除予定)");
-			bean.setPostImgPath("test");
-			bean.setBoardId(id);
-
-			dao.MakePost(bean);
-
-		}
-
-		if(insertRead!=null) {
-			for(int i=0;i<insertRead.length;i++) {
-				dao.InsertRead(userInfo.getUserID(),Integer.parseInt(insertRead[i]));
-			}
-		}
-		if(deleteRead!=null) {
-			for(int i=0;i<deleteRead.length;i++) {
-				dao.DeleteRead(userInfo.getUserID(),Integer.parseInt(deleteRead[i]));
-			}
-		}
-
 		//ログインユーザーが所属する掲示板情報をDBから取得
 		//セッションに格納
 		BoardInfoBean[] boardInfo=dao.GetMyBoards(userInfo.getUserID());
@@ -116,19 +75,91 @@ public class BoardServlet extends HttpServlet {
 				}
 			}
 		}
-		//セッションに格納
-		session.setAttribute("userRead",userRead);
-		//セッションに格納
+		//いいね数を取得する連想配列をセッションに格納
 		session.setAttribute("readCount",readCount);
-		//セッションに格納
+		//ログインユーザーがいいねしてるかを取得する連想配列をセッションに格納
+		session.setAttribute("userRead",userRead);
+		//コメント数を取得する連想配列をセッションに格納
 		session.setAttribute("comentCount",comentCount);
 
 
+		//確認ボタン変更value受け取り
+		String insertRead[] = req.getParameterValues("insertRead");
+		String deleteRead[] = req.getParameterValues("deleteRead");
+		//確認済み追加あればDBのreadテーブルに追加
+		if(insertRead!=null) {
+			for(int i=0;i<insertRead.length;i++) {
+				dao.InsertRead(userInfo.getUserID(),Integer.parseInt(insertRead[i]));
+			}
+		}
+		//確認済み削除あればDBのreadテーブルから削除
+		if(deleteRead!=null) {
+			for(int i=0;i<deleteRead.length;i++) {
+				dao.DeleteRead(userInfo.getUserID(),Integer.parseInt(deleteRead[i]));
+			}
+		}
 
+		//遷移前にクリックしたフォームの名前取得
+		String formName = req.getParameter("formName");
+		//遷移前にクリックしたフォームの名前があるか
+		if(formName!=null) {
+			switch (formName){
+			//記事クリック時、記事詳細へ遷移
+			case "postDetail":
+				String postId = req.getParameter("postId");
+				var intPostId=Integer.parseInt(postId);//int変換
+				PostInfoBean postBean=new PostInfoBean();
+				outside:for(int a=0;a<PostInfoList.size();a++) {
+					for(int b=0;b<PostInfoList.get(a).length;b++) {
+						if(PostInfoList.get(a)[b].getPostId()==intPostId) {
+							postBean=PostInfoList.get(a)[b];
+							break outside;
+						}
+					}
+				}
+				//記事IDのbeanをセッションに格納
+				session.setAttribute("postBean",postBean);
+				//記事詳細画面サーブレットに遷移
+				rd = req.getRequestDispatcher("/postDetail");
+				rd.forward(req, resp);
+				break;
+			//記事投稿の送信ボタンクリック時、DBの記事テーブルに追加
+			case "makePost":
+				String boardId = req.getParameter("boardId");
+				String postTitle = req.getParameter("postTitle");
+				String postContent = req.getParameter("postContent");
+				var intBoardId=Integer.parseInt(boardId);
+				postContent=postContent.replace("\r\n", "<br>");
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String date = sdf.format(timestamp);
 
-			//掲示板本体画面に遷移
+				PostInfoBean bean=new PostInfoBean();
+				bean.setPostDate(date);
+				bean.setPostTitle(postTitle);
+				bean.setPostContents(postContent);
+				bean.setPostUserId(userInfo.getUserID());
+				bean.setPostCategory("カテゴリ(削除予定)");
+				bean.setPostImgPath("test");
+				bean.setBoardId(intBoardId);
+
+				dao.MakePost(bean);
+				//遷移前にクリックしたフォームの名前がなければ掲示板本体画面に遷移
+				rd = req.getRequestDispatcher("/src/jsp/board.jsp");
+				rd.forward(req, resp);
+				break;
+			default:
+				;
+			}
+		}else {
+			//遷移前にクリックしたフォームの名前がなければ掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);
+		}
+
+
+
+
 
 	}
 
