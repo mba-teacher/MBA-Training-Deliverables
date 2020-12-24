@@ -428,13 +428,13 @@ public class DAO {
 		return b;//tryを通過したかを返す
 	}
 
-	/*⑫記事のコメント情報取得
+	/*⑫記事(またはコメント)のコメント情報取得
 	 *メソッド名：GetCommentInfo()
-	 * 引数      ：int postId
+	 * 引数      ：int postId , String choice
 	 * 戻り値    ：ArrayList<CommentInfoBean>型 CommentInfoList
-	 * 処理      ：DB(Comment_Info)に記事IDを指定してSQL文を発行し、コメント情報を取得する
+	 * 処理      ：DB(Comment_Info)に記事IDorコメントIDを指定してSQL文を発行し、コメント情報を取得する
 	 */
-	public ArrayList<CommentInfoBean> GetCommentInfo(int postId) {
+	public ArrayList<CommentInfoBean> GetCommentInfo(int id,String choice) {
 		//戻り値として返すようの配列を定義
 		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
 		try {
@@ -444,7 +444,15 @@ public class DAO {
 			stmt = conn.createStatement();
 
 			//SQL文作成
-			String query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+postId+"'";
+			String query="";
+			//引数のchoiceによって記事のコメント取得かコメントのコメント取得か場合分け
+			if(choice.equals("post")) {
+				query = "SELECT * FROM Comment_Info WHERE Post_ID = '"+id+"'";
+			}else if(choice.equals("comment")) {
+				query = "SELECT * FROM Comment_Info WHERE Comment_Chain = '"+id+"'";
+			}else {
+				System.out.println("第二引数にはpostかcommentをいれてください");
+				}
 			ResultSet rs =  stmt.executeQuery(query);
 
 			//上記SQL文で指定したレコードの数分while文を回す

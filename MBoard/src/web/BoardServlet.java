@@ -65,7 +65,7 @@ public class BoardServlet extends HttpServlet {
 				int postId=PostInfoList.get(i)[x].getPostId();
 				ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
 				readCount.put(postId, readInfo.size());
-				comentCount.put(postId, dao.GetCommentInfo(postId).size());
+				comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
 				//ログインユーザーが記事にいいねしてるかを取得する連想配列に格納
 				userRead.put(postId, false);
 				for(int y=0;y<readInfo.size();y++) {
@@ -98,7 +98,7 @@ public class BoardServlet extends HttpServlet {
 				dao.DeleteRead(userInfo.getUserID(),Integer.parseInt(deleteRead[i]));
 			}
 		}
-
+//---------------------------  遷移前のフォームごとにスイッチ文で分岐 -----------------------------
 		//遷移前にクリックしたフォームの名前取得
 		String formName = req.getParameter("formName");
 		//遷移前にクリックしたフォームの名前があるか

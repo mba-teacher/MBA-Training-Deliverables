@@ -40,7 +40,7 @@ public class PostDetailServlet extends HttpServlet {
 
 		//記事のコメントをリスト配列で取得
 		ArrayList<CommentInfoBean> CommentInfoList=new ArrayList<CommentInfoBean>();
-		CommentInfoList=dao.GetCommentInfo(postBean.getPostId());
+		CommentInfoList=dao.GetCommentInfo(postBean.getPostId(),"post");
 		//セッションに格納
 		session.setAttribute("CommentInfoList",CommentInfoList);
 
