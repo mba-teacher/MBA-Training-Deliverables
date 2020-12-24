@@ -2,9 +2,10 @@
  * 遷移処理の関数
  */
 
-function setBoardAndSubmit(id) {
-    document.sendIdForm.boardId.value = id;
-    document.sendIdForm.submit();
+function setBoardAndSubmit(id, formID) {
+	var form = document.getElementById(formID);
+    form.boardId.value = id;
+    form.submit();
 }
 
 function setAndSubmit(id, formID) {
@@ -16,6 +17,11 @@ function setAndSubmit(id, formID) {
 function setMember(id, formID) {
 	var form = document.getElementById(formID);
     form.memberId.value = id;
+}
+
+function setBoard(id, formID) {
+	var form = document.getElementById(formID);
+    form.boardId.value = id;
 }
 
 function hiddenSubmit() {

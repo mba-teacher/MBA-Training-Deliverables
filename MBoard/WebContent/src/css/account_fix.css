@@ -57,12 +57,16 @@ body{
 	white-space: nowrap; /*改行しない*/
 }
 
+.backbtn:hover {
+	background-color:#efefef;
+}
+
 /*------修正ボタン------*/
 .okbtn{
 	position:fixed;
     margin-bottom: 0;  /* 3% */
-    bottom:0;
-    right: -10%;
+    bottom:40px;
+    right: 5px;
     /* margin-left:93%; */
     transform: translateX(-100%);
 
@@ -78,6 +82,10 @@ body{
 	/**/
 	border: none;
 	cursor: pointer;
+}
+
+.okbtn:hover {
+	background-color:#ff7900;
 }
 
 .textbox{
@@ -139,12 +147,17 @@ body{
 	border-bottom:#909090 1px solid;
 	padding:10px 20px 10px 20px;
 	margin:0;
+	height: calc(100% / 8);
 }
 
+.user_list:first-of-type {
+	border-top:#909090 1px solid;
+}
+/*
 .user_list:last-of-type {
 	border-bottom: none;
 }
-
+ */
 .user_list p {
 	display: inline-block;
 	margin: 0;
@@ -161,7 +174,7 @@ body{
 	color: #ff2121;
 }
 
-.edit, .delete {
+.edit, .delete, .fix {
 	position:relative;
 	right:0;
 	width: 50px;
@@ -173,10 +186,14 @@ body{
 	cursor: pointer;
 }
 
+.edit:hover, .delete:hover, .fix:hover {
+	background-color:#efefef;
+}
+
 .delete {
 	margin-left:50px;
 }
-
+/*
 .fix{
 	position:absolute;
 	right:0;
@@ -186,7 +203,7 @@ body{
 	border:solid #000 1px;
 	border-radius:8px;
 }
-
+ */
 
 #none{
 	color:#ff0000;
@@ -203,36 +220,6 @@ span{
 }
 
 
-span1{
-    position:absolute;
-	right:0;
-	margin-right:280px;
-    transform: translateX(100%);
-}
-
-span2{
-	 position:absolute;
-	right:0;
-	margin-right:500px;
-    transform: translateX(100%);
-}
-
-/*--------全登録者表示ボタン--------*/
-.all_btn{
-	position:absolute;
-	left:0;
-	margin-left:150px;
-	top:10px;
-	padding:3px 20px;
-	background:#fff;
-	border-radius:8px;
-	color:#fff;
-	background-color:#FF9100;
-	border: 1px solid #003;
-	font-size: 15px;
-}
-
-
 /*--------↓検索用--------*/
 #noResult {
 	display:none;
@@ -245,9 +232,9 @@ span2{
 
 /*-----------↓管理者権限編集画面-----------*/
 .edit_main {
-	position: absolute;
+/* 	position: absolute;
 	left: 50%;
-	transform: translateX(-50%);
+	transform: translateX(-50%); */
 	font-size: 20px;
 }
 
@@ -263,12 +250,15 @@ span2{
 	margin: 0;
 	padding: 0;
 	padding-right: 5px;
-	font-size: 24px;
+	font-size: 30px;
 }
 
 .submit {
+	position: absolute;
+	right: 10px;
 	width: 50px;
 	height: 32px;
+	margin: 1em 0;
 	font-size: 16px;
 	background:#fff;
 	border:solid #000 1px;
@@ -326,6 +316,31 @@ input[type=radio]:checked + .radioLabel:before {
 
 .log {
 	display: inline-block;
-	width: 40%;
+	width: 43%;
 }
 
+/*--------全登録者表示ボタン--------*/
+.all_btn{
+	position:absolute;
+	left:0;
+	margin-left:150px;
+	top:10px;
+	padding:3px 20px;
+	background:#fff;
+	border-radius:8px;
+	color:#fff;
+	background-color:#FF9100;
+	border: 1px solid #003;
+	font-size: 15px;
+}
+
+.all_btn:hover {
+	background-color:#ff7900;
+}
+
+
+
+/*-----------↓掲示板修正_削除画面-----------*/
+p.board {
+	width:77%
+}

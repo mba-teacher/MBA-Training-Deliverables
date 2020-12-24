@@ -30,21 +30,27 @@
 			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp" class="backbtn"> 戻る </a>
 		</div>
 
+		<%-- 一時的に作成するフォームです --%>
+		<form action="" method="post" name="centerForm">
 		<div class="center">
-			<a class="js-modal-open" href="">
+			<a class="js-modal-open" id="">
 				<img class="box" src="<%=request.getContextPath()%>/src/img/mb_3_account.png" width="100%" height="100%">
 			</a>
-			<a href="<%=request.getContextPath()%>/src/jsp/board_fix.jsp">
+			<%-- <a href="<%=request.getContextPath()%>/boardfix">
 				<img class="box" src="<%=request.getContextPath()%>/src/img/mb_3_board.png" width="100%" height="100%">
-			</a>
-			<a class="js-modal-open2" href="">
+			</a> --%>
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_3_board.png" class="box" formaction="<%=request.getContextPath()%>/boardfix">
+			<a class="js-modal-open2" id="">
 				<img class="box" src="<%=request.getContextPath()%>/src/img/mb_3_group.png" width="100%" height="100%">
 			</a>
 			<a href="<%=request.getContextPath()%>/loginLog">
 				<img class="box" src="<%=request.getContextPath()%>/src/img/mb_3_log.png" width="100%" height="100%">
 			</a>
 		</div>
+		</form>
 	</div>
+
+	<form action="" method="post">
 
 		<div class="modal js-modal">
 			<div class="modal__bg js-modal-close"></div>
@@ -52,10 +58,8 @@
 				<p class="js-modal-close">×</p>
 				<p>アカウント関連</p>
 				<div class="btn_box">
-					<a href="<%=request.getContextPath()%>/src/jsp/create_user.jsp">
-					<div class="mobal_btn1">アカウント作成</div></a>
-				<a href="<%=request.getContextPath()%>/editAccount">
-					<div class="mobal_btn2">アカウント修正・削除</div></a>
+					<input type="submit" class="mobal_btn1" formaction="<%=request.getContextPath()%>/src/jsp/create_user.jsp" value="アカウント作成">
+					<input type="submit" class="mobal_btn2" formaction="<%=request.getContextPath()%>/editAccount" value="アカウント修正・削除">
 				</div>
 			</div>
 			<!--modal__inner-->
@@ -68,17 +72,19 @@
 				<p class="js-modal-close">×</p>
 				<p class="modal_title">グループ関連</p>
 				<%-- <a href="<%=request.getContextPath()%>/src/jsp/GroupEdit.jsp"> --%>
-					<form action="http://localhost:8080/MBoard/sample" method="post">
-					<input type="submit" class="mobal_btn1" name="goto" value="グループ編集">
+					<input type="submit" class="mobal_btn1" formaction="http://localhost:8080/MBoard/sample" name="goto" value="グループ編集">
 					<!-- <div class="mobal_btn1">グループ編集</div></a> -->
-					</form>
-				<a href="">
-				<div class="mobal_btn2">ユーザー設定</div></a>
+
+				<input type="submit" class="mobal_btn2" formaction="<%=request.getContextPath()%>/#" value="ユーザー設定">
 			</div>
 		</div>
 
+	</form>
 
+	<%-- 一時的に作成するフォームです --%>
+	<form id="" action="" method="post">
+		<input type="hidden">
+	</form>
 
-	</div>
 </body>
 </html>

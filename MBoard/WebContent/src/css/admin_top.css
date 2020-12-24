@@ -60,6 +60,10 @@ body{
 	opacity:0.8;
 }
 
+.box:focus {
+	outline: none;
+}
+
 .back{
     position:absolute;
     margin-top:4%;
