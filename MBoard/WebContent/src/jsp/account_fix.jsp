@@ -19,7 +19,6 @@
 <% String[] editInfo = (String[])session.getAttribute("editInfo"); %>
 
 	<a href="" class="backbtn js-modal-open"> 戻る </a>
-	<%-- <a href="" class="okbtn">修正</a> --%>
 
 	<div class="title">
 		<h1>アカウント修正・削除</h1>
@@ -35,8 +34,6 @@
 	</div>
 
 	<div class="test">
-
-		<form name="editSendForm" action="<%=request.getContextPath()%>/src/jsp/account_edit.jsp" method="post">
 
 		<div class="user_name">
 			<div class="user_list_header">
@@ -54,14 +51,12 @@
 
 			<div class="ul" id="target-area">
 			<ul>
-			<% for (int i = 0; i < uibs.size(); i++) { %><%-- 11件表示させる --%>
+			<% for (int i = 0; i < uibs.size(); i++) { %><%-- 全表示 --%>
 				<% if (i < uibs.size()) { %>
 				<%-- 管理者権限の変更を受け取る変数 --%>
 				<% if (request.getParameter("authority"+ uibs.get(i).getUserID()) != null && !request.getParameter("authority"+ uibs.get(i).getUserID()).isEmpty()) { %>
 				<%    editInfo[i] = request.getParameter("authority"+ uibs.get(i).getUserID()); %>
 				<% } %>
-				<%-- <% String admin = null; %> --%>
-
 				<%-- 表示する文字を入れる変数 --%>
 				<% String string = null; %>
 
@@ -78,7 +73,7 @@
 						<%    string = "なし"; %>
 						<% } %>
 						<div class="adminChoise changed"><%=string%></div>
-						<input type="hidden" name="isAdmin<%=uibs.get(i).getUserID()%>" value="<%=editInfo[i]%>">
+						<input type="button" value="編集" class="edit open3" data-num="<%=uibs.get(i).getUserID()%>" data-bool="<%=editInfo[i]%>">
 					<% } else { %>
 						<% if(uibs.get(i).isAdmin()) { %>
 						<%    string = "あり"; %>
@@ -86,11 +81,10 @@
 						<%    string = "なし"; %>
 						<% } %>
 						<div class="adminChoise"><%=string%></div>
-						<input type="hidden" name="isAdmin<%=uibs.get(i).getUserID()%>" value="<%=uibs.get(i).isAdmin()%>">
+						<input type="button" value="編集" class="edit open3" data-num="<%=uibs.get(i).getUserID()%>" data-bool="<%=uibs.get(i).isAdmin()%>">
 					<% } %>
 
-					<input type="button" value="編集" class="edit" onclick="setAdminAndSubmit('<%=uibs.get(i).getUserID()%>')">
-					<input type="button" class="delete js-modal-open2" value="削除">
+					<input type="button" class="delete js-modal-open2" value="削除" onclick="setMember('<%=uibs.get(i).getUserID()%>', 'deleteForm')">
 				</li>
 				<% count++; %>
 				<% } %>
@@ -98,6 +92,7 @@
 			<% session.setAttribute("count", count); %>
 			<% System.out.println("遷移前のcount:" + session.getAttribute("count")); %>
 			</ul>
+			<%-- 無限スクロールは実装していない --%>
 			<%-- <% if (count < uibs.size()) { %>
 				<div class="scroll">
 					<a class="jscroll-next" href="<%=request.getContextPath()%>/src/jsp/account_fix_buff.jsp">次の記事へ</a>
@@ -105,14 +100,16 @@
 			<% } %> --%>
 
 			<% session.setAttribute("editInfo", editInfo); %>
+			<% System.out.println(editInfo[0]); %>
 			<!-- class="ul" -->
 			</div>
-
 		</div>
-			<input type="submit" class="okbtn" formaction="<%=request.getContextPath()%>/editAccountAfter" value="修正">
-			<input type="hidden" name="memberId" value=""><%-- 編集画面用のhidden --%>
-		</form>
 	</div>
+
+	<form id="editForm" action="<%=request.getContextPath()%>/editAccountAfter" method="post" onsubmit="return editSendCheck()">
+		<input type="submit" class="okbtn" value="修正">
+		<input type="hidden" name="sendType" value="edit">
+	</form>
 
 
 	<div class="modal js-modal">
@@ -137,14 +134,40 @@
 			<p>
 				<br>本当に削除してもよろしいですか？
 			</p>
-			<div class="btn_box">
-				<a href="" class="js-modal-close">キャンセル</a>
-				<a href="" class="mobal_btn2">OK</a>
-			</div>
+			<form id="deleteForm" action="<%=request.getContextPath()%>/editAccountAfter" method="post">
+				<input type="hidden" name="sendType" value="delete">
+				<input type="hidden" name="memberId" value=""><%-- 削除するアカウントのID --%>
+				<div class="btn_box">
+					<input type="button" class="js-modal-close" value="キャンセル">
+					<!-- <a href="" class="js-modal-close">キャンセル</a> -->
+					<input type="submit" class="mobal_btn2" value="OK">
+					<!-- <a href="" class="mobal_btn2">OK</a> -->
+				</div>
+			</form>
 		</div>
 		<!--modal__inner-->
 	</div>
 	<!--modal-->
+
+	<section class="modal edit_main">
+		<div class="modal__bg"></div>
+		<div class="modal__content">
+		<p class="close-mark">×</p>
+		<p><span id="edit_name"></span>の管理者権限</p>
+
+		<form action="<%=request.getContextPath()%>/src/jsp/account_fix.jsp" method="post">
+			<div class="edit_choice">
+				<input type="radio" id="true" name="authority" value="true">
+				<label for="true" class="radioLabel">あり</label>
+				<input type="radio" id="false" name="authority" value="false">
+				<label for="false" class="radioLabel">なし</label>
+			</div>
+			<div class="btn_box">
+				<input type="submit" class="modal_btn3" value="変更">
+			</div>
+		</form>
+		</div>
+	</section>
 
 <script src="<%=request.getContextPath()%>/src/js/account_fix.js"></script>
 <script src="<%=request.getContextPath()%>/src/js/scroll.js"></script>

@@ -44,5 +44,14 @@
 
 	</section>
 
+	<%-- account_fix.jspの方に記述していたもの --%>
+	<section class="backup">
+						<input type="hidden" name="isAdmin<%--uibs.get(i).getUserID()--%>" value="<%--editInfo[i]--%>">
+						<input type="hidden" name="isAdmin<%--uibs.get(i).getUserID()--%>" value="<%--uibs.get(i).isAdmin()--%>">
+
+					<input type="button" value="編集" class="edit" onclick="setAndSubmit('<%--uibs.get(i).getUserID()--%>', 'editForm')">
+		<input type="hidden" name="memberId" value=""><%-- 編集画面用のhidden --%>
+	</section>
+
 </body>
 </html>

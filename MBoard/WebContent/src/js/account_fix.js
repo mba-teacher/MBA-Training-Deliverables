@@ -1,6 +1,4 @@
-/**
- *
- */
+
 /*
 jQuery("#realText input:text").on('click blur keydown keyup keypress change'
 ,function(){
@@ -9,7 +7,9 @@ jQuery("#realWrite p").html(textWrite);
 });
 */
 
-
+/**
+ * ページ内検索
+ */
 $(function () {
     searchWord = function(){
       var searchResult,
@@ -87,4 +87,45 @@ $(function () {
 
     // searchWordの実行
     $('#search-text').on('input', searchWord);
+
+
+
+	/**
+	 * 権限の編集前準備
+	 */
+	$('.edit').on('click', function(){
+		var name,
+			radio_name,
+			admin;
+
+		name = $(this).prevAll('p').text() +"さん";
+		radio_name = "authority"+ $(this).data('num');
+		admin = $(this).data('bool');
+
+		$('#edit_name').text(name);
+		$('#true').attr('name', radio_name);
+		$('#false').attr('name', radio_name);
+
+		//ラジオボタンの選択制御
+		$('#'+admin).prop('checked', true);
+
+	});
+
   });
+
+
+/**
+ * 修正ボタンの遷移可否
+ */
+function editSendCheck() {
+	var changed = document.getElementsByClassName("changed");
+
+	if (changed.length > 0) {       //changedクラスがある場合
+		console.log("class=changed");
+		return true;
+	}
+	else {                          //changedクラスがない場合
+		return false;
+	}
+}
+

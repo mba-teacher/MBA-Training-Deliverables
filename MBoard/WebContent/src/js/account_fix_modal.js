@@ -24,7 +24,14 @@ $(function(){
     });
 
 
-
+	$('.open3').on('click',function(){
+        $('.edit_main').fadeIn();
+        return false;
+    });
+    $('.modal__bg, .close-mark').on('click',function(){
+        $('.edit_main').fadeOut();
+        return false;
+    });
 
 
 });
