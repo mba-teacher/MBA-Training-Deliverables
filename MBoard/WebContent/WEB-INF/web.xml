@@ -44,4 +44,23 @@
   	<servlet-name>GroupEdit</servlet-name>
   	<url-pattern>/GroupEdit</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>AdminUserconfig</servlet-name>
+  	<servlet-class>web.AdminUserconfigServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>AdminUserconfig</servlet-name>
+  	<url-pattern>/AdminUserconfig</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>GroupUser</servlet-name>
+  	<servlet-class>web.GroupUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>GroupUser</servlet-name>
+  	<url-pattern>/GroupUser</url-pattern>
+  </servlet-mapping>
+
 </web-app>

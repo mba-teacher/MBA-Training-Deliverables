@@ -27,12 +27,16 @@
     border-radius:10px;
     top: 50%;
     transform: translate(-50%,-50%);
-    width:600px;
-    height:380px;
+    width:520px;
+    height:320px;
     font-size:25px;
+    text-align:center;
      box-sizing: border-box;
 }
-
+.modal__content p{
+	text-align: left;
+	display: inline-block;
+}
 
 
 
@@ -45,7 +49,8 @@
     border-radius:8px;
     color:#000;
     font-size:20px;
-     width:180px;
+    width:160px;
+    height:60px;
 }
 
 .mobal_btn2{
@@ -55,7 +60,15 @@
     text-align:center;
     border-radius:8px;
     color:#000;
-    font-size:20px;
-    width:180px;
+    font-size:25px;
+    width:160px;
+    height:60px;
 }
 
+.btn_box {
+ /* ポップアップしたボタンの位置調整*/
+  padding-top: 0px;
+  margin-top:20px;
+  display: flex;
+  justify-content: space-evenly;
+}

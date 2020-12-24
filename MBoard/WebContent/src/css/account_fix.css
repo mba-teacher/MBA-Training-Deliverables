@@ -98,12 +98,17 @@ body{
 	padding:10px 20px 10px 20px;
 	margin:0;
 }
+.target-area{
+	border-bottom:#909090 1px solid;
+	padding:10px 20px 10px 20px;
+	margin:0;
+}
 
 .delete{
 	position:absolute;
 	right:0;
 	margin-right:35px;
-	margin-top:10px;
+	margin-top:0px;
 	background:#fff;
 	border:solid #000 1px;
 	border-radius:8px;
@@ -160,7 +165,12 @@ span2{
 	color:#fff;
 	background-color:#FF9100;
 }
+.editButton{
+	position:relative;
+	top:-35px;
+	left:20px;
 
+}
 
 
 
