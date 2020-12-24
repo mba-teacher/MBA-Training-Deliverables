@@ -19,6 +19,8 @@
 <%-- <% System.out.println("post_buff到着"); %> --%>
 
 	<div class="scroll">
+		<% int max = count + 2; %>
+		<% for (int i = count; i < max; i++) { %>
 		<div class="post_area">
 			<div >
 				<img src="<%=request.getContextPath()%><%= pib[count].getPostUserIconPath() %>" class="icon_area">
@@ -33,6 +35,7 @@
 			<div class="post"><%= pib[count].getPostContents() %><!-- 投稿内容 --></div>
 			<% count++; %>
 		</div>
+		<% } %>
 		<% session.setAttribute("count", count); %>
 		<% System.out.println("count:" + count); %>
 		<% if (count < pib.length) {%>

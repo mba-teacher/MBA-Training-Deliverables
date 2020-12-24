@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import data.DAO;
 import data.UserInfoBean;
 
+@WebServlet("/createaccount")
 public class CreateAccountServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,7 +46,7 @@ public class CreateAccountServlet extends HttpServlet {
 
 			//管理者画面本体の通知
 			notice[0] = "edited";
-			notice[1] = "アカウント情報";
+			notice[1] = "アカウント";
 			req.setAttribute("notice", notice);
 			url = "/src/jsp/admin_top.jsp";
 		}

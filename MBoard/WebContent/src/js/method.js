@@ -2,19 +2,32 @@
  * 遷移処理の関数
  */
 
-function setMemberAndSubmit(id) {
-    document.postIconForm.memberId.value = id;
-    document.postIconForm.submit();
+function setBoardAndSubmit(id, formID) {
+	var form = document.getElementById(formID);
+    form.boardId.value = id;
+    form.submit();
 }
 
-function setBoardAndSubmit(id) {
-    document.sendIdForm.boardId.value = id;
-    document.sendIdForm.submit();
+function setAndSubmit(id, formID) {
+	var form = document.getElementById(formID);
+    form.memberId.value = id;
+    form.submit();
+}
+
+function setMember(id, formID) {
+	var form = document.getElementById(formID);
+    form.memberId.value = id;
+}
+
+function setBoard(id, formID) {
+	var form = document.getElementById(formID);
+    form.boardId.value = id;
 }
 
 function hiddenSubmit() {
     document.hiddenForm.submit();
 }
+
 
 
 /**

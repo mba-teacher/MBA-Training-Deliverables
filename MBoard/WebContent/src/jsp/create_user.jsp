@@ -8,10 +8,14 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/create_user.css" />
 </head>
 <body>
+
+	<div class="header_title">
+		<h1>アカウント作成</h1>
+	</div>
+
 <section class="mainView">
-	<h1>アカウント作成</h1><%-- 画像？文字？ --%>
 	<form action="<%=request.getContextPath()%>/createaccount" method="post" name="Form1" onsubmit="return formCheck()">
-	<%-- <%=request.getContextPath()%>/ --%>
+
 		<div class="inputForm">
 			<!-- バリデーションチェックはJSで実装中 -->
 			<p class="title">ユーザー名<span class="requierdItem">*</span><span class="alertarea"></span>

@@ -36,12 +36,20 @@
 }
 
 /*閉じる(×)ボタン*/
-.js-modal-close{
+p.js-modal-close{
   position: absolute;
-  top: 10px;
+  top: 15px;
   right: 25px;
   font-size: 40px;
   cursor: pointer;
+  /* 追加 */
+  padding: 0;
+  margin: 0;
+}
+
+/*------少しデザイン変更------*/
+p.js-modal-close:active {
+	color: #b11;
 }
 
 .mobal_btn1{
@@ -49,22 +57,40 @@
 	width: 480px;
     height: 75px;
 	position:relative;
-    border:solid 2px #414141;
     padding:15px 50px;
     top:30px;
     text-align:center;
+    border:solid 2px #414141;
     border-radius:8px;
     color:#000;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+/*------少しデザイン変更------*/
+.mobal_btn1:hover{
+	background-color:#efefef;
+	/* opacity: 0.8; */
 }
 
 .mobal_btn2{
+	font-size: 0.9em;
+	width: 480px;
+    height: 75px;
 	position:relative;
-    border:solid 2px #414141;
     padding:15px 50px;
     top:60px;
     text-align:center;
+    border:solid 2px #414141;
     border-radius:8px;
     color:#000;
+    background-color: #ffffff;
+    cursor: pointer;
 }
 
+/*------少しデザイン変更------*/
+.mobal_btn2:hover{
+	background-color:#efefef;
+	/* opacity: 0.8; */
+}
 

@@ -62,7 +62,7 @@
 								<p class="address">アドレス一覧</p>
 								<!-- <div class="user_information"> -->
 									<% for (int i = 0; i < uib.size(); i++) { %>
-									<a class="user_information_area" href="javascript:setMemberAndSubmit('<%=uib.get(i).getUserID()%>')">
+									<a class="user_information_area" href="javascript:setAndSubmit('<%=uib.get(i).getUserID()%>','postIconForm')">
 										<% if (uib.get(i).getProfileImgPath() == null || uib.get(i).getProfileImgPath() == "") { %>
 										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 										<% } else { %>
@@ -87,7 +87,7 @@
 										<label for="inbox<%=i%>"><%=gn[i]%></label><input type="checkbox" id="inbox<%=i%>" class="on-off">
 										<div class="dropdown">
 											<% for (int j = 0; j < lists.get(i).size(); j++) { %>
-											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>')">
+											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>','postIconForm')">
 												<% if (lists.get(i).get(j).getProfileImgPath() == null || lists.get(i).get(j).getProfileImgPath() == "") { %>
 												<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 												<% } else { %>
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 				<%-- 各メンバーページに飛ばす用のユーザーIDを送るためのフォーム --%>
-				<form name="postIconForm" action="<%=request.getContextPath()%>/member" method="post">
+				<form id="postIconForm" action="<%=request.getContextPath()%>/member" method="post">
 					<input type="hidden" name="memberId" value="" />
 				</form>
 			</div>

@@ -52,14 +52,20 @@
 
 .js-modal-close{
 	position:relative;
-    border:solid 2px #414141;
     padding:15px /*50px*/;
     top:60px;
+    width:180px;
     text-align:center;
+    border:solid 2px #414141;
     border-radius:8px;
     color:#000;
     font-size:20px;
-     width:180px;
+    background-color: #ffffff;
+	cursor: pointer;
+}
+
+.js-modal-close:hover {
+	background-color:#efefef;
 }
 
 .mobal_btn2{
@@ -72,6 +78,46 @@
     color:#000;
     font-size:20px;
     width:180px;
+    background-color: #ffffff;
+	cursor: pointer;
+}
+
+.mobal_btn2:hover {
+	background-color:#efefef;
 }
 
 
+.modal_btn3{
+	position:relative;
+	top:60px;
+	left: 50%;
+	transform: translateX(-50%);
+	width:180px;
+	padding:15px /*50px*/;
+	text-align:center;
+	border:solid 2px #414141;
+	border-radius:8px;
+	background-color: #fff;
+	color:#000;
+	font-size:20px;
+    background-color: #ffffff;
+	cursor: pointer;
+}
+
+.modal_btn3:hover {
+	background-color:#efefef;
+}
+
+p.close-mark {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 40px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+p.close-mark:active {
+	color: #b11;
+}
