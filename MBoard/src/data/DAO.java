@@ -1651,14 +1651,14 @@ public class DAO {
 
 	//㊵対象ユーザーのグループ情報の更新
 	/*メソッド名:ChangeGroups()
-	 *引数:int groupId[], String groupName[], int userId[]
+	 *引数:int groupId[], int userId[]
 	 *戻り値:無し
 	 *処理:
 	 *①Group_Member_InfoにユーザーIDを指定してSQL文を発行し、その指定したグループの情報を全て削除する。
 	 *②Group_Member_Infoに再びSQL文を発行し、引数の値を元にグループ情報をGroup_Member_Infoに追加する。
 	*/
 
-	public GroupMemberInfoBean ChangeGroups(int groupId[], int userId[]) throws ClassNotFoundException {
+	public GroupMemberInfoBean ChangeGroups(int groupId[], int userId) throws ClassNotFoundException {
 		try {
 			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
@@ -1669,14 +1669,14 @@ public class DAO {
 			int count=0;
 
 			//SQL文作成1(DELETE文)
-			String query = "DELETE FROM Group_Member_Info WHERE User_ID ="+userId[count];
+			String query = "DELETE FROM Group_Member_Info WHERE User_ID ="+userId;
         	int leave = stmt.executeUpdate(query);
 
         	//受け取った引数の配列の要素数分までfor文で繰り返す
         	for(count=0;count<groupId.length;count++) {
         		//SQL文作成2(INSERT文)
         		query = "INSERT INTO Group_Member_Info(Group_ID,User_ID)"
-						+ " VALUES("+groupId[count]+","+userId[count]+")";
+						+ " VALUES("+groupId[count]+","+userId+")";
 				int join = stmt.executeUpdate(query);
         	}
 
