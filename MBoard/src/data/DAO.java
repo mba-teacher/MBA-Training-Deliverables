@@ -589,7 +589,7 @@ public class DAO {
 		}
 	}
 
-	/*[14-2]記事のいいね数取得
+	/*[14-2]記事のいいね情報取得
 	 * メソッド名：GetReadInfo()
 	 * 引数      ：int postId
 	 * 戻り値    ：ArrayList<ReadInfoBean>型 ReadInfoBean
@@ -610,7 +610,7 @@ public class DAO {
 
 			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
-				//CommentInfoBeanクラスのインスタンスを作成
+				//ReadInfoBeanクラスのインスタンスを作成
 				//各種情報をBeanにsetterメソッドを使い、格納する
 				ReadInfoBean b = new ReadInfoBean();
 				b.setReadId(rs.getInt("Read_ID"));
@@ -695,15 +695,15 @@ public class DAO {
 		}
 	}
 
-	/*[15-2]コメントのいいね数取得
+	/*[15-2]コメントのいいね情報取得
 	 * メソッド名：GetReadCommentCount()
 	 * 引数      ：int Comment
-	 * 戻り値    ：int型 readCount
-	 * 処理      ：DB(Read_Info)にコメントIDを指定してSQL文を発行し、いいね数を取得する
+	 * 戻り値    ：ArrayList<ReadInfoBean>
+	 * 処理      ：DB(Read_Info)にコメントIDを指定してSQL文を発行し、いいね情報を取得する
 	 */
-	public int GetReadCommentCount(int Comment) {
+	public ArrayList<ReadInfoBean>  GetCommentReadInfo(int Comment) {
 		//戻り値として返すようの変数を定義
-		int readCount=0;
+		ArrayList<ReadInfoBean> ReadInfoBean=new ArrayList<ReadInfoBean>();
 		try {
 			//MySQLに接続
 			Class.forName("com.mysql.jdbc.Driver");
@@ -717,7 +717,16 @@ public class DAO {
 			//上記SQL文で指定したレコードの数分while文を回す
 			while(rs.next()) {
 				//戻り値として返すいいねの合計値を加算
-				readCount++;
+				//ReadInfoBeanクラスのインスタンスを作成
+				//各種情報をBeanにsetterメソッドを使い、格納する
+				ReadInfoBean b = new ReadInfoBean();
+				b.setReadId(rs.getInt("Read_ID"));
+				b.setReadDate(rs.getString("Read_Date"));
+				b.setReadUserId(rs.getInt("Read_User_ID"));
+				b.setPostId(rs.getInt("Post_ID"));
+				b.setCommentId(rs.getInt("Comment_ID"));
+				//最初に定義した配列にBeanのインスタンスを格納する
+				ReadInfoBean.add(b);
 			}
 
 			//下記catchはエラーハンドリング用
@@ -727,7 +736,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 		//データを格納した配列を返す
-		return readCount;
+		return ReadInfoBean;
 	}
 
 	//⑯定型文情報の取得

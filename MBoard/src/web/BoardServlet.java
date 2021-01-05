@@ -101,8 +101,9 @@ public class BoardServlet extends HttpServlet {
 //---------------------------  遷移前のフォームごとにスイッチ文で分岐 -----------------------------
 		//遷移前にクリックしたフォームの名前取得
 		String formName = req.getParameter("formName");
-		//遷移前にクリックしたフォームの名前があるか
+		//掲示板本体画面のフォームを通っているか
 		if(formName!=null) {
+			//遷移前のフォームごとに処理を分岐
 			switch (formName){
 			//記事クリック時、記事詳細へ遷移
 			case "postDetail":

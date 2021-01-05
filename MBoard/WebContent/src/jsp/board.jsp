@@ -369,6 +369,7 @@ function readAction(postId, name) {
 		//押された確認済みボタンがページにきて初めての場合はその情報をhiddenでフォームに追加
 		//フォームの数分hidden追加メソッド呼び出し
 		insertHidden("postForm",postId, name);
+		insertHidden("hiddenForm",postId, name);
 	}
 	}
 

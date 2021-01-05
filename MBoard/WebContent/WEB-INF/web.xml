@@ -63,4 +63,22 @@
   	<url-pattern>/GroupUser</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+  	<servlet-name>board</servlet-name>
+  	<servlet-class>web.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>board</servlet-name>
+  	<url-pattern>/board</url-pattern>
+  </servlet-mapping>
+
+   <servlet>
+  	<servlet-name>postDetail</servlet-name>
+  	<servlet-class>web.PostDetailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>postDetail</servlet-name>
+  	<url-pattern>/postDetail</url-pattern>
+  </servlet-mapping>
+
 </web-app>

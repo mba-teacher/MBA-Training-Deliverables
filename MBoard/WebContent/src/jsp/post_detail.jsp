@@ -15,6 +15,7 @@
 <body>
 <% PostInfoBean post = (PostInfoBean)session.getAttribute("postBean"); %>
 <% ArrayList<CommentInfoBean> comment = (ArrayList<CommentInfoBean>)session.getAttribute("CommentInfoList"); %>
+<% ArrayList<ArrayList<CommentInfoBean>> commentChain= (ArrayList<ArrayList<CommentInfoBean>>)session.getAttribute("CommentChainList"); %>
 
 	<div class="flex_container">
 		<div class="nav-area">
@@ -178,15 +179,17 @@
 								<img src="src/img/mb_2_syousai.png">
 							</div>
 						</div>
-						<% } %>
-	<!-- 					<div class="tree-area">
+							<% for (int x = 0; x < commentChain.get(i).size(); x++ ) { %>
+							<div class="tree-area">
 							<div class="comment-branch">
 								<div class="branch-border border-top"></div>
+								<%if(x+1!=commentChain.get(i).size()){ %>
 								<div class="branch-border border-bottom"></div>
+								<%} %>
 							</div>
 							<div class="post post-comment post-tree">
 								<img src="src/img/mb_e_plus.png" class="post-icon">
-								<div class="post-board-name">掲示板名</div>
+								<div class="post-board-name"><%= commentChain.get(i).get(x).getCommentId() %></div>
 								<div class="post-comment-for">苗字名前へ返信</div>
 								<div class="post-user-name">投稿者名</div>
 								<div class="post-date">投稿日時</div>
@@ -207,36 +210,8 @@
 								</div>
 							</div>
 						</div>
-
-
-
-						<div class="tree-area">
-							<div class="comment-branch">
-								<div class="branch-border border-top"></div>
-							</div>
-							<div class="post post-comment post-tree">
-								<img src="src/img/mb_e_plus.png" class="post-icon">
-								<div class="post-board-name">掲示板名</div>
-								<div class="post-comment-for">苗字名前へ返信</div>
-								<div class="post-user-name">投稿者名</div>
-								<div class="post-date">投稿日時</div>
-								<div class="clear"></div>
-								<div class="post-letter">投稿内容<br>投稿内容<br>投稿内容<br></div>
-								<div class="post-icon-area">
-									<div class="comment">
-										<img src="src/img/mb_i_comment.png">
-										<span class="number">100</span>コメント
-									</div>
-									<div class="good">
-										<img src="src/img/mb_j_good.png">
-										<span class="number">100</span>確認済
-									</div>
-								</div>
-								<div class="post-detail-button">
-									<img src="src/img/mb_2_syousai.png">
-								</div>
-							</div>
-						</div> -->
+							<% } %>
+						<% } %>
 
 					</div>
 
