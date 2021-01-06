@@ -24,6 +24,7 @@
 	<%-- 配列を定義し、セッションで持って来たDB情報を挿入 --%>
 	<% ArrayList<GroupInfoBean> grouplist = new ArrayList<GroupInfoBean>(); %>
 	<% ArrayList<GroupMemberInfoBean> memberGrouplist = new ArrayList<GroupMemberInfoBean>(); %>
+	<% int userId= (int)session.getAttribute("userId"); %>
 	<% grouplist.addAll((ArrayList<GroupInfoBean>) session.getAttribute("groupList")); %>
 	<% memberGrouplist.addAll((ArrayList<GroupMemberInfoBean>) session.getAttribute("memberGroupList")); %>
 
@@ -63,7 +64,7 @@
 	</div>
 
 	<%-- 決定ボタンを押した時、対象ユーザーのIDを送付 --%>
-	<input type='hidden' name='userId' id='input' value='<%=memberGrouplist.get(0).getUserId()%>'>
+	<input type='hidden' name='userId' id='input' value='<%=userId %>'>
 	<input type="submit" class="okbtn" name="goto" value="決定">
 
 	<%-- ここからポップアップ --%>

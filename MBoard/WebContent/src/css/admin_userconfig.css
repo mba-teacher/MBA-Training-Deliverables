@@ -87,7 +87,7 @@ body{
   white-space: nowrap; /*改行しない*/
 }
 
-.user_list p{
+.user_list_header p{
 	border-bottom:#909090 1px solid;
 	padding:10px 20px 10px 20px;
 	margin:0;
