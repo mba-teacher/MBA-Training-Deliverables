@@ -17,7 +17,7 @@
 
 	<div class="main">
 
-		<% if(notice != null && notice[0] == "edited") { %>
+		<% if(notice != null && notice[0].equals("edited")) { %>
 			<header class="alarm"><span class="blank"><%=notice[1]%></span> を更新しました。</header>
 			<%-- ↑'notice[1]'に「アカウント」/「掲示板」/「グループ」のどれかを代入する --%>
 		<% } %>

@@ -4,8 +4,13 @@
 
 $(function(){
     $('.js-modal-open').on('click',function(){
-        $('.js-modal').fadeIn();
-        return false;
+    	var change_flg = $('.test').find('.changed');
+    	if(change_flg.length > 0) {
+        	$('.js-modal').fadeIn();
+        	return false;
+        } else {
+        	document.getElementById("toTop").click();
+        }
     });
     $('.js-modal-close').on('click',function(){
         $('.js-modal').fadeOut();

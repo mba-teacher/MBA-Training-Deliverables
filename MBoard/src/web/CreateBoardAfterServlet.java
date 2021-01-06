@@ -67,6 +67,8 @@ public class CreateBoardAfterServlet extends HttpServlet {
 				d.UpdateBoard(bib);
 				d.UpdatePermmisioinMembers(bib.getBoardId(), userId);
 				System.out.println("Edit board.");
+
+
 				//urlの指定
 				url = "src/jsp/board_fix.jsp";
 			}
