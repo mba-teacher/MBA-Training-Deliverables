@@ -1,26 +1,32 @@
-/**
- *
- */
 
+/*
 jQuery("#realText input:text").on('click blur keydown keyup keypress change'
+
 ,function() {
 		var textWrite = jQuery("#realText input:text").val();
 		jQuery("#realWrite p").html(textWrite);
 	});
 
-$(function() {
+*/
+
+/**
+ * ページ内検索
+ */
+ $(function() {
 	searchWord = function() {
 		var searchResult,
-			searchGroup,
+			searchAdmin,
+			searchEdit,
+			searchDelete,
 			searchText = $(this).val(), // 検索ボックスに入力された値
 			targetText,
-			groupText,
 			hitNum;
 
 		// 検索結果を格納するための配列を用意
 		searchResult = [];
-		searchGroup = [];
+		searchAdmin = [];
 		searchEdit = [];
+		searchDelete = [];
 
 		// 検索結果エリアの表示を空にする
 		$('#search-result__list').empty();
@@ -38,49 +44,90 @@ $(function() {
 					// 存在する場合はそのリストのテキストを用意した配列に格納
 					searchResult.push(targetText);
 					//★同階層の要素（兄弟要素）を検索してコピー
-            		searchGroup.push($(this).nextAll('.groupChoise').clone());
+            		searchAdmin.push($(this).nextAll('.groupChoise').clone());
             		searchEdit.push($(this).nextAll('.editButton').clone(true));
-
+					searchDelete.push($(this).nextAll('.delete').clone(true));
 					console.log(searchResult.length);
-				} else{
-					//検索該当なし
-					console.log("true");
-				}
-				console.log(searchText);
-			});
+          }else{
+            //検索該当なし
+            console.log("true");
+          }
+          console.log(searchText);
+        });
 
-			// 検索結果をページに出力
-			for (var i = 0; i < searchResult.length; i++) {
-				/*最初にulを作成//・・・prependTo()の()要素の先頭に$()の要素が挿入される
-        		if (i == 0) {
-        			$('<ul></ul>').prependTo('#search-result__list');
-        		}*/
+        // 検索結果をページに出力
+        for (var i = 0; i < searchResult.length; i ++) {
+        	//最初にulを作成
+        	if (i == 0) {
+        		$('<ul></ul>').prependTo('#search-result__list');
+        	}
+        	//リストアイテムの作成  IDに「result＋検索数番号」を設定
+			$('<li class="user_list"></li>').appendTo('#search-result__list ul').attr('id', 'result'+i);
+			$('<p>').text(searchResult[i]).appendTo('#result'+i);
+			$(searchAdmin[i]).appendTo('#result'+i);
+			$(searchEdit[i]).appendTo('#result'+i);
+			$(searchDelete[i]).appendTo('#result'+i);
+        }
+        //検索対象に該当した場合
+		if (searchResult.length > 0) {
+			document.getElementById("noResult").style.display = "none";        //該当なし非表示
+        	document.getElementById("search-result").style.display = "block";  //検索結果表示
+        }
+        //該当なしの場合
+        else {
+        	document.getElementById("noResult").style.display = "block";       //該当なし表示
+            document.getElementById("search-result").style.display = "none";   //検索結果非表示
+        }
 
-				//リストアイテムの作成  IDに「result＋検索数番号」を設定//.attr(A,B)でA(id等)の属性名をBに変更
-				$('<div class="target-area"></div>').appendTo('#search-result__list').attr('id', 'result'+i);
-				$('<wr></wr>').text(searchResult[i]).appendTo('#result'+i);
-				$(searchGroup[i]).appendTo('#result'+i);
-				$(searchEdit[i]).appendTo('#result'+i);
-			}
-			//検索対象に該当した場合
-			if (searchResult.length > 0) {
-				//document.getElementById("noResult").style.display = "none";        //該当なし非表示
-				document.getElementById("search-result").style.display = "block";  //検索結果表示
-			}
-			//該当なしの場合
-			else {
-				//document.getElementById("noResult").style.display = "block";       //該当なし表示
-				document.getElementById("search-result").style.display = "none";   //検索結果非表示
-			}
+      }else{
+        //初期の状態に戻す
+        document.getElementById("target-area").style.display = "block";
+        document.getElementById("noResult").style.display = "none";
+        document.getElementById("search-result").style.display = "none";
+      }
+    };
 
-		}else{
-			//初期の状態に戻す
-			document.getElementById("close-target").style.display = "block";
-			//document.getElementById("noResult").style.display = "none";
-			document.getElementById("search-result").style.display = "none";
-		}
-	};
+    // searchWordの実行
+    $('#search-text').on('input', searchWord);
 
-	// searchWordの実行
-	$('#search-text').on('input', searchWord);
-});
+
+
+	/**
+	 * 権限の編集前準備
+	 */
+	$('.edit').on('click', function(){
+		var name,
+			radio_name,
+			admin;
+
+		name = $(this).prevAll('p').text() +"さん";
+		radio_name = "authority"+ $(this).data('num');
+		admin = $(this).data('bool');
+
+		$('#edit_name').text(name);
+		$('#true').attr('name', radio_name);
+		$('#false').attr('name', radio_name);
+
+		//ラジオボタンの選択制御
+		$('#'+admin).prop('checked', true);
+
+	});
+
+  });
+
+
+/**
+ * 修正ボタンの遷移可否
+ */
+function editSendCheck() {
+	var changed = document.getElementsByClassName("changed");
+
+	if (changed.length > 0) {       //changedクラスがある場合
+		console.log("class=changed");
+		return true;
+	}
+	else {                          //changedクラスがない場合
+		return false;
+	}
+}
+
