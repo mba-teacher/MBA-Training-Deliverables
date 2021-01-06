@@ -15,7 +15,7 @@ import data.DAO;
 import data.UserInfoBean;
 
 @WebServlet("/loginLog")
-public class AdminLoginLogServlet extends HttpServlet {
+public class LoginLogServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession s = req.getSession(false);

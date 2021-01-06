@@ -15,12 +15,12 @@ jQuery("#realText input:text").on('click blur keydown keyup keypress change'
  $(function() {
 	searchWord = function() {
 		var searchResult,
-			searchAdmin,
-			searchEdit,
-			searchDelete,
 			searchText = $(this).val(), // 検索ボックスに入力された値
 			targetText,
 			hitNum;
+		var searchAdmin,
+			searchEdit,
+			searchDelete;
 
 		// 検索結果を格納するための配列を用意
 		searchResult = [];
@@ -34,29 +34,30 @@ jQuery("#realText input:text").on('click blur keydown keyup keypress change'
 		// 検索ボックスに値が入ってる場合
 		if (searchText != '') {
 			//元々のリストの中身を非表示に
-			document.getElementById("close-target").style.display = "none";
+			document.getElementById("target-area").style.display = "none";
 
 			//$()の中身を検索対象に
-			$('.user_list .target-area wr').each(function() {
+			$('.ul .user_list p').each(function() {
 				targetText = $(this).text();
+
 				// 検索対象となるリストに入力された文字列が存在するかどうかを判断
 				if (targetText.indexOf(searchText) != -1) {
 					// 存在する場合はそのリストのテキストを用意した配列に格納
 					searchResult.push(targetText);
 					//★同階層の要素（兄弟要素）を検索してコピー
-            		searchAdmin.push($(this).nextAll('.groupChoise').clone());
-            		searchEdit.push($(this).nextAll('.editButton').clone(true));
+            		searchAdmin.push($(this).nextAll('.adminChoise').clone());
+            		searchEdit.push($(this).nextAll('.edit').clone(true));
 					searchDelete.push($(this).nextAll('.delete').clone(true));
 					console.log(searchResult.length);
-          }else{
-            //検索該当なし
-            console.log("true");
-          }
-          console.log(searchText);
-        });
+				}else{
+					//検索該当なし
+					console.log("true");
+				}
+				console.log(searchText);
+			});
 
-        // 検索結果をページに出力
-        for (var i = 0; i < searchResult.length; i ++) {
+		// 検索結果をページに出力
+		for (var i = 0; i < searchResult.length; i ++) {
         	//最初にulを作成
         	if (i == 0) {
         		$('<ul></ul>').prependTo('#search-result__list');
@@ -71,18 +72,17 @@ jQuery("#realText input:text").on('click blur keydown keyup keypress change'
         //検索対象に該当した場合
 		if (searchResult.length > 0) {
 			document.getElementById("noResult").style.display = "none";        //該当なし非表示
-        	document.getElementById("search-result").style.display = "block";  //検索結果表示
         }
         //該当なしの場合
         else {
         	document.getElementById("noResult").style.display = "block";       //該当なし表示
-            document.getElementById("search-result").style.display = "none";   //検索結果非表示
         }
+        //検索結果表示
+        document.getElementById("search-result").style.display = "block";
 
       }else{
         //初期の状態に戻す
         document.getElementById("target-area").style.display = "block";
-        document.getElementById("noResult").style.display = "none";
         document.getElementById("search-result").style.display = "none";
       }
     };

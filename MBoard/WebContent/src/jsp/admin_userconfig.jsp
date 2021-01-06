@@ -5,11 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>ユーザー設定</title>
-<link rel="stylesheet" href="src/css/account_fix.css">
+<link rel="stylesheet" href="src/css/admin_userconfig.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-<script src="src/js/account_fix.js"></script>
+<script src="src/js/admin_userconfig.js"></script>
 
 <body>
 	<!-- <a href="" class="backbtn js-modal-open"> 戻る </a> -->
@@ -43,7 +43,7 @@
 	<div class="test">
 		<div class="user_name">
 
-			<div class="user_list">
+			<div class="user_list_header">
 				<P>
 					ユーザー
 					<span2>グループ</span2>
