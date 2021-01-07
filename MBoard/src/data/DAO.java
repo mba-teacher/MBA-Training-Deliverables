@@ -2009,6 +2009,52 @@ public class DAO {
 		return null;
 	}
 
+	/* ㊾掲示板に参加するメンバーの取得
+	 * メソッド名：GetBoardMembers()
+	 * 引数      ：int boardId
+	 * 戻り値    ：ArrayList<UserInfoBean> list
+	 * 処理      ：サブクエリを使い、DB(Board_Member_Info)に引数(掲示板ID)を指定してユーザーIDを取得し、
+	 *             DB(User_Info)に取得したユーザーIDを代入してSQL文を発行し、ユーザーID,ユーザー名,イメージパスを取得する
+	 */
+	public ArrayList<UserInfoBean> GetBoardMembers(int boardId) {
+		//戻り値として返すようの配列を定義
+		ArrayList<UserInfoBean> list = new ArrayList<UserInfoBean>();
+		//DBから取得した情報を格納するようのUserInfoBeanを宣言
+		UserInfoBean ub;
+		if(conn == null) {
+			try {
+				//DBに接続する
+				ConnectToDB(dbName);
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			//サブクエリを使い、掲示板に所属しているユーザー情報を取得するためのSQL文を発行する
+			String query = "SELECT * FROM User_Info WHERE User_ID IN (SELECT User_ID FROM Board_Member_Info WHERE Board_ID = ?)";
+			pst = conn.prepareStatement(query);
+			//?に引数（掲示板ID）を代入
+			pst.setInt(1, boardId);
+			ResultSet rs = pst.executeQuery();
+
+			while(rs.next()) {
+				ub = new UserInfoBean();
+				ub.setUserID(rs.getInt(UserInfoBean.USER_ID_COLUMN));
+				ub.setUserName(rs.getString(UserInfoBean.USER_NAME_COLUMN));
+				ub.setProfileImgPath(rs.getString(UserInfoBean.PROFILE_IMAGE_COLUMN));
+				//ユーザーID,ユーザー名,イメージパスのみを入れたBeanをリストに追加する
+				list.add(ub);
+			}
+			//データ格納したリストを返す
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//問題があったらnullを返す
+		return null;
+	}
+
 //--------------以下SQL基本構文(select、insert、update、delete)のメソッド。---------
 
 	/*SELECT文 条件なしオーバーロード

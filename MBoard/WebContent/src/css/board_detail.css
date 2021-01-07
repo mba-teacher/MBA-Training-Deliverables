@@ -8,11 +8,21 @@
 
 .board-detail {
 	width:100%;
-	min-height:200px;
+	min-height:100px;
+	max-height:200px;
 	background:white;
 	border-radius:8px;
 	padding:10px;
 	box-sizing:border-box;
+	overflow:scroll;
+}
+
+/* board_detail.jsp用背景調整 */
+.board-detail-content-area{
+	background-color:#dceaef;
+	width:calc(100% - 0px);
+	display:flex;
+	flex-direction:column;
 }
 
 .heading {

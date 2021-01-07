@@ -19,12 +19,12 @@
   </filter-mapping>
 
  <servlet>
-  	<servlet-name>sample</servlet-name>
-  	<servlet-class>web.GroupEditServlet</servlet-class>
+  	<servlet-name>test</servlet-name>
+  	<servlet-class>web.BoardDetailServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>sample</servlet-name>
-  	<url-pattern>/sample</url-pattern>
+  	<servlet-name>test</servlet-name>
+  	<url-pattern>/test</url-pattern>
   </servlet-mapping>
 
   <servlet>
