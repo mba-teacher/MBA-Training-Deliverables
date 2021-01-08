@@ -159,7 +159,6 @@ public class DAO {
 					pib[i].setPostTitle(result.getString(PostInfoBean.POST_TITLE_COLUMN));
 					pib[i].setPostContents(result.getString(PostInfoBean.POST_CONTENTS_COLUMN));
 					pib[i].setPostUserId(result.getInt(PostInfoBean.POST_USER_ID_COLUMN));
-					pib[i].setPostCategory(result.getString(PostInfoBean.POST_CATEGORY_COLUMN));
 					pib[i].setPostImgPath(result.getString(PostInfoBean.POST_IMAGE_COLUMN));
 					pib[i].setBoardId(result.getInt(PostInfoBean.BOARD_ID_COLUMN));
 					pib[i].setPostUserName(SelectMember(userId).getUserName());
@@ -330,7 +329,6 @@ public class DAO {
 					pib[i].setPostTitle(result.getString(PostInfoBean.POST_TITLE_COLUMN));
 					pib[i].setPostContents(result.getString(PostInfoBean.POST_CONTENTS_COLUMN));
 					pib[i].setPostUserId(result.getInt(PostInfoBean.POST_USER_ID_COLUMN));
-					pib[i].setPostCategory(result.getString(PostInfoBean.POST_CATEGORY_COLUMN));
 					pib[i].setPostImgPath(result.getString(PostInfoBean.POST_IMAGE_COLUMN));
 					pib[i].setBoardId(result.getInt(PostInfoBean.BOARD_ID_COLUMN));
 				}
@@ -380,10 +378,10 @@ public class DAO {
 			//MySQLに接続し、SQL文作成するメソッド呼び出し(Post_Infoにレコード追加)
 			InsertQuery(DefineDatabase.POST_INFO_TABLE, new String[] {PostInfoBean.POST_DATE_COLUMN,
 					    PostInfoBean.POST_TITLE_COLUMN, PostInfoBean.POST_CONTENTS_COLUMN,
-					    PostInfoBean.POST_USER_ID_COLUMN, PostInfoBean.POST_CATEGORY_COLUMN,
-					    PostInfoBean.POST_IMAGE_COLUMN, PostInfoBean.BOARD_ID_COLUMN}, new String[] {
+					    PostInfoBean.POST_USER_ID_COLUMN, PostInfoBean.POST_IMAGE_COLUMN,
+					    PostInfoBean.BOARD_ID_COLUMN}, new String[] {
 					    postInfoBean.getPostDate(), postInfoBean.getPostTitle(), postInfoBean.getPostContents(),
-					    postUserId, postInfoBean.getPostCategory(), postInfoBean.getPostImgPath(), boardId});
+					    postUserId, postInfoBean.getPostImgPath(), boardId});
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -1718,18 +1716,17 @@ public class DAO {
 			//記事を更新するためのSQL文を発行する
 			//Post_IDとPost_User_IDは更新しない
 			String query = "UPDATE Post_Info SET Post_Date = ?, Post_Title = ?, "
-					+ "Post_Contents = ?, Post_Category = ?, Post_Image = ?, Board_ID = ? "
+					+ "Post_Contents = ?, Post_Image = ?, Board_ID = ? "
 					+ "WHERE Post_ID = ?";
 			pst = conn.prepareStatement(query);
 			//1～6はSETする値
 			pst.setString(1, b.getPostDate());
 			pst.setString(2, b.getPostTitle());
 			pst.setString(3, b.getPostContents());
-			pst.setString(4, b.getPostCategory());
-			pst.setString(5, b.getPostImgPath());
-			pst.setInt(6, b.getBoardId());
+			pst.setString(4, b.getPostImgPath());
+			pst.setInt(5, b.getBoardId());
 			//7はWHERE条件でつかう値
-			pst.setInt(7, b.getPostId());
+			pst.setInt(6, b.getPostId());
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
