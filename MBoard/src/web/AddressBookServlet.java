@@ -32,34 +32,16 @@ public class AddressBookServlet extends HttpServlet {
 
 
 			//グループの数を出す
-			int max = 0;
-			for (int i = 0; i < gib.size(); i++) {
-				if (gib.get(i).getGroupId() > max) {
-					max = gib.get(i).getGroupId();
-				}
-			}
-
+			int max = gib.size();
 			//グループの数分回す
 			for (int i = 0; i < max; i++) {
-				ArrayList<UserInfoBean> list = d.GetGroupMembers(i + 1);
+				ArrayList<UserInfoBean> list = d.GetGroupMembers(gib.get(i).getGroupId());
 				lists.add(list);
 			}
 
-			//必要なグループ情報だけを渡すためのString[]を作る
-			String[] groupName = new String[max];
-			for (int i = 0; i < max; i++) {
-				for (int j = 0; j < gib.size(); j++) {
-					if ((i + 1) == gib.get(j).getGroupId()) {
-						groupName[i] = gib.get(j).getGroupName();
-						break;
-					}
-				}
-			}
-			System.out.println("グループ：" + groupName.length);
-
 			req.setAttribute("allMembers", uib);
 			req.setAttribute("groupMembers", lists);
-			req.setAttribute("groupNames", groupName);
+			req.setAttribute("groupNames", gib);
 			url = "/src/jsp/addressbook_group.jsp";
 		}
 		RequestDispatcher rd = req.getRequestDispatcher(url);

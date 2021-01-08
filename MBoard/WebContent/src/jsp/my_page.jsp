@@ -63,9 +63,13 @@
 					</div>
 					<h2><%= uib.getUserName() %></h2>
 					<p class="address"><%= uib.getEmailAdress() %></p>
-					<a href="profile_edit.jsp"><div class="profile_edit">プロフィール編集</div></a>
+					<a href="<%=request.getContextPath()%>/src/jsp/profile_edit.jsp">
+						<div class="profile_edit">プロフィール編集</div>
+					</a>
 					<% if (uib.isAdmin()) { %>
-						<a href="admin_top.jsp"><div class="admin">管理者画面</div></a>
+						<a href="<%=request.getContextPath()%>/src/jsp/admin_top.jsp">
+							<div class="admin">管理者画面</div>
+						</a>
 					<% } %>
 				</div>
 

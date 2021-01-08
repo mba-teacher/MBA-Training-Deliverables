@@ -23,7 +23,7 @@
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
+			<a href="<%=request.getContextPath()%>/mypage">
 				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
 			</a>
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
@@ -32,7 +32,7 @@
 			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
 			</a>
-			<a href="#">
+			<a id="#">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
 
@@ -91,7 +91,7 @@
 						<p>自己紹介</p>
 						<textarea class="create-detail" placeholder="自己紹介">データベースにないのでまだ確認できません</textarea>
 						<div class="submit-area">
-							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/src/jsp/my_page.jsp'">
+							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/mypage'">
 							<input type="submit" name="" value="保存" class="submit">
 						</div>
 					</form>

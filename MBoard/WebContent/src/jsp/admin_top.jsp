@@ -28,7 +28,7 @@
 		</div>
 
 		<div class="back">
-			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp" class="backbtn"> 戻る </a>
+			<a href="<%=request.getContextPath()%>/mypage" class="backbtn"> 戻る </a>
 		</div>
 
 		<%-- aタグを使わないように一時的に作成したフォームです --%>

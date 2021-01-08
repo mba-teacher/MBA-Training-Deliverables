@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import data.DAO;
-import data.PostInfoBean;
 import data.UserInfoBean;
 
 @WebServlet("/profileEdit")
@@ -31,6 +30,7 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			String profileImg = "";
 
 			//画像を格納するパス
+			//一時的に格納するパスはローカルリポジトリの絶対パスを入れています
 			String ImgPath = "C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\profile";
 			//掲示板名（画像の名前を掲示板名と同一にする）
 			String Name = uib.getLoginID();
@@ -57,11 +57,8 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			s.setAttribute("userInfoBean", uib);
 			//プロフィール更新の通知
 			req.setAttribute("notice", "edited");
-			//記事情報の取得
-			PostInfoBean[] pib = d.GetMyPosts(uib.getUserID());
-			s.setAttribute("postInfoBean", pib);
 
-			url = "src/jsp/my_page.jsp";
+			url = "mypage";
 		}
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
