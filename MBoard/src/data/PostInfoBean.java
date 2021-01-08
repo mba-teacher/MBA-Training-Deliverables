@@ -9,7 +9,6 @@ public class PostInfoBean implements Serializable {
 	public static final String POST_TITLE_COLUMN = "Post_Title";
 	public static final String POST_CONTENTS_COLUMN = "Post_Contents";
 	public static final String POST_USER_ID_COLUMN = "Post_User_ID";
-	public static final String POST_CATEGORY_COLUMN = "Post_Category";
 	public static final String POST_IMAGE_COLUMN = "Post_Image";
 	public static final String BOARD_ID_COLUMN = "Board_ID";
 
@@ -18,7 +17,6 @@ public class PostInfoBean implements Serializable {
 	private String postTitle;
 	private String postContents;
 	private int postUserId;
-	private String postCategory;
 	private String postImgPath;
 	private int boardId;
 	private int commentCount;
@@ -43,13 +41,12 @@ public class PostInfoBean implements Serializable {
 	}
 	public PostInfoBean() {	}
 	public PostInfoBean(int postId, String postDate, String postTitle, String postContents, int postUserId,
-						 String postCategory, String postImgPath, int boardId) {
+						 String postImgPath, int boardId) {
 		this.postId = postId;
 		this.postDate = postDate;
 		this.postTitle = postTitle;
 		this.postContents = postContents;
 		this.postUserId = postUserId;
-		this.postCategory = postCategory;
 		this.postImgPath = postImgPath;
 		this.boardId = boardId;
 	}
@@ -83,12 +80,6 @@ public class PostInfoBean implements Serializable {
 	}
 	public void setPostUserId(int postUserId) {
 		this.postUserId = postUserId;
-	}
-	public String getPostCategory() {
-		return postCategory;
-	}
-	public void setPostCategory(String postCategory) {
-		this.postCategory = postCategory;
 	}
 	public String getPostImgPath() {
 		return postImgPath;
