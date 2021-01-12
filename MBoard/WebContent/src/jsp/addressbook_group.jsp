@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
-	import="data.UserInfoBean,java.util.ArrayList"%>
+	import="data.UserInfoBean,data.GroupInfoBean,java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,14 +18,14 @@
 <%-- 全メンバー情報とグループ情報を受け取る --%>
 <% ArrayList<UserInfoBean> uib = (ArrayList<UserInfoBean>)request.getAttribute("allMembers"); %>
 <% ArrayList<ArrayList<UserInfoBean>> lists = (ArrayList<ArrayList<UserInfoBean>>)request.getAttribute("groupMembers"); %>
-<% String[] gn = (String[])request.getAttribute("groupNames"); %>
+<% ArrayList<GroupInfoBean> gn = (ArrayList<GroupInfoBean>)request.getAttribute("groupNames"); %>
 	<div class="flex_container">
 		<div class="nav-area">
 			<div class="logo-area">
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
+			<a href="<%=request.getContextPath()%>/mypage">
 				<img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon">
 			</a>
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
@@ -56,14 +56,24 @@
 
 					<div class="tab_content" id="address_content">
 						<div class="tab_content_description">
-							<p class="serch">検索：<input type="text" name="serch"></p><!-- 検索窓は後追いで実装のため作動しません -->
+							<input type="text" id="search-text" class="serch" name="serch"><!-- 検索窓は後追いで実装のため作動しません -->
 
 							<div class="address_area">
 								<p class="address">アドレス一覧</p>
-								<!-- <div class="user_information"> -->
+
+								<%-- 検索結果を表示するエリア --%>
+								<div class="search-result" id="search-result">
+									<div id="search-result__list"></div>
+
+									<div id="noResult">
+										<p id="none">該当しませんでした</p>
+									</div>
+								</div>
+
+								<div id="target-area">
 									<% for (int i = 0; i < uib.size(); i++) { %>
 									<a class="user_information_area" href="javascript:setAndSubmit('<%=uib.get(i).getUserID()%>','postIconForm')">
-										<% if (uib.get(i).getProfileImgPath() == null || uib.get(i).getProfileImgPath() == "") { %>
+										<% if (uib.get(i).getProfileImgPath() == null || uib.get(i).getProfileImgPath().isEmpty()) { %>
 										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 										<% } else { %>
 										<img src="<%=request.getContextPath()%><%=uib.get(i).getProfileImgPath()%>" class="user_icon">
@@ -72,7 +82,7 @@
 									</a>
 									<% } %>
 								<div class="clear"></div>
-								<!-- </div> -->
+								</div>
 							</div>
 						</div>
 					</div>
@@ -84,11 +94,11 @@
 								<div class="box">
 									<% for (int i = 0; i < lists.size(); i++) { %>
 									<div class="group_tab">
-										<label for="inbox<%=i%>"><%=gn[i]%></label><input type="checkbox" id="inbox<%=i%>" class="on-off">
+										<label for="inbox<%=i%>"><%=gn.get(i).getGroupName()%></label><input type="checkbox" id="inbox<%=i%>" class="on-off">
 										<div class="dropdown">
 											<% for (int j = 0; j < lists.get(i).size(); j++) { %>
 											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>','postIconForm')">
-												<% if (lists.get(i).get(j).getProfileImgPath() == null || lists.get(i).get(j).getProfileImgPath() == "") { %>
+												<% if (lists.get(i).get(j).getProfileImgPath() == null || lists.get(i).get(j).getProfileImgPath().isEmpty()) { %>
 												<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 												<% } else { %>
 												<img src="<%=request.getContextPath()%><%=lists.get(i).get(j).getProfileImgPath()%>" class="user_icon">
@@ -126,6 +136,7 @@
 		</div>
 	</div>
 
+	<script src="<%=request.getContextPath()%>/src/js/addressbook.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
 </body>

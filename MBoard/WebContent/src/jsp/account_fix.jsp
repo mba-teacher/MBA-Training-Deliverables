@@ -18,7 +18,7 @@
 <% int count = 0; %>
 <% String[] editInfo = (String[])session.getAttribute("editInfo"); %>
 
-	<a href="" class="backbtn js-modal-open"> 戻る </a>
+	<input type="button" class="backbtn js-modal-open" value="戻る">
 
 	<div class="title">
 		<h1>アカウント修正・削除</h1>
@@ -120,7 +120,7 @@
 			</p>
 			<div class="btn_box">
 				<a href="" class="js-modal-close">キャンセル</a>
-				<a href="<%=request.getContextPath()%>/src/jsp/admin_top.jsp" class="mobal_btn2">OK</a>
+				<a href="<%=request.getContextPath()%>/src/jsp/admin_top.jsp" class="mobal_btn2" id="toTop">OK</a>
 			</div>
 		</div>
 		<!--modal__inner-->

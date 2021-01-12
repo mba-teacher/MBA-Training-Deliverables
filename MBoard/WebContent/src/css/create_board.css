@@ -85,6 +85,9 @@
 	margin-right:30px;
 }
 
+.name {
+	z-index: 10;
+}
 
 /*----------↓掲示板色----------*/
 .board-color {

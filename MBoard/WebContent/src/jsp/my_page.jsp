@@ -19,8 +19,9 @@
 <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %>
 <% session.setAttribute("count", 0); %>
 <% int count = (int)session.getAttribute("count"); %>
+<% String notice = (String)request.getAttribute("notice"); %>
 
-	<% if (request.getAttribute("notice") != null && (String)request.getAttribute("notice") == "edited") { %>
+	<% if (notice != null && notice.equals("edited")) { %>
 		<header class="alarm">プロフィール を更新しました。</header>
 	<% } %>
 	<div class="flex_container">
@@ -63,9 +64,13 @@
 					</div>
 					<h2><%= uib.getUserName() %></h2>
 					<p class="address"><%= uib.getEmailAdress() %></p>
-					<a href="profile_edit.jsp"><div class="profile_edit">プロフィール編集</div></a>
+					<a href="<%=request.getContextPath()%>/src/jsp/profile_edit.jsp">
+						<div class="profile_edit">プロフィール編集</div>
+					</a>
 					<% if (uib.isAdmin()) { %>
-						<a href="admin_top.jsp"><div class="admin">管理者画面</div></a>
+						<a href="<%=request.getContextPath()%>/src/jsp/admin_top.jsp">
+							<div class="admin">管理者画面</div>
+						</a>
 					<% } %>
 				</div>
 
@@ -138,5 +143,6 @@
 
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/scroll.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/admin_top.js"></script>
 </body>
 </html>

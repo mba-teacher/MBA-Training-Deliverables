@@ -28,7 +28,7 @@
 			</div>
 
 			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
-				<%-- <img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon"> --%>
+				<img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon">
 			</a>
 			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
@@ -64,7 +64,7 @@
 						</div>
 						<div class="board-name-area">
 							<p>掲示板名<span class="requierdItem">*</span></p>
-							<input type="text" name="Board_Category" value="<%=bib.getBoardCategory()%>" placeholder="例：日報">
+							<input type="text" name="Board_Category" value="<%=bib.getBoardCategory()%>" placeholder="例：日報" class="name">
 						</div>
 						<div>
 							<p>掲示板色選択</p>

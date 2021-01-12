@@ -12,26 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.mysql.jdbc.StringUtils;
+
 import data.DAO;
 import data.PostInfoBean;
 import data.UserInfoBean;
 
 @WebServlet("/profileEdit")
-@MultipartConfig(location="C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img/profile")
+@MultipartConfig(location="C:\\Users\\wn8-n\\Desktop\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\profile")
 public class ProfileEditAfterServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession s = req.getSession(false);
-		String url = "";
+		String url = "src/jsp/my_page.jsp";
 		if (s == null) {
 			url = "http://localhost:8080/MBoard/src/jsp/login.jsp";
 		} else {
 			DAO d = new DAO();
 			UserInfoBean uib = (UserInfoBean)s.getAttribute("userInfoBean");
-			String profileImg = "";
+			String profileImg = null;
 
 			//画像を格納するパス
-			String ImgPath = "C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\profile";
+			//一時的に格納するパスはローカルリポジトリの絶対パスを入れています
+			String ImgPath = "C:\\Users\\wn8-n\\Desktop\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\profile";
 			//掲示板名（画像の名前を掲示板名と同一にする）
 			String Name = uib.getLoginID();
 			Part part = req.getPart("profile-icon");
@@ -47,7 +50,7 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			uib.setUserName(req.getParameter("user_name"));
 			uib.setEmailAdress(req.getParameter("email_address"));
 			uib.setLineWorksID(req.getParameter("line_works_id"));
-			if (profileImg != null || !profileImg.isEmpty()) {
+			if (!StringUtils.isNullOrEmpty(profileImg)) {
 				uib.setProfileImgPath(profileImg);
 			}
 			//DBを更新する
@@ -55,13 +58,14 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			System.out.println("Update my userinfo.");
 			//セッションを更新
 			s.setAttribute("userInfoBean", uib);
-			//プロフィール更新の通知
-			req.setAttribute("notice", "edited");
-			//記事情報の取得
+			//ユーザーの記事情報を取得
 			PostInfoBean[] pib = d.GetMyPosts(uib.getUserID());
+			//記事情報をセッションに保存
 			s.setAttribute("postInfoBean", pib);
 
-			url = "src/jsp/my_page.jsp";
+			//プロフィール更新の通知
+			req.setAttribute("notice", "edited");
+
 		}
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);

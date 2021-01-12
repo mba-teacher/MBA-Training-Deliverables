@@ -38,6 +38,7 @@ public class CreateAccountServlet extends HttpServlet {
 			uib.setLoginPass(req.getParameter("Login_Pass"));       //Login_Pass
 			uib.setEmailAdress(req.getParameter("Email_Address"));  //Email_Address
 			uib.setLineWorksID(req.getParameter("Line_Works_ID"));  //Line_Works_ID
+			uib.setProfileImgPath("/src/img/noimage.jpg");          //Profile_Image(noimageを仮の画像にする)
 			uib.setAdmin(bool);       //Admin
 
 			//DBにユーザー情報を追加
