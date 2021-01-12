@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import data.BoardInfoBean;
+import data.BoardPermissionInfoBean;
 import data.DAO;
 import data.PostInfoBean;
 import data.ReadInfoBean;
@@ -38,57 +39,16 @@ public class BoardServlet extends HttpServlet {
 		UserInfoBean userInfo=dao.Login("id1", "pass1");
 		session.setAttribute("userInfoBean",userInfo);
 
-		//ログインユーザーが所属する掲示板情報をDBから取得
-		//セッションに格納
-		BoardInfoBean[] boardInfo=dao.GetMyBoards(userInfo.getUserID());
-		session.setAttribute("boardInfoBean",boardInfo);
-
-		//所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)
-		ArrayList<PostInfoBean[]> PostInfoList=new ArrayList<PostInfoBean[]>();
-		//掲示板ごとに、記事一覧の配列をDBから取得
-		for(int i=0;i<boardInfo.length;i++) {
-			System.out.println(boardInfo[i].getBoardId());
-			PostInfoList.add(dao.GetBoardPosts(boardInfo[i].getBoardId()));
-		}
-		//セッションに格納
-		session.setAttribute("postInfoBeanList",PostInfoList);
-
-		//記事IDをキーにして、そのいいね数を取得する連想配列
-		HashMap<Integer, Integer> readCount = new HashMap<Integer, Integer>();
-		//記事IDをキーにして、ログインユーザーがいいねしてるかを取得する連想配列
-		HashMap<Integer, Boolean> userRead = new HashMap<Integer, Boolean>();
-		//記事IDをキーにして、そのコメント数を取得する連想配列
-		HashMap<Integer, Integer> comentCount= new HashMap<Integer, Integer>();
-		//所属する掲示板のすべての記事のコメント数、良いね数を連想配列に格納
-		for(int i=0;i<PostInfoList.size();i++) {
-			for(int x=0;x<PostInfoList.get(i).length;x++) {
-				int postId=PostInfoList.get(i)[x].getPostId();
-				ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
-				readCount.put(postId, readInfo.size());
-				comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
-				//ログインユーザーが記事にいいねしてるかを取得する連想配列に格納
-				userRead.put(postId, false);
-				for(int y=0;y<readInfo.size();y++) {
-					if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
-						userRead.put(postId, true);
-					}
-				}
-			}
-		}
-		//いいね数を取得する連想配列をセッションに格納
-		session.setAttribute("readCount",readCount);
-		//ログインユーザーがいいねしてるかを取得する連想配列をセッションに格納
-		session.setAttribute("userRead",userRead);
-		//コメント数を取得する連想配列をセッションに格納
-		session.setAttribute("comentCount",comentCount);
 
 
+		//--------------確認済みを変更した場合DBの確認済みテーブルを変更--------------
 		//確認ボタン変更value受け取り
 		String insertRead[] = req.getParameterValues("insertRead");
 		String deleteRead[] = req.getParameterValues("deleteRead");
 		//確認済み追加あればDBのreadテーブルに追加
 		if(insertRead!=null) {
 			for(int i=0;i<insertRead.length;i++) {
+				//dao.InsertCommentRead(1,1);
 				dao.InsertRead(userInfo.getUserID(),Integer.parseInt(insertRead[i]));
 			}
 		}
@@ -98,68 +58,138 @@ public class BoardServlet extends HttpServlet {
 				dao.DeleteRead(userInfo.getUserID(),Integer.parseInt(deleteRead[i]));
 			}
 		}
-//---------------------------  遷移前のフォームごとにスイッチ文で分岐 -----------------------------
+
 		//遷移前にクリックしたフォームの名前取得
 		String formName = req.getParameter("formName");
-		//掲示板本体画面のフォームを通っているか
-		if(formName!=null) {
-			//遷移前のフォームごとに処理を分岐
-			switch (formName){
-			//記事クリック時、記事詳細へ遷移
-			case "postDetail":
-				String postId = req.getParameter("postId");
-				var intPostId=Integer.parseInt(postId);//int変換
-				PostInfoBean postBean=new PostInfoBean();
-				outside:for(int a=0;a<PostInfoList.size();a++) {
-					for(int b=0;b<PostInfoList.get(a).length;b++) {
-						if(PostInfoList.get(a)[b].getPostId()==intPostId) {
-							postBean=PostInfoList.get(a)[b];
-							break outside;
-						}
+		//--------------掲示板本体画面から投稿記事を送信した場合DBの記事テーブルを変更--------------
+		//記事送信フォームを通った場合、投稿記事をDBの記事テーブルに追加
+		if(formName!=null&&formName.equals("makePost")) {
+			String boardId = req.getParameter("boardId");
+			String postTitle = req.getParameter("postTitle");
+			String postContent = req.getParameter("postContent");
+			var intBoardId=Integer.parseInt(boardId);
+			postContent=postContent.replace("\r\n", "<br>");
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = sdf.format(timestamp);
+
+			PostInfoBean bean=new PostInfoBean();
+			bean.setPostDate(date);
+			bean.setPostTitle(postTitle);
+			bean.setPostContents(postContent);
+			bean.setPostUserId(userInfo.getUserID());
+			bean.setPostImgPath("test");
+			bean.setBoardId(intBoardId);
+
+			dao.MakePost(bean);
+		}
+
+		//--------------掲示板に参加、あるいは退出した場合、DBの参加情報テーブル更新--------------
+		//掲示板一覧画面から掲示板に参加するボタン押下時DBのBoard_Member_Infoテーブルを追加
+		if(formName!=null&&formName.equals("joinBoard")) {
+			String boardId = req.getParameter("boardId");
+			var id=Integer.parseInt(boardId);//int変換
+			dao.JoinBoard(id,userInfo.getUserID());
+		}
+		//掲示板本体画面から掲示板を退出するボタン押下時DBのBoard_Member_Infoテーブルから削除
+		if(formName!=null&&formName.equals("leaveBoard")) {
+			String boardId = req.getParameter("boardId");
+			var id=Integer.parseInt(boardId);//int変換
+			dao.LeaveBoard(id,userInfo.getUserID());
+		}
+
+		//--------------掲示板本体画面に必要なDB情報を取得し、セッションに格納--------------
+		//参加可能掲示板の掲示板情報をDBから取得
+		ArrayList<BoardPermissionInfoBean> permission=dao.GetPermissionInfo(userInfo.getUserID());
+		ArrayList<BoardInfoBean> permissionBoard=dao.GetBoards(permission);
+		//セッションに格納
+		session.setAttribute("permissionBoard",permissionBoard);
+		//記事IDをキーにして参加中か参加可能か判別する連想配列
+		HashMap<Integer, Boolean> joinJudge = new HashMap<Integer, Boolean>();
+		//最初は不参加であるfalseを全てのキーの値に代入
+		for(int i=0;i<permissionBoard.size();i++) {
+			int id=permissionBoard.get(i).getBoardId();
+			joinJudge.put(id, false);
+		}
+
+		//ログインユーザーが参加中の掲示板情報をDBから取得
+		BoardInfoBean[] boardInfo=dao.GetMyBoards(userInfo.getUserID());
+		//セッションに格納
+		session.setAttribute("boardInfoBean",boardInfo);
+		//参加中の掲示板のIDをキーに、参加中か参加可能か判別する連想配列の値をtrue(参加中)にする
+		for(int i=0;i<boardInfo.length;i++) {
+			int id=boardInfo[i].getBoardId();
+			joinJudge.put(id, true);
+		}
+		//記事IDをキーにして参加中か参加可能か判別する連想配列をセッションに格納
+		session.setAttribute("joinJudge",joinJudge);
+
+		//所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)
+		ArrayList<PostInfoBean[]> PostInfoList=new ArrayList<PostInfoBean[]>();
+		//掲示板ごとに、記事一覧の配列をDBから取得
+		for(int i=0;i<boardInfo.length;i++) {
+			PostInfoList.add(dao.GetBoardPosts(boardInfo[i].getBoardId()));
+		}
+		//セッションに格納
+		session.setAttribute("postInfoBeanList",PostInfoList);
+
+		//記事IDをキーにして、その確認済み数を取得する連想配列
+		HashMap<Integer, Integer> readCount = new HashMap<Integer, Integer>();
+		//記事IDをキーにして、ログインユーザーが確認済みしてるかを取得する連想配列
+		HashMap<Integer, Boolean> userRead = new HashMap<Integer, Boolean>();
+		//記事IDをキーにして、そのコメント数を取得する連想配列
+		HashMap<Integer, Integer> comentCount= new HashMap<Integer, Integer>();
+		//所属する掲示板のすべての記事のコメント数、確認済み数を連想配列に格納
+		for(int i=0;i<PostInfoList.size();i++) {
+			for(int x=0;x<PostInfoList.get(i).length;x++) {
+				int postId=PostInfoList.get(i)[x].getPostId();
+				ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
+				readCount.put(postId, readInfo.size());
+				comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
+				//ログインユーザーが記事に確認済みしてるかを取得する連想配列に格納
+				userRead.put(postId, false);
+				for(int y=0;y<readInfo.size();y++) {
+					if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
+						userRead.put(postId, true);
 					}
 				}
-				//記事IDのbeanをセッションに格納
-				session.setAttribute("postBean",postBean);
-				//記事詳細画面サーブレットに遷移
-				rd = req.getRequestDispatcher("/postDetail");
-				rd.forward(req, resp);
-				break;
-			//記事投稿の送信ボタンクリック時、DBの記事テーブルに追加
-			case "makePost":
-				String boardId = req.getParameter("boardId");
-				String postTitle = req.getParameter("postTitle");
-				String postContent = req.getParameter("postContent");
-				var intBoardId=Integer.parseInt(boardId);
-				postContent=postContent.replace("\r\n", "<br>");
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String date = sdf.format(timestamp);
-
-				PostInfoBean bean=new PostInfoBean();
-				bean.setPostDate(date);
-				bean.setPostTitle(postTitle);
-				bean.setPostContents(postContent);
-				bean.setPostUserId(userInfo.getUserID());
-				bean.setPostImgPath("test");
-				bean.setBoardId(intBoardId);
-
-				dao.MakePost(bean);
-				//遷移前にクリックしたフォームの名前がなければ掲示板本体画面に遷移
-				rd = req.getRequestDispatcher("/src/jsp/board.jsp");
-				rd.forward(req, resp);
-				break;
-			default:
-				;
 			}
+		}
+		//確認済み数を取得する連想配列をセッションに格納
+		session.setAttribute("readCount",readCount);
+		//ログインユーザーが確認済みしてるかを取得する連想配列をセッションに格納
+		session.setAttribute("userRead",userRead);
+		//コメント数を取得する連想配列をセッションに格納
+		session.setAttribute("comentCount",comentCount);
+
+
+
+
+		//--------------記事クリック時、記事詳細へ遷移--------------
+		if(formName!=null&&formName.equals("postDetail")) {
+			String postId = req.getParameter("postId");
+			var intPostId=Integer.parseInt(postId);//int変換
+			PostInfoBean postBean=new PostInfoBean();
+			outside:for(int a=0;a<PostInfoList.size();a++) {
+				for(int b=0;b<PostInfoList.get(a).length;b++) {
+					if(PostInfoList.get(a)[b].getPostId()==intPostId) {
+						postBean=PostInfoList.get(a)[b];
+						break outside;
+					}
+				}
+			}
+			//記事IDのbeanをセッションに格納
+			session.setAttribute("postBean",postBean);
+			//詳細画面が記事かコメントか判別するをセッションに記事(post)を代入
+			session.setAttribute("detailType","post");
+			//記事詳細画面サーブレットに遷移
+			rd = req.getRequestDispatcher("/postDetail");
+			rd.forward(req, resp);
 		}else {
-			//遷移前にクリックしたフォームの名前がなければ掲示板本体画面に遷移
+			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);
 		}
-
-
-
-
 
 	}
 

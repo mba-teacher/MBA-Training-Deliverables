@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,java.util.ArrayList,java.util.HashMap"%>
+    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,data.BoardPermissionInfoBean,java.util.ArrayList,java.util.HashMap"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +15,9 @@
 <%-- ユーザー自身のユーザー情報をセッションから受け取る --%>
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
 <%-- 掲示板情報を受け取る --%>
+<% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
+<% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
 <% ArrayList<PostInfoBean[]> pibList=(ArrayList<PostInfoBean[]>)session.getAttribute("postInfoBeanList");  %>
 <% HashMap<Integer, Integer> readCount = (HashMap<Integer, Integer>)session.getAttribute("readCount");%>
 <% HashMap<Integer, Integer> commentCount = (HashMap<Integer, Integer>)session.getAttribute("comentCount"); %>
@@ -28,6 +30,7 @@ var boardId=[];
 boardId.push('<%out.print(bib[i].getBoardId());%>');
 boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 <% } %>
+var selectBoardId=boardId[0];
 </script>
 
 	<div class="flex_container">
@@ -123,7 +126,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 								<img src="src/img/mb_e_plus.png" class="post-icon">
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
 								<div class="post-user-name">投稿者名</div>
-								<div id="aaaaaaa" class="post-date">投稿日時</div>
+								<div id="aaaaaaa" class="post-date"><%= pibList.get(i)[x].getPostDate() %></div>
 								<div class="clear"></div>
 								<div class="post-letter"><%= pibList.get(i)[x].getPostContents() %></div>
 								<div class="post-icon-area">
@@ -132,7 +135,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 										<span class="number"><%= commentCount.get(pibList.get(i)[x].getPostId()) %></span>コメント
 									</div>
 									<div class="good">
-										<img class="readButton" src="src/img/mb_j_good.png" onclick="imgwin('<%out.print(pibList.get(i)[x].getPostId());%>')">
+										<img class="readButton" src="src/img/mb_j_good.png" onclick="readClick('<%out.print(pibList.get(i)[x].getPostId());%>')">
 										<span id="count<%out.print(pibList.get(i)[x].getPostId());%>"><%= readCount.get(pibList.get(i)[x].getPostId()) %></span>
 										<div id="read<%out.print(pibList.get(i)[x].getPostId());%>" >
 											<div class="<%out.print(userRead.get(pibList.get(i)[x].getPostId()));%>">
@@ -192,56 +195,18 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 				</div>
 				<div class="popup-board-content">
 
+					<%for(int i=0;i<permissionBoardList.size();i++){ %>
 					<div class="popup-board-item">
 						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
+						<p class="popup-board-name"><%= permissionBoardList.get(i).getBoardCategory() %></p>
+						<%int id=permissionBoardList.get(i).getBoardId(); %>
+						<%if(joinJudge.get(id)){ %>
+							<div class="board-join">参加中</div>
+						<%}else{ %>
+							<div class="board-leave" onclick="joinBoard('<%out.print(id);%>')">参加する</div>
+						<%} %>
 					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-leave">参加する</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
+					<%} %>
 
 				</div>
 			</div>
@@ -264,6 +229,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 	<form action="board" method="post" id="hiddenForm">
 		<input type="hidden" name="formName" id="formNameHidden">
 		<input type="hidden" name="postId" id="postIdHidden">
+		<input type="hidden" name="boardId" id="boardIdHidden">
 	</form>
 
 <script>
@@ -298,8 +264,10 @@ jQuery(function($){
 		var i= parseInt($(this).index());
 		//掲示板の名前を上に表示
 		name.textContent=boardName[i];
+		//表示中の掲示板のIDを格納
+		selectBoardId=boardId[i];
 		//掲示板IDを記事作成フォームのhiddenのvalueに代入
-		//サーブレット側で受け取って、該当の掲示板に記事を追加
+		//サーブレット側で受け取って、記事を追加する時に該当の掲示板を判別
 		hidden.value=boardId[i];
 	});
 });
@@ -324,11 +292,32 @@ $('.post').click(function(event){
 	}
 });
 
+//参加するボタンクリック時
+function joinBoard(id){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	boardIdHidden.value=id;
+	formNameHidden.value="joinBoard";
+	hiddenForm.submit();
+}
+
+//「掲示板から退出」テキスト押下時
+$('.property-item').click(function(event){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	boardIdHidden.value=""+selectBoardId;
+	formNameHidden.value="leaveBoard";
+	alert(selectBoardId);
+	hiddenForm.submit();
+});
+
 
 //確認済みボタンクリック時
-function imgwin(img){
-	var read = document.getElementById( "read"+img ) ;
-	var readCount = document.getElementById( "count"+img ) ;
+function readClick(id){
+	var read = document.getElementById( "read"+id ) ;
+	var readCount = document.getElementById( "count"+id ) ;
 	// 最初の子要素を取得
 	var userRead = read.firstElementChild ;
 	//
@@ -340,7 +329,7 @@ function imgwin(img){
 		userRead.textContent="未確認";
 		//押されたボタンの記事IDをhiddenでわたすメソッド呼び出し
 		//サーブレット側でdeleteReadを受け取ると該当の記事のログインユーザーの確認済みを削除
-	 	readAction(img,"deleteRead");
+	 	readAction(id,"deleteRead");
 	}else{
  		var i=parseInt(readCount.textContent);
 		i++;
@@ -349,7 +338,7 @@ function imgwin(img){
 		userRead.textContent="確認済";
 		//押されたボタンの記事IDをhiddenでわたすメソッド呼び出し
 		//サーブレット側でinsertReadを受け取ると該当の記事のログインユーザーの確認済みを追加
-		readAction(img,"insertRead");
+		readAction(id,"insertRead");
 	}
 }
 

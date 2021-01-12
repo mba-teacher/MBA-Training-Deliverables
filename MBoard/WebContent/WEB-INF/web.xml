@@ -81,4 +81,13 @@
   	<url-pattern>/postDetail</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+  	<servlet-name>articleEdit</servlet-name>
+  	<servlet-class>web.ArticleEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>articleEdit</servlet-name>
+  	<url-pattern>/articleEdit</url-pattern>
+  </servlet-mapping>
+
 </web-app>
