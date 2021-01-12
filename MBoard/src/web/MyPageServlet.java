@@ -24,12 +24,12 @@ public class MyPageServlet extends HttpServlet {
 		if (s == null) {
 			url = "http://localhost:8080/MBoard/src/jsp/login.jsp";
 		} else {
-			DAO dao = new DAO();
+			DAO d = new DAO();
 			//ユーザーの情報をセッションから取得する
 			UserInfoBean uib = (UserInfoBean)s.getAttribute("userInfoBean");
 
 			//ユーザーの記事情報を取得
-			PostInfoBean[] pib = dao.GetMyPosts(uib.getUserID());
+			PostInfoBean[] pib = d.GetMyPosts(uib.getUserID());
 			//記事情報をセッションに保存
 			s.setAttribute("postInfoBean", pib);
 			System.out.println("number of posts："+ pib.length);

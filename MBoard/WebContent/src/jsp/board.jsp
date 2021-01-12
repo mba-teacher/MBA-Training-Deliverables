@@ -16,10 +16,12 @@
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
 <%-- 掲示板情報を受け取る --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
+<%--
 <% ArrayList<PostInfoBean[]> pibList=(ArrayList<PostInfoBean[]>)session.getAttribute("postInfoBeanList");  %>
 <% HashMap<Integer, Integer> readCount = (HashMap<Integer, Integer>)session.getAttribute("readCount");%>
 <% HashMap<Integer, Integer> commentCount = (HashMap<Integer, Integer>)session.getAttribute("comentCount"); %>
 <% HashMap<Integer, Boolean> userRead = (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
+ --%>
 <%-- <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %> --%>
 <script>
 var boardName=[];
@@ -37,13 +39,13 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 				<img src="src/img/logo_white.png">
 			</div>
 
-			<a href="#">
-				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"> --%>
+			<a href="<%=request.getContextPath()%>/mypage">
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon">
 			</a>
-			<a href="#">
+			<%-- ↓同一画面には遷移しないようaタグを外します --%>
 				<img src="src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="#">
+
+			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">
@@ -116,6 +118,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 
 						<!--掲示板タブを切り替えて表示する記事一覧-->
 						<div id="panelGroup" class="panel-group">
+<%--
 						<% for (int i = 0; i < pibList.size(); i++ ) { %>
 								<div class="panel">
 									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
@@ -152,7 +155,7 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 									<% } %>
 								</div>
 							<% } %>
-
+ --%>
 
 
 						</div>

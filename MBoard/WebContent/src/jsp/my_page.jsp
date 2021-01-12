@@ -19,8 +19,9 @@
 <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %>
 <% session.setAttribute("count", 0); %>
 <% int count = (int)session.getAttribute("count"); %>
+<% String notice = (String)request.getAttribute("notice"); %>
 
-	<% if (request.getAttribute("notice") != null && (String)request.getAttribute("notice") == "edited") { %>
+	<% if (notice != null && notice.equals("edited")) { %>
 		<header class="alarm">プロフィール を更新しました。</header>
 	<% } %>
 	<div class="flex_container">
@@ -142,5 +143,6 @@
 
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/scroll.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/admin_top.js"></script>
 </body>
 </html>

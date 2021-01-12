@@ -52,7 +52,7 @@
 			<div class="mypage_content">
 				<div class="create-area">
 					<h1 class="page-title">プロフィール編集</h1>
-					<form action="../../profileEdit" method="post" name="profileForm" enctype="multipart/form-data"  onsubmit="return formCheck()">
+					<form action="<%=request.getContextPath()%>/profileEdit" method="post" name="profileForm" enctype="multipart/form-data"  onsubmit="return formCheck()">
 						<p>プロフィールアイコン</p>
 						<div class="create-icon-area">
 							<div class="create-icon">
