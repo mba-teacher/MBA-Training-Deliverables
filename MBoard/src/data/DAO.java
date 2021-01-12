@@ -2052,6 +2052,83 @@ public class DAO {
 		return null;
 	}
 
+	/*㊿記事情報を取得
+	 *メソッド名：GetPost()
+	 * 引数      ：int postId
+	 * 戻り値    ：PostInfoBean postBean
+	 * 処理      ：引数(記事ID)を代入したSQL文を発行し、DB(Post_Info)から記事情報を取得
+	 */
+		public PostInfoBean GetPost(int postId) {
+			//戻り値として返すようの配列を定義
+			PostInfoBean postBean=new PostInfoBean();
+			try {
+				//MySQLに接続する
+				Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection(url+dbName, user, pass);
+				stmt = conn.createStatement();
+				//SQL文作成
+				String query = "SELECT * FROM Post_Info WHERE Post_ID = '"+postId+"'";
+				ResultSet rs =  stmt.executeQuery(query);
+				//上記SQL文で指定したレコードの数分while文を回す
+				while(rs.next()) {
+					//各種情報をBeanにsetterメソッドを使い、格納する
+					postBean.setPostId(rs.getInt("Post_ID"));
+					postBean.setPostDate(rs.getString("Post_Date"));
+					postBean.setPostTitle(rs.getString("Post_Title"));
+					postBean.setPostContents(rs.getString("Post_Contents"));
+					postBean.setPostUserId(rs.getInt("Post_User_ID"));
+					postBean.setPostImgPath(rs.getString("Post_Image"));
+					postBean.setBoardId(rs.getInt("Board_ID"));
+				}
+				//下記catchはエラーハンドリング用
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//postInfo型のbeanを返す
+			return postBean;
+		}
+
+
+		/*[51]コメント情報を取得
+		 *メソッド名：GetComment()
+		 * 引数      ：int commentId
+		 * 戻り値    ：CommentInfoBean commentBean
+		 * 処理      ：引数(コメントID)を代入したSQL文を発行し、DB(Comment_Info)からコメント情報を取得
+		 */
+			public CommentInfoBean GetComment(int commentId) {
+				//戻り値として返すようの配列を定義
+				CommentInfoBean commentBean=new CommentInfoBean();
+				try {
+					//MySQLに接続する
+					Class.forName("com.mysql.jdbc.Driver");
+					conn = DriverManager.getConnection(url+dbName, user, pass);
+					stmt = conn.createStatement();
+					//SQL文作成
+					String query = "SELECT * FROM Comment_Info WHERE Comment_ID = '"+commentId+"'";
+					ResultSet rs =  stmt.executeQuery(query);
+					//上記SQL文で指定したレコードの数分while文を回す
+					while(rs.next()) {
+						//各種情報をBeanにsetterメソッドを使い、格納する
+						commentBean.setCommentId(rs.getInt("Comment_ID"));
+						commentBean.setCommentDate(rs.getString("Comment_Date"));
+						commentBean.setCommentUserId(rs.getInt("Comment_User_ID"));
+						commentBean.setCommentContents(rs.getString("Comment_Contents"));
+						commentBean.setPostId(rs.getInt("Post_ID"));
+						commentBean.setCommentChain(rs.getInt("Comment_Chain"));
+					}
+					//下記catchはエラーハンドリング用
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				//postInfo型のbeanを返す
+				return commentBean;
+			}
+
+
 //--------------以下SQL基本構文(select、insert、update、delete)のメソッド。---------
 
 	/*SELECT文 条件なしオーバーロード

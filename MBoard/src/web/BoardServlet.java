@@ -140,7 +140,6 @@ public class BoardServlet extends HttpServlet {
 				bean.setPostTitle(postTitle);
 				bean.setPostContents(postContent);
 				bean.setPostUserId(userInfo.getUserID());
-				bean.setPostCategory("カテゴリ(削除予定)");
 				bean.setPostImgPath("test");
 				bean.setBoardId(intBoardId);
 
