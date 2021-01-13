@@ -6,9 +6,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>掲示板</title>
-	<link rel="stylesheet" href="src/css/nav.css" />
-	<link rel="stylesheet" href="src/css/board.css" />
-	<link rel="stylesheet" href="src/css/scroll.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
@@ -37,28 +37,29 @@ var selectBoardId=boardId[0];
 		<div class="nav-area">
 
 			<div class="logo-area">
-				<img src="src/img/logo_white.png">
+				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="#">
-				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"> --%>
+			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
+				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()"> --%>
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
+			</a>
+			<a href="">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
+			</a>
+			<a href="<%=request.getContextPath()%>/addressbook">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">
-				<img src="src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_address.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_link.png" class="nav-icon" id="link-show">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
 
 			<div class="nav-bottom">
 				<a href="#">
-				<img src="src/img/mb_0_notice.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
 				</a>
 				<a href="#">
-				<img src="src/img/mb_0_other.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
 				</a>
 			</div>
 
@@ -83,16 +84,16 @@ var selectBoardId=boardId[0];
 					</div>
 					<div class="board-list-footer">
 						<div class="show-board-list">掲示板を登録</div>
-						<img src="src/img/mb_e_plus.png" class="add_button show-board-list">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="add_button show-board-list">
 					</div>
 				</div>
 
 				<div class="board-content-area">
 					<div class="board-header">
 						<div class="board-name-area">
-							<img src="src/img/mb_e_plus.png" class="board-icon">
+							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon">
 							<div id="boardName" class="board-name"><%= bib[0].getBoardCategory() %></div>
-							<img src="src/img/mb_2_syousai.png" class="board-menu">
+							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
 
@@ -103,10 +104,10 @@ var selectBoardId=boardId[0];
 								<textarea class="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
-										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
 									<input type="hidden" name="formName" value="makePost" >
@@ -123,7 +124,7 @@ var selectBoardId=boardId[0];
 								<div class="panel">
 									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
 								<div class="post" name='<%out.print(pibList.get(i)[x].getPostId());%>'>
-								<img src="src/img/mb_e_plus.png" class="post-icon">
+								<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
 								<div class="post-user-name">投稿者名</div>
 								<div id="aaaaaaa" class="post-date"><%= pibList.get(i)[x].getPostDate() %></div>
@@ -131,11 +132,11 @@ var selectBoardId=boardId[0];
 								<div class="post-letter"><%= pibList.get(i)[x].getPostContents() %></div>
 								<div class="post-icon-area">
 									<div class="comment">
-										<img src="src/img/mb_i_comment.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
 										<span class="number"><%= commentCount.get(pibList.get(i)[x].getPostId()) %></span>コメント
 									</div>
 									<div class="good">
-										<img class="readButton" src="src/img/mb_j_good.png" onclick="readClick('<%out.print(pibList.get(i)[x].getPostId());%>')">
+										<img class="readButton" src="<%=request.getContextPath()%>/src/img/mb_j_good.png" onclick="readClick('<%out.print(pibList.get(i)[x].getPostId());%>')">
 										<span id="count<%out.print(pibList.get(i)[x].getPostId());%>"><%= readCount.get(pibList.get(i)[x].getPostId()) %></span>
 										<div id="read<%out.print(pibList.get(i)[x].getPostId());%>" >
 											<div class="<%out.print(userRead.get(pibList.get(i)[x].getPostId()));%>">
@@ -149,7 +150,7 @@ var selectBoardId=boardId[0];
 									</div>
 								</div>
 								<div class="post-detail-button">
-									<img src="src/img/mb_2_syousai.png">
+									<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
 								</div>
 								</div>
 									<% } %>
@@ -171,11 +172,11 @@ var selectBoardId=boardId[0];
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
 				</div>
 			</div>
 		</div>
@@ -190,14 +191,14 @@ var selectBoardId=boardId[0];
 						<div class="popup-board-add">新規追加</div>
 					</div>
 					<div class="popup-board-close">
-						<img src="src/img/mb_f_close.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
 					</div>
 				</div>
 				<div class="popup-board-content">
 
 					<%for(int i=0;i<permissionBoardList.size();i++){ %>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name"><%= permissionBoardList.get(i).getBoardCategory() %></p>
 						<%int id=permissionBoardList.get(i).getBoardId(); %>
 						<%if(joinJudge.get(id)){ %>
@@ -233,15 +234,20 @@ var selectBoardId=boardId[0];
 	</form>
 
 <script>
+
+
 //要素を取得 ( → <ul id="target"> ... </ul> )
 var ulElement = document.getElementById( "tabGroup" ) ;
 var panelGroup = document.getElementById( "panelGroup" ) ;
-// 最初の子要素を取得 ( → <li>要素1</li> )
+//最初の子要素を取得 ( → <li>要素1</li> )
 var tabFirstLi = ulElement.firstElementChild ;
 var panelFirst = panelGroup.firstElementChild ;
 //一番上の掲示板タブを表示させる
 tabFirstLi.className="tab is-active";
 panelFirst.className="panel is-show";
+
+
+
 
 
 //掲示板タブを切り替えて、記事一覧パネルを切り替える
@@ -251,14 +257,14 @@ jQuery(function($){
 		$('.is-active').removeClass('is-active');
 		$(this).addClass('is-active');
 		$('.is-show').removeClass('is-show');
-        // クリックしたタブからインデックス番号を取得
+      // クリックしたタブからインデックス番号を取得
 		const index = $(this).index();
-        // クリックしたタブと同じインデックス番号をもつコンテンツを表示
+      // クリックしたタブと同じインデックス番号をもつコンテンツを表示
 		$('.panel').eq(index).addClass('is-show');
 
-        //掲示板の名前を表示している要素取得
+      //掲示板の名前を表示している要素取得
 		var name = document.getElementById( "boardName" ) ;
-        //記事作成フォームの中のhidden要素取得
+      //記事作成フォームの中のhidden要素取得
 		var hidden = document.getElementById( "boardNameHidden" ) ;
 		//インデックス番号をint型にする
 		var i= parseInt($(this).index());
@@ -292,6 +298,14 @@ $('.post').click(function(event){
 	}
 });
 
+//自分のアイコンクリック時、サーブレット経由でマイページへ遷移
+function myPage(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	formNameHidden.value="myPage";
+	hiddenForm.submit();
+}
+
 //参加するボタンクリック時
 function joinBoard(id){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
@@ -304,6 +318,7 @@ function joinBoard(id){
 
 //「掲示板から退出」テキスト押下時
 $('.property-item').click(function(event){
+	 target = $(event.target);
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
 	var formNameHidden = document.getElementById( "formNameHidden" ) ;
@@ -331,7 +346,7 @@ function readClick(id){
 		//サーブレット側でdeleteReadを受け取ると該当の記事のログインユーザーの確認済みを削除
 	 	readAction(id,"deleteRead");
 	}else{
- 		var i=parseInt(readCount.textContent);
+		var i=parseInt(readCount.textContent);
 		i++;
 		readCount.textContent=""+i;
 		userRead.className="true";
@@ -351,8 +366,8 @@ function readAction(postId, name) {
 		//確認済みhiddenが既に存在した場合hidden削除
 		//(ページにきて２回目に確認ボタン押していた場合取り消し。DB情報は変更しなくていいため。)
 		var len=ele.length
- 		for(var i=0;i<len;i++){
- 			ele[0].remove();
+		for(var i=0;i<len;i++){
+			ele[0].remove();
 		}
 	}else{
 		//押された確認済みボタンがページにきて初めての場合はその情報をhiddenでフォームに追加
@@ -373,7 +388,7 @@ function insertHidden(formName,postId, name) {
 	form.insertAdjacentElement('beforeend',input);
 }
 </script>
-	<script src="src/js/nav.js"></script>
-	<script src="src/js/board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/board.js"></script>
 </body>
 </html>

@@ -17,7 +17,7 @@ import data.UserInfoBean;
 @WebServlet("/mypage")
 public class MyPageServlet extends HttpServlet {
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//セッションが切れていないか確認
 		HttpSession s = req.getSession(false);
 		String url = "/src/jsp/my_page.jsp";

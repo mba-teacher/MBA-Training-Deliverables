@@ -185,6 +185,10 @@ public class BoardServlet extends HttpServlet {
 			//記事詳細画面サーブレットに遷移
 			rd = req.getRequestDispatcher("/postDetail");
 			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("myPage")) {
+			//掲示板本体画面に遷移
+			rd = req.getRequestDispatcher("/mypage");
+			rd.forward(req, resp);
 		}else {
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");

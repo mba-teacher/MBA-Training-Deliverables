@@ -86,7 +86,7 @@ public class LoginServlet extends HttpServlet {
 						session.setAttribute("comentCount", comentCount);
 						//--------
 			*/
-			RequestDispatcher rd = req.getRequestDispatcher("/src/jsp/board.jsp");
+			RequestDispatcher rd = req.getRequestDispatcher("/board");
 			rd.forward(req, resp);
 
 		} else {
