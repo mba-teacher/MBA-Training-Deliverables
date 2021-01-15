@@ -35,7 +35,6 @@ public class MyPageServlet extends HttpServlet {
 			System.out.println("number of posts："+ pib.length);
 		}
 
-		System.out.println("servlet:" + url);
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}
@@ -58,7 +57,6 @@ public class MyPageServlet extends HttpServlet {
 			System.out.println("number of posts："+ pib.length);
 		}
 
-		System.out.println("servlet:" + url);
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}

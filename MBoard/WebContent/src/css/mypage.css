@@ -8,11 +8,12 @@
 .alarm{
 	position:absolute;
 	 margin-left:50%;
-	 margin-top:2%;
+	 margin-top:15px;
 	 padding:3px 20px;
-	 transform: translate(-50%, -50%); /*基準を中央にする*/
+	 transform: translateX(-50%); /*基準を中央にする*/
 	 background-color:#252525;
 	 color:#fff;
+	z-index: 5;
 }
 
 .profile_area{
