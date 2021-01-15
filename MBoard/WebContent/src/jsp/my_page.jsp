@@ -34,7 +34,7 @@
 			<%-- 同一ページには遷移しない設定のためaタグをはずす --%>
 				<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon" id="my-icon">
 
-			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
+			<a href="<%=request.getContextPath()%>/board">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
 			</a>
 			<a href="<%=request.getContextPath()%>/addressbook">

@@ -40,7 +40,7 @@ var selectBoardId=boardId[0];
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
+			<a href="<%=request.getContextPath()%>/mypage">
 				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()"> --%>
 				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
 			</a>
