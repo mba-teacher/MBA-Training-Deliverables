@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,data.BoardPermissionInfoBean,java.util.ArrayList,java.util.HashMap"%>
+    import = "data.UserInfoBean,data.BoardInfoBean,data.PostInfoBean,data.BoardPermissionInfoBean,data.TemplateInfoBean,java.util.ArrayList,java.util.HashMap"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +19,9 @@
 <% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
 <%-- ログインユーザーの参加中の示板情報をリスト配列で取得 --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
+<%-- ログインユーザーの定型文情報をリスト配列で取得 --%>
+<% ArrayList<TemplateInfoBean> TemplateInfoList = (ArrayList<TemplateInfoBean>)session.getAttribute("TemplateInfoList"); %>
+
 <%-- 掲示板IDをキーにして参加中か参加可能か判別する連想配列を取得 --%>
 <% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
 <!-- 所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)を取得 -->
@@ -113,10 +116,10 @@ var selectBoardId=boardId[0];
 								<textarea class="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png" onclick="template()">
+										<%-- <img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> --%>
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
 									<input type="hidden" name="formName" value="makePost" >
@@ -341,6 +344,14 @@ function boardDetail(){
 	var boardIdHidden = document.getElementById( "boardIdHidden" )
 	formNameHidden.value="boardDetail";
 	boardIdHidden.value=selectBoardId;
+	hiddenForm.submit();
+}
+
+//定型文編集アイコンをクリック時、サーブレット経由で定型文編集画面へ遷移
+function template(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" );
+	formNameHidden.value="template";
 	hiddenForm.submit();
 }
 

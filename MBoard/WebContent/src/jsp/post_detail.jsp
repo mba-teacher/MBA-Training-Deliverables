@@ -154,10 +154,10 @@
 								<textarea class="post-form-content" name="postContent" placeholder="返信内容"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
+ 										<img src="src/img/mb_g_letteredit.png">
+										<!--<img src="src/img/mb_g_letteredit.png">
 										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
+										<img src="src/img/mb_g_letteredit.png"> -->
 									</div>
 									<input type="hidden" name="formName" value="makeComment" >
 									<input type="submit" value="送信" class="submit">

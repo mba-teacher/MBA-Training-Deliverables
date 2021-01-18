@@ -78,8 +78,6 @@ public class TemplateServlet extends HttpServlet {
 		//リストをセッションに格納
 		session.setAttribute("TemplateInfoList", TemplateInfoList);
 
-
-
 		//定型文画面に遷移
 		rd = req.getRequestDispatcher("/src/jsp/template.jsp");
 		rd.forward(req, resp);

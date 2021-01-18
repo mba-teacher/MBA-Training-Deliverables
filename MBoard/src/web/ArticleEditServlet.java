@@ -32,43 +32,21 @@ public class ArticleEditServlet extends HttpServlet {
 
 		//記事かコメントのIDを取得
 		String detailId = req.getParameter("postId");
-
+		//記事かコメントの情報を取得しセッション
 		if(req.getParameter("delete")==null&&req.getParameter("save")==null) {
 			int id=Integer.parseInt(detailId);
 			if(id<0) {
-//				PostInfoBean post = (PostInfoBean)session.getAttribute("postBean");
-//				session.setAttribute("editPost",post);
-//				session.setAttribute("editType","post");
 				id*=-1;
 				session.setAttribute("editPost",dao.GetPost(id));
 				session.setAttribute("editType","post");
 			}else {
 				session.setAttribute("editComment",dao.GetComment(id));
 				session.setAttribute("editType","comment");
-//				//遷移前画面で使用していたコメントリスト
-//				ArrayList<CommentInfoBean> CommentInfoList = (ArrayList<CommentInfoBean>)session.getAttribute("CommentInfoList");
-//				ArrayList<ArrayList<CommentInfoBean>> CommentChainList= (ArrayList<ArrayList<CommentInfoBean>>)session.getAttribute("CommentChainList");
-//
-//				//フォームから受け取ったコメントIDと一致するコメントのbeanを探す
-//				CommentInfoBean commentBean=new CommentInfoBean();
-//				for(int i=0;i<CommentInfoList.size();i++) {
-//					if(CommentInfoList.get(i).getCommentId()==Integer.parseInt(detailId)) {
-//						commentBean=CommentInfoList.get(i);
-//					}
-//				}
-//				for(int a=0;a<CommentChainList.size();a++) {
-//					for(int b=0;b<CommentChainList.get(a).size();b++) {
-//						if(CommentChainList.get(a).get(b).getCommentId()==Integer.parseInt(detailId)) {
-//							commentBean=CommentChainList.get(a).get(b);
-//						}
-//					}
-//				}
-//				session.setAttribute("editComment",commentBean);
-//				session.setAttribute("editType","comment");
 			}
 		}
 
 
+		//編集or削除をDBで更新処理
 		if(req.getParameter("delete")!=null) {
 			String editType= (String)session.getAttribute("editType");
 			if(editType.equals("post")) {
@@ -95,8 +73,6 @@ public class ArticleEditServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/src/jsp/article_edit.jsp");
 			rd.forward(req, resp);
 		}
-
-
 
 	}
 

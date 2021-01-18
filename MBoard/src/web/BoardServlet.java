@@ -18,6 +18,7 @@ import data.BoardPermissionInfoBean;
 import data.DAO;
 import data.PostInfoBean;
 import data.ReadInfoBean;
+import data.TemplateInfoBean;
 import data.UserInfoBean;
 
 
@@ -35,10 +36,8 @@ public class BoardServlet extends HttpServlet {
 		//DAOインスタンス作成
 		DAO dao=new DAO();
 
-		//デバックよう。ログインしている状態で始める。
 		//DBから取得したログインユーザー情報をセッションに格納
-		UserInfoBean userInfo=dao.Login("id1", "pass1");
-		session.setAttribute("userInfoBean",userInfo);
+		UserInfoBean userInfo=(UserInfoBean)session.getAttribute("userInfoBean");
 
 
 		//--------------確認済みを変更した場合DBの確認済みテーブルを変更--------------
@@ -133,6 +132,12 @@ public class BoardServlet extends HttpServlet {
 		//セッションに格納
 		session.setAttribute("postInfoBeanList",PostInfoList);
 
+		//ログインユーザーの定型文情報を取得
+		ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
+		TemplateInfoList=dao.GetTemplates(userInfo.getUserID());
+		//セッションに格納
+		session.setAttribute("TemplateInfoList",TemplateInfoList);
+
 		//記事IDをキーにして、その確認済み数を取得する連想配列
 		HashMap<Integer, Integer> readCount = new HashMap<Integer, Integer>();
 		//記事IDをキーにして、ログインユーザーが確認済みしてるかを取得する連想配列
@@ -202,6 +207,10 @@ public class BoardServlet extends HttpServlet {
 			//掲示板詳細サーブレットに遷移
 			rd = req.getRequestDispatcher("/boardDetail");
 			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("template")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/template");
+			rd.forward(req, resp);
 		}else{
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
@@ -209,6 +218,12 @@ public class BoardServlet extends HttpServlet {
 		}
 
 	}
+
+
+
+
+
+//------------------------------------------------------------------------------------------
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
