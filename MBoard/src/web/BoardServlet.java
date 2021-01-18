@@ -168,9 +168,6 @@ public class BoardServlet extends HttpServlet {
 		session.setAttribute("comentCount",comentCount);
 
 
-
-
-
 		//--------------記事クリック時、記事詳細へ遷移--------------
 		if(formName!=null&&formName.equals("postDetail")) {
 			String postId = req.getParameter("postId");

@@ -6,10 +6,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>会話詳細</title>
-	<link rel="stylesheet" href="src/css/nav.css" />
-	<link rel="stylesheet" href="src/css/board.css" />
-	<link rel="stylesheet" href="src/css/post_detail.css" />
-	<link rel="stylesheet" href="src/css/scroll.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/post_detail.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
@@ -37,7 +37,7 @@
 		<div class="nav-area">
 
 			<div class="logo-area">
-				<img src="src/img/logo_white.png">
+				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
 			<!-- <a href="#"> -->
@@ -50,15 +50,15 @@
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
 			<!-- </a> -->
 			<a href="#">
-				<img src="src/img/mb_0_link.png" class="nav-icon" id="link-show">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
 
 			<div class="nav-bottom">
 				<a href="#">
-				<img src="src/img/mb_0_notice.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
 				</a>
 				<a href="#">
-				<img src="src/img/mb_0_other.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
 				</a>
 			</div>
 
@@ -134,7 +134,7 @@
 					</div>
 					<div class="board-list-footer">
 						<div class="show-board-list">掲示板を登録</div>
-						<img src="src/img/mb_e_plus.png" class="add_button show-board-list">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="add_button show-board-list">
 					</div>
 				</div>
 
@@ -142,9 +142,9 @@
 
 					<div class="board-header">
 						<div class="board-name-area">
-							<img src="src/img/mb_e_plus.png" class="board-icon">
+							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon">
 							<div class="board-name">会話詳細</div>
-							<!-- <img src="src/img/mb_2_syousai.png" class="board-menu"> -->
+							<!-- <img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu"> -->
 						</div>
 					</div>
 
@@ -154,10 +154,10 @@
 								<textarea class="post-form-content" name="postContent" placeholder="返信内容"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
- 										<img src="src/img/mb_g_letteredit.png">
-										<!--<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png"> -->
+ 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<!--<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> -->
 									</div>
 									<input type="hidden" name="formName" value="makeComment" >
 									<input type="submit" value="送信" class="submit">
@@ -170,7 +170,7 @@
 							<!-- 記事IDとコメントIDのかぶり防止に記事IDを負の値にしている -->
 							<%int postId=post.getPostId()*-1;%>
 						<div class="post" name="mainDtail" id="<%out.print(postId);%>">
-							<img src="src/img/mb_e_plus.png" class="post-icon">
+							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 							<div class="post-board-name"><%= post.getPostTitle() %></div>
 							<div class="post-user-name">投稿者名</div>
 							<div class="post-date"><%=post.getPostDate()%></div>
@@ -178,11 +178,11 @@
 							<div class="post-letter"><%=post.getPostContents()%><br></div>
 							<div class="post-icon-area">
 								<div class="comment">
-									<img src="src/img/mb_i_comment.png">
+									<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
 									<span class="number"><%= session.getAttribute("postCommentCount") %></span>コメント
 								</div>
 								<div class="good">
-									<img class="readButton" src="src/img/mb_j_good.png" onclick="readClick('<%out.print(postId);%>')">
+									<img class="readButton" src="<%=request.getContextPath()%>/src/img/mb_j_good.png" onclick="readClick('<%out.print(postId);%>')">
 									<span id="count<%out.print(postId);%>"><%= session.getAttribute("postReadCount") %></span>
 										<div id="read<%out.print(postId);%>" >
 											<div class="<%out.print((boolean)session.getAttribute("postUserRead"));%>">
@@ -197,14 +197,14 @@
 							</div>
 							<div >
 								<% if(post.getPostUserId()==userInfo.getUserID()){ %>
-								<img  id="<%out.print(postId);%>" class="post-detail-button" src="src/img/mb_2_syousai.png">
+								<img  id="<%out.print(postId);%>" class="post-detail-button" src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
 								<% } %>
 							</div>
 						</div>
 						<%}else if(detailType.equals("comment")){%>
 						<% int detailId=detailComment.getCommentId();%>
 						<div class="post" name="mainDtail" id="<%out.print(detailId);%>">
-							<img src="src/img/mb_e_plus.png" class="post-icon">
+							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 							<div class="post-board-name">コメント</div>
 							<div class="post-user-name">投稿者名</div>
 							<div class="post-date"><%= detailComment.getCommentDate() %></div>
@@ -212,11 +212,11 @@
 							<div class="post-letter"><%=detailComment.getCommentContents()%><br></div>
 							<div class="post-icon-area">
 								<div class="comment">
-									<img src="src/img/mb_i_comment.png">
+									<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
 									<span class="number"><%= session.getAttribute("postCommentCount") %></span>コメント
 								</div>
 								<div class="good">
-									<img class="readButton" src="src/img/mb_j_good.png" onclick="readClick('<%out.print(detailId);%>')">
+									<img class="readButton" src="<%=request.getContextPath()%>/src/img/mb_j_good.png" onclick="readClick('<%out.print(detailId);%>')">
 									<span id="count<%out.print(detailId);%>"><%= session.getAttribute("postReadCount") %></span>
 										<div id="read<%out.print(detailId);%>" >
 											<div class="<%out.print((boolean)session.getAttribute("postUserRead"));%>">
@@ -231,7 +231,7 @@
 							</div>
 							<div >
 								<% if(detailComment.getCommentUserId()==userInfo.getUserID()){ %>
-								<img  id="<%out.print(detailId);%>" class="post-detail-button" src="src/img/mb_2_syousai.png">
+								<img  id="<%out.print(detailId);%>" class="post-detail-button" src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
 								<% } %>
 							</div>
 						</div>
@@ -240,7 +240,7 @@
 						<% for (int i = 0; i < comment.size(); i++ ) { %>
 						<%int commentId= comment.get(i).getCommentId();%>
 						<div class="post post-comment" id="<%out.print(commentId);%>">
-							<img src="src/img/mb_e_plus.png" class="post-icon">
+							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 							<div class="post-board-name"><%= commentId %></div>
 							<div class="post-comment-for"><%= post.getPostTitle() %>へのコメント</div>
 							<div class="post-user-name">投稿者名</div>
@@ -249,11 +249,11 @@
 							<div class="post-letter"><%= comment.get(i).getCommentContents() %></div>
 							<div class="post-icon-area">
 								<div class="comment">
-									<img src="src/img/mb_i_comment.png">
+									<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
 									<span class="number"><%= commentCount.get(commentId) %></span>コメント
 								</div>
 								<div class="good">
-									<img class="readButton" src="src/img/mb_j_good.png" onclick="readClick('<%out.print(commentId);%>')">
+									<img class="readButton" src="<%=request.getContextPath()%>/src/img/mb_j_good.png" onclick="readClick('<%out.print(commentId);%>')">
 									<span id="count<%out.print(commentId);%>"><%= readCount.get(commentId) %></span>
 										<div id="read<%out.print(commentId);%>" >
 											<div class="<%out.print(userRead.get(commentId));%>">
@@ -268,7 +268,7 @@
 							</div>
 							<div >
 								<% if(comment.get(i).getCommentUserId()==userInfo.getUserID()){ %>
-								<img  id="<%out.print(commentId);%>" class="post-detail-button" src="src/img/mb_2_syousai.png">
+								<img  id="<%out.print(commentId);%>" class="post-detail-button" src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
 								<% } %>
 							</div>
 						</div>
@@ -283,7 +283,7 @@
 								<%} %>
 							</div>
 							<div class="post post-comment post-tree" id="<%out.print(commentChainId);%>">
-								<img src="src/img/mb_e_plus.png" class="post-icon">
+								<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 								<div class="post-board-name"><%= commentChainId %></div>
 								<div class="post-comment-for"><%= post.getPostTitle() %>へのコメントのコメント</div>
 								<div class="post-user-name">投稿者名</div>
@@ -292,11 +292,11 @@
 								<div class="post-letter"><%= commentChain.get(i).get(x).getCommentContents() %></div>
 								<div class="post-icon-area">
 									<div class="comment">
-										<img src="src/img/mb_i_comment.png">
+										<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
 										<span class="number"> <%=commentCount.get(commentChainId) %></span>コメント
 									</div>
 									<div class="good">
-										<img class="readButton" src="src/img/mb_j_good.png" onclick="readClick('<%out.print(commentChainId);%>')">
+										<img class="readButton" src="<%=request.getContextPath()%>/src/img/mb_j_good.png" onclick="readClick('<%out.print(commentChainId);%>')">
 										<span id="count<%out.print(commentChainId);%>"><%= readCount.get(commentChainId) %></span>
 										<div id="read<%out.print(commentChainId);%>" >
 											<div class="<%out.print(userRead.get(commentChainId));%>">
@@ -311,7 +311,7 @@
 								</div>
 								<div>
 									<% if(commentChain.get(i).get(x).getCommentUserId()==userInfo.getUserID()){ %>
-									<img  id="<%out.print(commentChainId);%>" class="post-detail-button" src="src/img/mb_2_syousai.png">
+									<img  id="<%out.print(commentChainId);%>" class="post-detail-button" src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
 									<% } %>
 
 								</div>
@@ -331,11 +331,11 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
-					<img src="src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
 				</div>
 			</div>
 		</div>
@@ -350,58 +350,58 @@
 						<div class="popup-board-add">新規追加</div>
 					</div>
 					<div class="popup-board-close">
-						<img src="src/img/mb_f_close.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
 					</div>
 				</div>
 				<div class="popup-board-content">
 
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-leave">参加する</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
 					<div class="popup-board-item">
-						<img src="src/img/mb_e_plus.png">
+						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
 						<p class="popup-board-name">掲示板名</p>
 						<div class="board-join">参加中</div>
 					</div>
@@ -535,7 +535,7 @@ function insertHidden(formName,postId, name) {
 }
 
 </script>
-	<script src="src/js/nav.js"></script>
-	<script src="src/js/board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/board.js"></script>
 </body>
 </html>

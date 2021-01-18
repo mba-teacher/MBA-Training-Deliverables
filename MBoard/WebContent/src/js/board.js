@@ -38,4 +38,14 @@ $(function(){
 		$(".popup-board-property").fadeOut(100);
 	});
 
+	//定型文プロパティを開く
+	$(".template-menu").click(function(){
+		$(".popup-template-property").fadeIn(100);
+	});
+
+	//定型文プロパティを閉じる
+	$(".link-hide").click(function(){
+		$(".popup-template-property").fadeOut(100);
+	});
+
 });

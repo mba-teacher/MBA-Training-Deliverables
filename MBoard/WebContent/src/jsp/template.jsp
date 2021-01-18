@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
-	import = "data.TemplateInfoBean"
+	import = "data.TemplateInfoBean,data.UserInfoBean"
 	import ="java.util.ArrayList"%>
 	<!DOCTYPE html>
 <html>
@@ -14,6 +14,8 @@
 </head>
 <body>
 <%
+//ログインユーザー情報をセッションから取得
+UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean");
 //ログインユーザーの定型文情報をセッションからリスト配列で取得
 ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
 TemplateInfoList=(ArrayList<TemplateInfoBean>)session.getAttribute("TemplateInfoList");
@@ -65,13 +67,13 @@ var tempContent ={
 				<img src="src/img/logo_white.png">
 			</div>
 
-			<a href="#">
-				<img src="src/img/mb_0_link.png" class="nav-icon">
+			 <a href="<%=request.getContextPath()%>/mypage">
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" >
 			</a>
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/board">
 				<img src="src/img/mb_0_boad.png" class="nav-icon">
 			</a>
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">

@@ -494,3 +494,41 @@ textarea{
 .property-item:last-of-type {
 	color:red;
 }
+
+
+/* 						↓定型文プロパティポップアップ						*/
+
+
+
+.popup-template-property{
+	z-index:2;
+	display:none;
+}
+
+.template-property-bg {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100vw;
+	height:100vh;
+	background-color:rgba(0, 0, 0, 0);
+}
+
+.template-property-area {
+	position:fixed;
+	top:360px;
+	left:470px;
+	width:160px;
+	height:100px;
+	background-color:white;
+	box-shadow: 0 0px 10px 0 rgba(0, 0, 0, .4);
+	border-radius:8px;
+}
+
+.template-item:first-of-type {
+	margin-top:9px;
+}
+
+.template-item {
+	margin:3px 0 0 10px;
+}

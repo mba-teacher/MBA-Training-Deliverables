@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<title>掲示板</title>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
-	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board1.css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
@@ -20,8 +20,7 @@
 <%-- ログインユーザーの参加中の示板情報をリスト配列で取得 --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
 <%-- ログインユーザーの定型文情報をリスト配列で取得 --%>
-<% ArrayList<TemplateInfoBean> TemplateInfoList = (ArrayList<TemplateInfoBean>)session.getAttribute("TemplateInfoList"); %>
-
+<% ArrayList<TemplateInfoBean> TemplateList = (ArrayList<TemplateInfoBean>)session.getAttribute("TemplateInfoList"); %>
 <%-- 掲示板IDをキーにして参加中か参加可能か判別する連想配列を取得 --%>
 <% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
 <!-- 所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)を取得 -->
@@ -116,10 +115,19 @@ var selectBoardId=boardId[0];
 								<textarea class="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png" onclick="template()">
-										<%-- <img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> --%>
+										<div class="template-icon">
+											<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png" class="template-menu" >
+										</div>
+
+										<div class="popup-template-property">
+											<div class="link-hide template-property-bg"></div>
+											<div class="template-property-area">
+												<div class="template-item">定型文一覧　<input type="button" value="編集" onclick="template()"></input></div>
+												<%for(int i=0;i<TemplateList.size();i++){ %>
+													<div class="template-item" onclick="setTemplate('<%out.print(i);%>')"><%= TemplateList.get(i).getTempleName() %></div>
+												<%} %>
+											</div>
+										</div>
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
 									<input type="hidden" name="formName" value="makePost" >
@@ -297,7 +305,6 @@ $('.submit').on('click', function () {
 	  $(this).css('pointer-events','none');
 	});
 
-
 //記事をクリック時
 $('.post').click(function(event){
 	var target = $(event.target);
@@ -367,13 +374,17 @@ function joinBoard(id){
 
 //「掲示板から退出」テキスト押下時
 function leaveBoard(){
-	target = $(event.target);
+	//target = $(event.target);
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
 	var formNameHidden = document.getElementById( "formNameHidden" ) ;
 	boardIdHidden.value=""+selectBoardId;
 	formNameHidden.value="leaveBoard";
 	hiddenForm.submit();
+}
+
+//定型文を投稿フォームに代入
+function setTemplate(){
 }
 
 //「掲示板から退出」テキスト押下時
@@ -449,6 +460,6 @@ function insertHidden(formName,postId, name) {
 }
 </script>
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
-	<script src="<%=request.getContextPath()%>/src/js/board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/board1.js"></script>
 </body>
 </html>
