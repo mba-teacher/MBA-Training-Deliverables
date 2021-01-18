@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<title>掲示板</title>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/nav.css" />
-	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board1.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/board.css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/src/css/scroll.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
@@ -460,6 +460,6 @@ function insertHidden(formName,postId, name) {
 }
 </script>
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
-	<script src="<%=request.getContextPath()%>/src/js/board1.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/board.js"></script>
 </body>
 </html>
