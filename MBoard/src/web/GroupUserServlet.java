@@ -42,7 +42,7 @@ public class GroupUserServlet extends HttpServlet{
 			try {
 				//対象ユーザーの所属グループ一覧を取得し配列に格納
 				memberGrouplist.addAll(dao.GetMyGroups(UserId));
-				System.out.println(memberGrouplist.size());
+				//System.out.println(memberGrouplist.size());
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}

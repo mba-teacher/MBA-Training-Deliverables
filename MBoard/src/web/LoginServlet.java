@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
 		UserInfoBean uib = dao.Login(req.getParameter("user"), req.getParameter("pass"));
 		if (uib != null) {
 			//ログイン
-			System.out.println("LOGIN SUCCESS");
+			//System.out.println("LOGIN SUCCESS");
 			session = req.getSession(true);
 			session.setAttribute("userInfoBean", uib);
 
@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 						ArrayList<PostInfoBean[]> PostInfoList = new ArrayList<PostInfoBean[]>();
 						//掲示板ごとに、記事一覧の配列をDBから取得
 						for (int i = 0; i < boardInfo.length; i++) {
-							System.out.println(boardInfo[i].getBoardId());
+							//System.out.println(boardInfo[i].getBoardId());
 							PostInfoList.add(dao.GetBoardPosts(boardInfo[i].getBoardId()));
 						}
 						//セッションに格納
@@ -91,7 +91,7 @@ public class LoginServlet extends HttpServlet {
 
 		} else {
 			//ログイン失敗
-			System.out.println("LOGIN FAIL");
+			//System.out.println("LOGIN FAIL");
 			RequestDispatcher rd = req.getRequestDispatcher("/src/jsp/login_fail.jsp");
 			rd.forward(req, resp);
 		}

@@ -117,7 +117,7 @@ public class DAO {
 			return true;
 		}
 		//文章を表示
-		System.out.println("password and confirmation doest match->pass:" + newPass + "/confirmation:" + newPassConfirmation);
+		//System.out.println("password and confirmation doest match->pass:" + newPass + "/confirmation:" + newPassConfirmation);
 
 		//falseを返す
 		return false;
@@ -449,7 +449,7 @@ public class DAO {
 			}else if(choice.equals("comment")) {
 				query = "SELECT * FROM Comment_Info WHERE Comment_Chain = '"+id+"'";
 			}else {
-				System.out.println("第二引数にはpostかcommentをいれてください");
+				//System.out.println("第二引数にはpostかcommentをいれてください");
 				}
 			ResultSet rs =  stmt.executeQuery(query);
 
@@ -1102,7 +1102,7 @@ public class DAO {
 				GivePermission(b.getBoardId(), userId);
 			} else {
 				//rs.next()がfalse場合（検索がヒットしてないので念のためコンソールに表示する）
-				System.out.println("insertが失敗している可能性があります。");
+				//System.out.println("insertが失敗している可能性があります。");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2192,7 +2192,7 @@ public class DAO {
 			query += whereColumn[i] + " = '" + whereValue[i]+"' ";
 		}
 		query += ";";
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			//SQL文を作成
 			stmt = conn.createStatement();
@@ -2241,7 +2241,7 @@ public class DAO {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(query);
+		//System.out.println(query);
 		//作成したSQL文を返す
 		return result;
 	}
@@ -2285,7 +2285,7 @@ public class DAO {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(query);
+		//System.out.println(query);
 		//作成したSQL文を返す
 		return result;
 	}
@@ -2531,7 +2531,7 @@ public class DAO {
 		query += ");";										//"INSERT INTO " + tablename + "( +columns[i]+ ", "～")  VALUES ('"+values[i]+"' , '"～");"
 
 		//INSERT文を標準出力
-		System.out.println(query);
+		//System.out.println(query);
 
 		try {
 			//SQL(INSERT)文の出力

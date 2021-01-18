@@ -247,7 +247,6 @@ public class PostDetailServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/createBoard");
 			rd.forward(req, resp);
 		}else if(formName!=null&&formName.equals("addressBook")) {
-			System.out.println("adress");
 			//アドレス帳サーブレットに遷移
 			rd = req.getRequestDispatcher("/addressbook");
 			rd.forward(req, resp);

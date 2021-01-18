@@ -41,11 +41,11 @@ public class EditAccountServlet extends HttpServlet {
 						if (editAdmin[i].equals("true")) {
 							bool = true;
 						}
-						System.out.println("bool→"+bool);
+						//System.out.println("bool→"+bool);
 						//変更があった場合
 						if (bool != uibs.get(i).isAdmin()) {
 							d.UpdateAdmin(uibs.get(i).getUserID(), bool);
-							System.out.println("Update admin of ID:"+ uibs.get(i).getUserID() +".");
+							//System.out.println("Update admin of ID:"+ uibs.get(i).getUserID() +".");
 						}
 					}
 				}
@@ -63,7 +63,7 @@ public class EditAccountServlet extends HttpServlet {
 				int delMemberId = Integer.parseInt(req.getParameter("memberId"));
 
 				d.DeleteUser(delMemberId);
-				System.out.println("Delete user ID:"+ delMemberId +".");
+				//System.out.println("Delete user ID:"+ delMemberId +".");
 
 				//メンバー情報を取得し直す
 				uibs = d.GetAllMembers();

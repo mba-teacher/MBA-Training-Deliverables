@@ -27,20 +27,20 @@ public class testServlet extends HttpServlet {
 		list=d.GetPermissionInfo(2);
 
 		for(int i=0;i<list.size();i++) {
-			System.out.print(list.get(i).getBoardId()+":");
-			System.out.println(list.get(i).getUserId());
+			//System.out.print(list.get(i).getBoardId()+":");
+			//System.out.println(list.get(i).getUserId());
 		}
 
 		ArrayList<BoardInfoBean> list2=new ArrayList<BoardInfoBean>();
 		list2=d.GetBoards(list);
 
 		for(int i=0;i<list2.size();i++) {
-			System.out.print(list2.get(i).getBoardId()+":");
-			System.out.println(list2.get(i).getBoardCategory());
+			//System.out.print(list2.get(i).getBoardId()+":");
+			//System.out.println(list2.get(i).getBoardCategory());
 		}
 
-		//System.out.println(d.JoinBoard(1, 1));
-		//System.out.println(ID+":"+Pass);
+		////System.out.println(d.JoinBoard(1, 1));
+		////System.out.println(ID+":"+Pass);
 	}
 
 }

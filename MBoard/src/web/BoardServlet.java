@@ -41,7 +41,6 @@ public class BoardServlet extends HttpServlet {
 		session.setAttribute("userInfoBean",userInfo);
 
 
-
 		//--------------確認済みを変更した場合DBの確認済みテーブルを変更--------------
 		//確認ボタン変更value受け取り
 		String insertRead[] = req.getParameterValues("insertRead");
@@ -196,7 +195,6 @@ public class BoardServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/createBoard");
 			rd.forward(req, resp);
 		}else if(formName!=null&&formName.equals("addressBook")) {
-			System.out.println("adress");
 			//アドレス帳サーブレットに遷移
 			rd = req.getRequestDispatcher("/addressbook");
 			rd.forward(req, resp);
@@ -383,7 +381,6 @@ public class BoardServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/createBoard");
 			rd.forward(req, resp);
 		}else if(formName!=null&&formName.equals("addressBook")) {
-			System.out.println("adress");
 			//アドレス帳サーブレットに遷移
 			rd = req.getRequestDispatcher("/addressbook");
 			rd.forward(req, resp);

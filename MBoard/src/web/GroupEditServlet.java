@@ -61,10 +61,10 @@ public class GroupEditServlet extends HttpServlet{
 					try {
 						//指定したグループ名を更新する
 						dao.ChangeGroupName(GroupId, GroupName);
-						System.out.println("更新");
+						//System.out.println("更新");
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
-						System.out.println("error:" + GroupName);
+						//System.out.println("error:" + GroupName);
 					}
 
 				}else {
@@ -90,7 +90,7 @@ public class GroupEditServlet extends HttpServlet{
 						//新しいグループを作成
 						dao.CreateGroup(GroupName);
 					} catch (ClassNotFoundException e) {
-						System.out.println("error:" + GroupName);
+						//System.out.println("error:" + GroupName);
 						e.printStackTrace();
 					}
 

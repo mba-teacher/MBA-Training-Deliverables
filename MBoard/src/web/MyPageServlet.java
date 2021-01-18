@@ -32,7 +32,7 @@ public class MyPageServlet extends HttpServlet {
 			PostInfoBean[] pib = d.GetMyPosts(uib.getUserID());
 			//記事情報をセッションに保存
 			s.setAttribute("postInfoBean", pib);
-			System.out.println("number of posts："+ pib.length);
+			//System.out.println("number of posts："+ pib.length);
 		}
 
 		RequestDispatcher rd = req.getRequestDispatcher(url);
@@ -54,7 +54,7 @@ public class MyPageServlet extends HttpServlet {
 			PostInfoBean[] pib = d.GetMyPosts(uib.getUserID());
 			//記事情報をセッションに保存
 			s.setAttribute("postInfoBean", pib);
-			System.out.println("number of posts："+ pib.length);
+			//System.out.println("number of posts："+ pib.length);
 		}
 
 		RequestDispatcher rd = req.getRequestDispatcher(url);

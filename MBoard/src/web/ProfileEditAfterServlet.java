@@ -54,7 +54,7 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			}
 			//DBを更新する
 			d.UpdateMyUserInfo(uib);
-			System.out.println("Update my userinfo.");
+			//System.out.println("Update my userinfo.");
 			//セッションを更新
 			s.setAttribute("userInfoBean", uib);
 

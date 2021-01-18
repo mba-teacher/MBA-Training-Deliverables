@@ -35,7 +35,7 @@ public class CreateBoardBeforeServlet extends HttpServlet {
 			boolean[] bool = new boolean[uibs.size()];
 			boolean all = false;
 
-			System.out.println("PageType：" + req.getParameter("pageType"));
+			//System.out.println("PageType：" + req.getParameter("pageType"));
 			//新規作成の場合
 			if (req.getParameter("pageType").equals("create")) {
 				//GetAllMenbersだけでいいのでURLのみ設定
@@ -67,7 +67,7 @@ public class CreateBoardBeforeServlet extends HttpServlet {
 			}
 			req.setAttribute("allMembers", uibs);
 		}
-		System.out.println("servlet:" + url);
+		//System.out.println("servlet:" + url);
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}

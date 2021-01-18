@@ -43,13 +43,6 @@ public class TemplateServlet extends HttpServlet {
 		//セッションからログイン中のユーザーIDをいれる(現状はデバック用に10を格納)
 		int userId=11;
 
-		//デバック用
-		System.out.println(action);
-		System.out.println(tempId);
-		System.out.println(tempUserId);
-		System.out.println(tempName);
-		System.out.println(tempContent);
-
 		//更新メッセージ用のセッションを定義
 		session.setAttribute("notice", "");
 
@@ -61,7 +54,6 @@ public class TemplateServlet extends HttpServlet {
 				session.setAttribute("notice", "定型文を削除しました");
 				break;
 			case "作成":
-				System.out.println("作成");
 				tempContent=tempContent.replace("\r\n", "\\n");
 				bean.setTempleUserId(userId);
 				bean.setTempleName(tempName);
@@ -70,7 +62,6 @@ public class TemplateServlet extends HttpServlet {
 				session.setAttribute("notice", "定型文を追加しました");
 				break;
 			case "更新":
-				System.out.println("更新");
 				tempContent=tempContent.replace("\r\n", "\\n");
 				bean.setTempleId(Integer.parseInt(tempId));
 				bean.setTempleName(tempName);

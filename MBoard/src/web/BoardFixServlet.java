@@ -38,7 +38,7 @@ public class BoardFixServlet extends HttpServlet {
 				//掲示板削除（trycatchどうする）
 				try {
 					d.DeleteBoard(boardId);
-					System.out.println("Delete board ID: "+ boardId +".");
+					//System.out.println("Delete board ID: "+ boardId +".");
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}

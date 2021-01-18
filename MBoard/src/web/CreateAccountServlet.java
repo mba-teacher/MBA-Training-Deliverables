@@ -43,7 +43,7 @@ public class CreateAccountServlet extends HttpServlet {
 
 			//DBにユーザー情報を追加
 			d.CreateUser(uib);
-			System.out.println("CreateUser.");
+			//System.out.println("CreateUser.");
 
 			//管理者画面本体の通知
 			notice[0] = "edited";

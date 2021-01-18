@@ -57,7 +57,7 @@ public class CreateBoardAfterServlet extends HttpServlet {
 			if(req.getParameter("pageType").equals("create")) {
 				//掲示板の作成
 				d.CreateBoard(bib, userId);
-				System.out.println("Cerate board.");
+				//System.out.println("Cerate board.");
 				//urlの指定
 				url = "src/jsp/board.jsp#board-list-link";
 			}
@@ -66,7 +66,7 @@ public class CreateBoardAfterServlet extends HttpServlet {
 				bib.setBoardId(Integer.parseInt(req.getParameter("Board_ID")));
 				d.UpdateBoard(bib);
 				d.UpdatePermmisioinMembers(bib.getBoardId(), userId);
-				System.out.println("Edit board.");
+				//System.out.println("Edit board.");
 
 
 				//urlの指定
