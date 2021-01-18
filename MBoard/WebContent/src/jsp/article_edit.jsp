@@ -12,8 +12,12 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
+<!--				セッションから情報を取得 	        -->
+<!-- 編集する記事の情報を取得 -->
 <% PostInfoBean post = (PostInfoBean)session.getAttribute("editPost"); %>
+<!-- 編集するコメントの情報を取得 -->
 <% CommentInfoBean comment = (CommentInfoBean)session.getAttribute("editComment"); %>
+<!-- 編集するものが記事かコメントか判別する変数を取得 -->
 <% String editType = (String)session.getAttribute("editType"); %>
 
 <div class="flex_container">

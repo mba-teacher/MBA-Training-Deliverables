@@ -105,7 +105,7 @@ public class BoardServlet extends HttpServlet {
 		ArrayList<BoardInfoBean> permissionBoard=dao.GetBoards(permission);
 		//セッションに格納
 		session.setAttribute("permissionBoard",permissionBoard);
-		//記事IDをキーにして参加中か参加可能か判別する連想配列
+		//掲示板IDをキーにして参加中か参加可能か判別する連想配列
 		HashMap<Integer, Boolean> joinJudge = new HashMap<Integer, Boolean>();
 		//最初は不参加であるfalseを全てのキーの値に代入
 		for(int i=0;i<permissionBoard.size();i++) {
@@ -122,7 +122,7 @@ public class BoardServlet extends HttpServlet {
 			int id=boardInfo[i].getBoardId();
 			joinJudge.put(id, true);
 		}
-		//記事IDをキーにして参加中か参加可能か判別する連想配列をセッションに格納
+		//掲示板IDをキーにして参加中か参加可能か判別する連想配列をセッションに格納
 		session.setAttribute("joinJudge",joinJudge);
 
 		//所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)
@@ -166,6 +166,7 @@ public class BoardServlet extends HttpServlet {
 
 
 
+
 		//--------------記事クリック時、記事詳細へ遷移--------------
 		if(formName!=null&&formName.equals("postDetail")) {
 			String postId = req.getParameter("postId");
@@ -187,10 +188,23 @@ public class BoardServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/postDetail");
 			rd.forward(req, resp);
 		}else if(formName!=null&&formName.equals("myPage")) {
-			//掲示板本体画面に遷移
+			//マイページサーブレットに遷移
 			rd = req.getRequestDispatcher("/mypage");
 			rd.forward(req, resp);
-		}else {
+		}else if(formName!=null&&formName.equals("createBoard")) {
+			//掲示板作成サーブレット画面に遷移
+			rd = req.getRequestDispatcher("/createBoard");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("addressBook")) {
+			System.out.println("adress");
+			//アドレス帳サーブレットに遷移
+			rd = req.getRequestDispatcher("/addressbook");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("boardDetail")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/boardDetail");
+			rd.forward(req, resp);
+		}else{
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);
@@ -361,10 +375,23 @@ public class BoardServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/postDetail");
 			rd.forward(req, resp);
 		}else if(formName!=null&&formName.equals("myPage")) {
-			//掲示板本体画面に遷移
+			//マイページサーブレットに遷移
 			rd = req.getRequestDispatcher("/mypage");
 			rd.forward(req, resp);
-		}else {
+		}else if(formName!=null&&formName.equals("createBoard")) {
+			//掲示板作成サーブレット画面に遷移
+			rd = req.getRequestDispatcher("/createBoard");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("addressBook")) {
+			System.out.println("adress");
+			//アドレス帳サーブレットに遷移
+			rd = req.getRequestDispatcher("/addressbook");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("boardDetail")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/boardDetail");
+			rd.forward(req, resp);
+		}else{
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import data.BoardInfoBean;
 import data.DAO;
 import data.UserInfoBean;
 
+@WebServlet("/boardDetail")
 public class BoardDetailServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
@@ -25,9 +27,11 @@ public class BoardDetailServlet extends HttpServlet{
 		//sessionの開始
 		HttpSession session=req.getSession(true);
 
+		int boardId= Integer.parseInt(req.getParameter("boardId"));
+
 		//DBの情報を格納
-		BoardInfoBean boardInfo= dao.GetBoardInfo(1);
-		userlist.addAll(dao.GetBoardMembers(1));
+		BoardInfoBean boardInfo= dao.GetBoardInfo(boardId);
+		userlist.addAll(dao.GetBoardMembers(boardId));
 		//★↑の文の()内を引っ張ってきたBorad_IDの値に変える
 
 		//選択した掲示板の情報をセッションに格納

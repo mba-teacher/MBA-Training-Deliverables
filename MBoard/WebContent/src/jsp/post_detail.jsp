@@ -13,14 +13,24 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
+<!--				セッションから情報を取得 	        -->
+<!-- ログイン中のユーザー情報を取得 -->
 <% UserInfoBean userInfo=(UserInfoBean)session.getAttribute("userInfoBean"); %>
+<!-- 詳細表示している、メインの一番上の記事の情報を取得 -->
 <% PostInfoBean post = (PostInfoBean)session.getAttribute("postBean"); %>
+<!-- 詳細表示している、メインの一番上のコメントの情報を取得 -->
 <% CommentInfoBean detailComment = (CommentInfoBean)session.getAttribute("commentBean"); %>
+<!-- 詳細表示しているものが記事かコメントか判別する変数を取得 -->
 <% String detailType = (String)session.getAttribute("detailType"); %>
+<!-- 詳細表示している記事orコメントのコメントをリスト配列で取得 -->
 <% ArrayList<CommentInfoBean> comment = (ArrayList<CommentInfoBean>)session.getAttribute("CommentInfoList"); %>
+<!-- 詳細表示している記事orコメントのコメントのコメントを２次元リスト配列で取得 -->
 <% ArrayList<ArrayList<CommentInfoBean>> commentChain= (ArrayList<ArrayList<CommentInfoBean>>)session.getAttribute("CommentChainList"); %>
+<!-- コメントIDをキーにして、その確認済み数を取得する連想配列を取得 -->
 <% HashMap<Integer, Integer> readCount= (HashMap<Integer, Integer>)session.getAttribute("readCount"); %>
+<!-- コメントIDをキーにして、ログインユーザーが確認済みしてるかを取得する連想配列を取得 -->
 <% HashMap<Integer, Boolean> userRead= (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
+<!-- コメントIDをキーにして、そのコメント数を取得する連想配列を取得 -->
 <% HashMap<Integer, Integer> commentCount= (HashMap<Integer, Integer>)session.getAttribute("commentCount"); %>
 
 	<div class="flex_container">
@@ -30,15 +40,15 @@
 				<img src="src/img/logo_white.png">
 			</div>
 
-			<a href="#">
-				<img src="src/img/mb_0_link.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_address.png" class="nav-icon">
-			</a>
+			<!-- <a href="#"> -->
+				<img src="<%=request.getContextPath()%><%= userInfo.getProfileImgPath() %>" class="nav-icon" onclick="myPage()">
+			<!-- </a> -->
+			<%-- <a href="<%=request.getContextPath()%>/board"> --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon" onclick="board()">
+			<!-- </a> -->
+			<!-- <a href=""> -->
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
+			<!-- </a> -->
 			<a href="#">
 				<img src="src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
@@ -134,7 +144,7 @@
 						<div class="board-name-area">
 							<img src="src/img/mb_e_plus.png" class="board-icon">
 							<div class="board-name">会話詳細</div>
-							<img src="src/img/mb_2_syousai.png" class="board-menu">
+							<!-- <img src="src/img/mb_2_syousai.png" class="board-menu"> -->
 						</div>
 					</div>
 
@@ -440,8 +450,31 @@ $('.post').click(function(event){
 		formNameHidden.value="commentDetail";
 		hiddenForm.submit();
 	}
-
 });
+
+//自分のアイコンクリック時、サーブレット経由でマイページへ遷移
+function myPage(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	formNameHidden.value="myPage";
+	hiddenForm.submit();
+}
+
+//固定画面の掲示板アイコンクリック時、サーブレット経由で掲示板本体画面へ遷移
+function board(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	formNameHidden.value="board";
+	hiddenForm.submit();
+}
+
+//固定画面のアドレス帳クリック時、サーブレット経由でアドレス帳画面へ遷移
+function addressBook(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	formNameHidden.value="addressBook";
+	hiddenForm.submit();
+}
 
 //確認済みボタンクリック時
 function readClick(img){

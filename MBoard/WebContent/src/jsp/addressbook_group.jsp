@@ -28,7 +28,7 @@
 			<a href="<%=request.getContextPath()%>/mypage">
 				<img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon">
 			</a>
-			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
+			<a href="<%=request.getContextPath()%>/board">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
 			</a>
 			<%-- 同一ページには遷移しないようにaタグをはずす --%>

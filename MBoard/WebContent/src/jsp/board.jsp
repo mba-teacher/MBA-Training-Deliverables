@@ -12,24 +12,34 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-<%-- ユーザー自身のユーザー情報をセッションから受け取る --%>
+<!--				セッションから情報を取得 	        -->
+<!-- ログイン中のユーザー情報を取得 -->
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
-<%-- 掲示板情報を受け取る --%>
+<%-- ログインユーザーの参加可能な掲示板情報をリスト配列で取得 --%>
 <% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
+<%-- ログインユーザーの参加中の示板情報をリスト配列で取得 --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
+<%-- 掲示板IDをキーにして参加中か参加可能か判別する連想配列を取得 --%>
 <% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
+<!-- 所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)を取得 -->
 <% ArrayList<PostInfoBean[]> pibList=(ArrayList<PostInfoBean[]>)session.getAttribute("postInfoBeanList");  %>
+<!-- コメントIDをキーにして、その確認済み数を取得する連想配列を取得 -->
 <% HashMap<Integer, Integer> readCount = (HashMap<Integer, Integer>)session.getAttribute("readCount");%>
+<!-- コメントIDをキーにして、ログインユーザーが確認済みしてるかを取得する連想配列を取得 -->
 <% HashMap<Integer, Integer> commentCount = (HashMap<Integer, Integer>)session.getAttribute("comentCount"); %>
+<!-- コメントIDをキーにして、そのコメント数を取得する連想配列を取得 -->
 <% HashMap<Integer, Boolean> userRead = (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
-<%-- <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %> --%>
 <script>
+//掲示板の名前を格納する配列
 var boardName=[];
+//掲示板のIDを格納する配列
 var boardId=[];
+//DBから取得した情報をそれぞれの配列に格納
 <% for (int i = 0; i < bib.length; i++ ) { %>
 boardId.push('<%out.print(bib[i].getBoardId());%>');
 boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 <% } %>
+//選択中の掲示板のID
 var selectBoardId=boardId[0];
 </script>
 
@@ -40,16 +50,15 @@ var selectBoardId=boardId[0];
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="<%=request.getContextPath()%>/mypage">
-				<%-- <img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()"> --%>
-				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
-			</a>
-			<a href="">
+			<%-- <a href="<%=request.getContextPath()%>/mypage"> --%>
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()">
+			<!-- </a> -->
+			<!-- <a href=""> -->
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="<%=request.getContextPath()%>/addressbook">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
-			</a>
+			<!-- </a> -->
+			<%-- <a href="<%=request.getContextPath()%>/addressbook"> --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
+			<!-- </a> -->
 			<a href="#">
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 			</a>
@@ -188,7 +197,7 @@ var selectBoardId=boardId[0];
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
 						<input type="text" placeholder="検索" class="popup-board-search">
-						<div class="popup-board-add">新規追加</div>
+						<div class="popup-board-add" onclick="createBoard()">新規追加</div>
 					</div>
 					<div class="popup-board-close">
 						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
@@ -216,9 +225,9 @@ var selectBoardId=boardId[0];
 		<div class="popup-board-property">
 			<div class="link-hide popup-property-bg"></div>
 			<div class="popup-property-area">
-				<div class="property-item">掲示板詳細</div>
-				<div class="property-item">通知設定</div>
-				<div class="property-item">掲示板から退出</div>
+				<div class="property-item" onclick="boardDetail()" >掲示板詳細</div>
+				<div class="property-item" >通知設定</div>
+				<div class="property-item" onclick="leaveBoard()">掲示板から退出</div>
 			</div>
 		</div>
 
@@ -231,6 +240,7 @@ var selectBoardId=boardId[0];
 		<input type="hidden" name="formName" id="formNameHidden">
 		<input type="hidden" name="postId" id="postIdHidden">
 		<input type="hidden" name="boardId" id="boardIdHidden">
+		<input type="hidden" name="pageType" id="pageType">
 	</form>
 
 <script>
@@ -306,6 +316,34 @@ function myPage(){
 	hiddenForm.submit();
 }
 
+//固定画面のアドレス帳クリック時、サーブレット経由でアドレス帳画面へ遷移
+function addressBook(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	formNameHidden.value="addressBook";
+	hiddenForm.submit();
+}
+
+//新規掲示板作成をクリック時、サーブレット経由で掲示板作成画面へ遷移
+function createBoard(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	var pageType = document.getElementById( "pageType" ) ;
+	formNameHidden.value="createBoard";
+	pageType.value="create";
+	hiddenForm.submit();
+}
+
+//掲示板詳細をクリック時、サーブレット経由で掲示板詳細画面へ遷移
+function boardDetail(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" )
+	formNameHidden.value="boardDetail";
+	boardIdHidden.value=selectBoardId;
+	hiddenForm.submit();
+}
+
 //参加するボタンクリック時
 function joinBoard(id){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
@@ -317,7 +355,18 @@ function joinBoard(id){
 }
 
 //「掲示板から退出」テキスト押下時
-$('.property-item').click(function(event){
+function leaveBoard(){
+	target = $(event.target);
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	boardIdHidden.value=""+selectBoardId;
+	formNameHidden.value="leaveBoard";
+	hiddenForm.submit();
+}
+
+//「掲示板から退出」テキスト押下時
+/* $('.property-item').click(function(event){
 	 target = $(event.target);
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
@@ -326,7 +375,7 @@ $('.property-item').click(function(event){
 	formNameHidden.value="leaveBoard";
 	alert(selectBoardId);
 	hiddenForm.submit();
-});
+}); */
 
 
 //確認済みボタンクリック時

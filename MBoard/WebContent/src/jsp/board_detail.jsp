@@ -27,10 +27,10 @@
 				<img src="src/img/logo_white.png">
 			</div>
 
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/board">
 				<img src="src/img/mb_0_boad.png" class="nav-icon">
 			</a>
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/addressbook">
 				<img src="src/img/mb_0_address.png" class="nav-icon">
 			</a>
 			<a href="#">

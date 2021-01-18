@@ -14,11 +14,14 @@
 </head>
 <body>
 <%
+//ログインユーザーの定型文情報をセッションからリスト配列で取得
 ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
 TemplateInfoList=(ArrayList<TemplateInfoBean>)session.getAttribute("TemplateInfoList");
+//定型分情報を格納する変数を宣言
 Integer tempId[] = new Integer[10];
 String tempName[] = new String[10];
 String tempContent[] = new String[10];
+//定型分情報を代入
 int i=0;
 for(TemplateInfoBean bean:TemplateInfoList) {
 	tempId[i]=bean.getTempleId();
@@ -34,7 +37,7 @@ var deleteList=[];//削除行の要素
 var rowCount = 0;//定型文一覧の行数
 //定型文のID
 var tempId ={
-		edit1:"<%out.print(tempId[0]);%>",edit2:"<%out.print(tempId[1]);%>",edit3:"<%out.print(tempId[2]);%>",
+		edit1':"<%out.print(tempId[0]);%>",edit2:"<%out.print(tempId[1]);%>",edit3:"<%out.print(tempId[2]);%>",
 		edit4:"<%out.print(tempId[3]);%>",edit5:"<%out.print(tempId[4]);%>",edit6:"<%out.print(tempId[5]);%>",
 		edit7:"<%out.print(tempId[6]);%>",edit8:"<%out.print(tempId[7]);%>",edit9:"<%out.print(tempId[8]);%>",
 		edit10:"<%out.print(tempId[9]);%>"

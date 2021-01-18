@@ -238,6 +238,27 @@ public class PostDetailServlet extends HttpServlet {
 		if(formName!=null&&formName.equals("postEdit")) {
 			rd = req.getRequestDispatcher("/articleEdit");
 			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("myPage")) {
+			//マイページサーブレットに遷移
+			rd = req.getRequestDispatcher("/mypage");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("createBoard")) {
+			//掲示板作成サーブレット画面に遷移
+			rd = req.getRequestDispatcher("/createBoard");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("addressBook")) {
+			System.out.println("adress");
+			//アドレス帳サーブレットに遷移
+			rd = req.getRequestDispatcher("/addressbook");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("boardDetail")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/boardDetail");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("board")) {
+			//掲示板作成サーブレット画面に遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
 		}else {
 			//記事詳細画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/post_detail.jsp");

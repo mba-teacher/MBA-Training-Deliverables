@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import data.DAO;
 import data.TemplateInfoBean;
 
+@WebServlet("/template")
 public class TemplateServlet extends HttpServlet {
 
 	@Override
@@ -39,7 +41,7 @@ public class TemplateServlet extends HttpServlet {
 		String tempContent = req.getParameter("tempContent");
 
 		//セッションからログイン中のユーザーIDをいれる(現状はデバック用に10を格納)
-		int userId=10;
+		int userId=11;
 
 		//デバック用
 		System.out.println(action);

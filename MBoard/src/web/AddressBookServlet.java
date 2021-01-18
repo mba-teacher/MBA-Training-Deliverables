@@ -47,4 +47,35 @@ public class AddressBookServlet extends HttpServlet {
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession s = req.getSession(false);
+		String url = "";
+		if (s == null) {
+			url = "http://localhost:8080/MBoard/src/jsp/login.jsp";
+		} else {
+
+			DAO d = new DAO();
+			ArrayList<UserInfoBean> uib = d.GetAllMembers();
+			ArrayList<GroupInfoBean> gib = d.GetAllGroups();
+			ArrayList<ArrayList<UserInfoBean>> lists = new ArrayList<ArrayList<UserInfoBean>>();
+
+
+			//グループの数を出す
+			int max = gib.size();
+			//グループの数分回す
+			for (int i = 0; i < max; i++) {
+				ArrayList<UserInfoBean> list = d.GetGroupMembers(gib.get(i).getGroupId());
+				lists.add(list);
+			}
+
+			req.setAttribute("allMembers", uib);
+			req.setAttribute("groupMembers", lists);
+			req.setAttribute("groupNames", gib);
+			url = "/src/jsp/addressbook_group.jsp";
+		}
+		RequestDispatcher rd = req.getRequestDispatcher(url);
+		rd.forward(req, resp);
+	}
 }
