@@ -31,23 +31,25 @@
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<%-- 同一ページには遷移しない設定のためaタグをはずす --%>
-				<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon" id="my-icon">
+			<form name="nav-trans" method="post">
+			<%-- 同一ページには遷移しない設定のため遷移先なし --%>
+			<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon" id="my-icon">
 
-			<a href="<%=request.getContextPath()%>/board">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="<%=request.getContextPath()%>/addressbook">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
-			</a>
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/board">
+
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/addressbook">
+
+			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
+			</form>
 
 			<div class="nav-bottom">
-				<a href="#"> <img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
-				</a> <a href="#"> <img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
-				</a>
+				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
+				<%-- その他のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
 
 		</div>
@@ -131,14 +133,25 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_LINEWORKS.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_calendar.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_drive.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_mail.png">
 				</div>
 			</div>
 		</div>
+
+		<div class="popup-bottom-link">
+			<div class="link-hide popup-bg"></div>
+			<div class="popup-content">
+				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>

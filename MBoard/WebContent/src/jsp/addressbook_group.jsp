@@ -19,28 +19,32 @@
 <% ArrayList<UserInfoBean> uib = (ArrayList<UserInfoBean>)request.getAttribute("allMembers"); %>
 <% ArrayList<ArrayList<UserInfoBean>> lists = (ArrayList<ArrayList<UserInfoBean>>)request.getAttribute("groupMembers"); %>
 <% ArrayList<GroupInfoBean> gn = (ArrayList<GroupInfoBean>)request.getAttribute("groupNames"); %>
+
 	<div class="flex_container">
 		<div class="nav-area">
 			<div class="logo-area">
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="<%=request.getContextPath()%>/mypage">
-				<img src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>" class="nav-icon" id="my-icon">
-			</a>
-			<a href="<%=request.getContextPath()%>/board">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<%-- 同一ページには遷移しないようにaタグをはずす --%>
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
+			<form name="nav-trans" method="post">
+			<input type="image" src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"
+			id="my-icon" formaction="<%=request.getContextPath()%>/mypage">
 
-			<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon"id="link-show">
-			</a>
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/board">
+
+			<%-- 同一ページには遷移しないようする --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
+
+			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon"id="link-show">
+			</form>
 
 			<div class="nav-bottom">
-				<a href="#"> <img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon"></a>
-				<a href="#"> <img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon"></a>
+				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
+				<%-- その他のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
 		</div>
 
@@ -56,7 +60,7 @@
 
 					<div class="tab_content" id="address_content">
 						<div class="tab_content_description">
-							<input type="text" id="search-text" class="serch" name="serch"><!-- 検索窓は後追いで実装のため作動しません -->
+							<input type="text" id="search-text" class="serch" name="serch">
 
 							<div class="address_area">
 								<p class="address">アドレス一覧</p>
@@ -74,6 +78,7 @@
 									<% for (int i = 0; i < uib.size(); i++) { %>
 									<a class="user_information_area" href="javascript:setAndSubmit('<%=uib.get(i).getUserID()%>','postIconForm')">
 										<% if (uib.get(i).getProfileImgPath() == null || uib.get(i).getProfileImgPath().isEmpty()) { %>
+										<%-- 画像がないときの仮画像 --%>
 										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 										<% } else { %>
 										<img src="<%=request.getContextPath()%><%=uib.get(i).getProfileImgPath()%>" class="user_icon">
@@ -99,6 +104,7 @@
 											<% for (int j = 0; j < lists.get(i).size(); j++) { %>
 											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>','postIconForm')">
 												<% if (lists.get(i).get(j).getProfileImgPath() == null || lists.get(i).get(j).getProfileImgPath().isEmpty()) { %>
+												<%-- 画像がないときの仮画像 --%>
 												<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="user_icon">
 												<% } else { %>
 												<img src="<%=request.getContextPath()%><%=lists.get(i).get(j).getProfileImgPath()%>" class="user_icon">
@@ -126,14 +132,25 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_LINEWORKS.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_calendar.png">
 					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_drive.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_mail.png">
 				</div>
 			</div>
 		</div>
+
+		<div class="popup-bottom-link">
+			<div class="link-hide popup-bg"></div>
+			<div class="popup-content">
+				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 	<script src="<%=request.getContextPath()%>/src/js/addressbook.js"></script>

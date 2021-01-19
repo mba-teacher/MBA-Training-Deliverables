@@ -14,7 +14,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
 </head>
 <body>
-<% System.out.println("memberpage"); %>
 
 <%-- ユーザー自身のユーザー情報をセッションから受け取る --%>
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
@@ -30,23 +29,26 @@
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<a href="<%=request.getContextPath()%>/src/jsp/my_page.jsp">
-				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
-			</a>
-			<a href="<%=request.getContextPath()%>/src/jsp/board.jsp">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="<%=request.getContextPath()%>/addressbook">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
-			</a>
+			<form name="nav-trans" method="post">
+
+			<input type="image" src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"
+			id="my-icon" formaction="<%=request.getContextPath()%>/mypage">
+
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/board">
+
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/addressbook">
+
+			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
+			</form>
 
 			<div class="nav-bottom">
-				<a href="#"> <img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
-				</a> <a href="#"> <img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
-				</a>
+				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
+				<%-- その他のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
 
 		</div>
@@ -55,9 +57,9 @@
 			<div class="mypage_content">
 				<div class="profile_area">
 					<div>
-						<% if (uib.getProfileImgPath() == null || uib.getProfileImgPath() == "")  { %>
-							<%-- 画像がないとき名前の頭文字を出す --%>
-							<span class="profile_icon">高</span>
+						<% if (uib.getProfileImgPath() == null || uib.getProfileImgPath().isEmpty())  { %>
+							<%-- 画像がないときの仮画像 --%>
+							<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="profile_icon">
 						<% } else { %>
 							<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="profile_icon">
 						<% } %>
@@ -86,7 +88,8 @@
 									<div class="post_area">
 										<div >
 											<% if (pib[i].getPostUserIconPath() == null) { %>
-												<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="icon_area">
+												<%-- 画像がないときの仮画像 --%>
+												<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="icon_area">
 											<% } else { %>
 												<img src="<%=request.getContextPath()%><%= pib[i].getPostUserIconPath() %>" class="icon_area">
 											<% } %>
@@ -126,17 +129,27 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="popup-link">
-			<div class="link-hide popup-bg"></div>
-			<div class="popup-content">
-				<div class="popup-icon">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png"> <img
-						src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-				</div>
+	<div class="popup-link">
+		<div class="link-hide popup-bg"></div>
+		<div class="popup-content">
+			<div class="popup-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_LINEWORKS.png">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_calendar.png">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_drive.png">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_mail.png">
+			</div>
+		</div>
+	</div>
+
+	<div class="popup-bottom-link">
+		<div class="link-hide popup-bg"></div>
+		<div class="popup-content">
+			<div class="popup-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
 			</div>
 		</div>
 	</div>

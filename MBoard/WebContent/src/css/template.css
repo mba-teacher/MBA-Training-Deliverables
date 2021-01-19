@@ -45,10 +45,12 @@ input[type="text"]{
 
 }
 
+/*--定型文一覧--*/
 .template_list{
 	position:relative;
 	top :100px;
 	left:60px;
+	height: 80%;
 }
 
 #table{
@@ -128,7 +130,7 @@ input[type="text"]{
 }
 
 .foot{
-	text-align: right;
+	text-align: center;
 }
 
 .modal{

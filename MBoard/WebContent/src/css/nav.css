@@ -45,6 +45,11 @@ body {
 /*----------↓アイコン----------*/
 .nav-icon {
 	width:70px;
+	cursor: pointer;
+}
+
+.nav-icon:focus {
+	outline: none;
 }
 
 /*----------↓マイページ遷移用のアイコン----------*/
@@ -101,6 +106,21 @@ body {
 }
 
 
+/*----------↓その他ポップアップ----------*/
+.popup-bottom-link {
+	display:none;
+}
+
+.popup-content{
+	position:fixed;
+	bottom: 200px;
+	left:90px;
+	width:290px;
+	height:100px;
+	background-color:white;
+	border-radius:8px;
+	border:1px solid #999;
+}
 
 
 

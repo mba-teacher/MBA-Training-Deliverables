@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "data.PostInfoBean,data.CommentInfoBean,java.util.ArrayList"%>
+    import = "data.PostInfoBean,data.CommentInfoBean,data.UserInfoBean,java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +19,8 @@
 <% CommentInfoBean comment = (CommentInfoBean)session.getAttribute("editComment"); %>
 <!-- 編集するものが記事かコメントか判別する変数を取得 -->
 <% String editType = (String)session.getAttribute("editType"); %>
+<%-- ユーザー自身のユーザー情報をセッションから受け取る --%>
+<% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
 
 <div class="flex_container">
 		<div class="nav-area">
@@ -27,26 +29,26 @@
 				<img src="src/img/logo_white.png">
 			</div>
 
-			<a href="#">
-				<img src="src/img/mb_0_link.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_boad.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_address.png" class="nav-icon">
-			</a>
-			<a href="#">
-				<img src="src/img/mb_0_link.png" class="nav-icon" id="link-show">
-			</a>
+			<form name="nav-trans" method="post">
+
+			<input type="image" src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"
+			id="my-icon" formaction="<%=request.getContextPath()%>/mypage">
+
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/board">
+
+			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/addressbook">
+
+			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
+			</form>
 
 			<div class="nav-bottom">
-				<a href="#">
-				<img src="src/img/mb_0_notice.png" class="nav-icon">
-				</a>
-				<a href="#">
-				<img src="src/img/mb_0_other.png" class="nav-icon">
-				</a>
+				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
+				<%-- その他のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
 
 		</div>
@@ -107,12 +109,22 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-				<img src="src/img/mb_0_attendance.png">
-				<img src="src/img/mb_0_attendance.png">
-				<img src="src/img/mb_0_attendance.png">
-				<img src="src/img/mb_0_attendance.png">
-				<img src="src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_LINEWORKS.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_calendar.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_drive.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_mail.png">
+				</div>
 			</div>
+		</div>
+
+		<div class="popup-bottom-link">
+			<div class="link-hide popup-bg"></div>
+			<div class="popup-content">
+				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+				</div>
 			</div>
 		</div>
 	</div>

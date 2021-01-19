@@ -32,6 +32,12 @@
 <% HashMap<Integer, Boolean> userRead= (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
 <!-- コメントIDをキーにして、そのコメント数を取得する連想配列を取得 -->
 <% HashMap<Integer, Integer> commentCount= (HashMap<Integer, Integer>)session.getAttribute("commentCount"); %>
+<%-- ログインユーザーの参加中の示板情報をリスト配列で取得 --%>
+<% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
+<%-- ログインユーザーの参加可能な掲示板情報をリスト配列で取得 --%>
+<% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
+<%-- 掲示板IDをキーにして参加中か参加可能か判別する連想配列を取得 --%>
+<% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
 
 	<div class="flex_container">
 		<div class="nav-area">
@@ -49,17 +55,14 @@
 			<!-- <a href=""> -->
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
 			<!-- </a> -->
-			<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
-			</a>
+			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 
 			<div class="nav-bottom">
-				<a href="#">
+				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
-				</a>
-				<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
-				</a>
+				<%-- その他のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
 
 		</div>
@@ -73,64 +76,12 @@
 						<input type="text" class="">
 					</div>
 					<div class="board-list">
-
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-						<div class="board-item">
-							<div class="board-color"></div>
-							<p>掲示板名</p>
-						</div>
-
+						<!--切り替え可能な掲示板タブ-->
+						<ul id="tabGroup" class="tab-group">
+							<% for (int i = 0; i < bib.length; i++ ) { %>
+								<li class="tab">掲示板名:<%= bib[i].getBoardCategory() %></li>
+							<% } %>
+						</ul>
 					</div>
 					<div class="board-list-footer">
 						<div class="show-board-list">掲示板を登録</div>
@@ -331,11 +282,21 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_LINEWORKS.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_calendar.png">
 					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_drive.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_mail.png">
+				</div>
+			</div>
+		</div>
+
+		<div class="popup-bottom-link">
+			<div class="link-hide popup-bg"></div>
+			<div class="popup-content">
+				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
 				</div>
 			</div>
 		</div>
@@ -347,7 +308,7 @@
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
 						<input type="text" placeholder="検索" class="popup-board-search">
-						<div class="popup-board-add">新規追加</div>
+						<div class="popup-board-add" onclick="createBoard()">新規追加</div>
 					</div>
 					<div class="popup-board-close">
 						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
@@ -355,56 +316,18 @@
 				</div>
 				<div class="popup-board-content">
 
+					<%for(int i=0;i<permissionBoardList.size();i++){ %>
 					<div class="popup-board-item">
 						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
+						<p class="popup-board-name"><%= permissionBoardList.get(i).getBoardCategory() %></p>
+						<%int id=permissionBoardList.get(i).getBoardId(); %>
+						<%if(joinJudge.get(id)){ %>
+							<div class="board-join">参加中</div>
+						<%}else{ %>
+							<div class="board-leave" onclick="joinBoard('<%out.print(id);%>')">参加する</div>
+						<%} %>
 					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-leave">参加する</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
-					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
-						<p class="popup-board-name">掲示板名</p>
-						<div class="board-join">参加中</div>
-					</div>
+					<%} %>
 
 				</div>
 			</div>
@@ -419,15 +342,15 @@
 			</div>
 		</div>
 
-	</div>
+		<!-- 記事投稿以外の遷移イベントはすべてこのフォームを通る。
+		いいねボタン(確認済みボタン)押下時に数値は変わるが、実際にDB更新されるのは遷移される時なので、
+		遷移時に毎回BoardServletを通り、いいねテーブル更新後に、サーブレットから別ページに飛ぶようにしている。 -->
+		<form action="postDetail" method="post" id="hiddenForm">
+			<input type="hidden" name="formName" id="formNameHidden">
+			<input type="hidden" name="postId" id="postIdHidden">
+		</form>
 
-<!-- 記事投稿以外の遷移イベントはすべてこのフォームを通る。
-	いいねボタン(確認済みボタン)押下時に数値は変わるが、実際にDB更新されるのは遷移される時なので、
-	遷移時に毎回BoardServletを通り、いいねテーブル更新後に、サーブレットから別ページに飛ぶようにしている。 -->
-	<form action="postDetail" method="post" id="hiddenForm">
-		<input type="hidden" name="formName" id="formNameHidden">
-		<input type="hidden" name="postId" id="postIdHidden">
-	</form>
+	</div>
 
 <script>
 //フォームのサブミット二重処理防止
@@ -475,6 +398,28 @@ function addressBook(){
 	formNameHidden.value="addressBook";
 	hiddenForm.submit();
 }
+
+//---掲示板一覧ポップ画面ように2つ追加---
+//新規掲示板作成をクリック時、サーブレット経由で掲示板作成画面へ遷移
+function createBoard(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	var pageType = document.getElementById( "pageType" ) ;
+	formNameHidden.value="createBoard";
+	pageType.value="create";
+	hiddenForm.submit();
+}
+
+//参加するボタンクリック時
+function joinBoard(id){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	boardIdHidden.value=id;
+	formNameHidden.value="joinBoard";
+	hiddenForm.submit();
+}
+
 
 //確認済みボタンクリック時
 function readClick(img){
