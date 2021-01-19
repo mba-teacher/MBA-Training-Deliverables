@@ -157,16 +157,20 @@ public class BoardServlet extends HttpServlet {
 		HashMap<Integer, Integer> comentCount= new HashMap<Integer, Integer>();
 		//所属する掲示板のすべての記事のコメント数、確認済み数を連想配列に格納
 		for(int i=0;i<PostInfoList.size();i++) {
-			for(int x=0;x<PostInfoList.get(i).length;x++) {
-				int postId=PostInfoList.get(i)[x].getPostId();
-				ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
-				readCount.put(postId, readInfo.size());
-				comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
-				//ログインユーザーが記事に確認済みしてるかを取得する連想配列に格納
-				userRead.put(postId, false);
-				for(int y=0;y<readInfo.size();y++) {
-					if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
-						userRead.put(postId, true);
+			if(PostInfoList.get(i)==null) {
+				System.out.println(i+"null");
+			}else {
+				for(int x=0;x<PostInfoList.get(i).length;x++) {
+					int postId=PostInfoList.get(i)[x].getPostId();
+					ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
+					readCount.put(postId, readInfo.size());
+					comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
+					//ログインユーザーが記事に確認済みしてるかを取得する連想配列に格納
+					userRead.put(postId, false);
+					for(int y=0;y<readInfo.size();y++) {
+						if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
+							userRead.put(postId, true);
+						}
 					}
 				}
 			}
@@ -248,11 +252,8 @@ public class BoardServlet extends HttpServlet {
 		//DAOインスタンス作成
 		DAO dao=new DAO();
 
-		//デバックよう。ログインしている状態で始める。
 		//DBから取得したログインユーザー情報をセッションに格納
-		UserInfoBean userInfo=dao.Login("id1", "pass1");
-		session.setAttribute("userInfoBean",userInfo);
-
+		UserInfoBean userInfo=(UserInfoBean)session.getAttribute("userInfoBean");
 
 
 		//--------------確認済みを変更した場合DBの確認済みテーブルを変更--------------
@@ -313,12 +314,23 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		//--------------掲示板本体画面に必要なDB情報を取得し、セッションに格納--------------
+		//全ユーザー情報をDBから取得
+		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
+		userlist.addAll(dao.GetAllMembers());
+		//ユーザーIDをキーにして、そのユーザー情報を取得する連想配列
+		HashMap<Integer, UserInfoBean> userIdHash = new HashMap<Integer, UserInfoBean>();
+		for(int i=0;i<userlist.size();i++) {
+			userIdHash.put(userlist.get(i).getUserID(),userlist.get(i));
+		}
+		//連想配列をセッションに格納
+		session.setAttribute("userIdHash", userIdHash);
+
 		//参加可能掲示板の掲示板情報をDBから取得
 		ArrayList<BoardPermissionInfoBean> permission=dao.GetPermissionInfo(userInfo.getUserID());
 		ArrayList<BoardInfoBean> permissionBoard=dao.GetBoards(permission);
 		//セッションに格納
 		session.setAttribute("permissionBoard",permissionBoard);
-		//記事IDをキーにして参加中か参加可能か判別する連想配列
+		//掲示板IDをキーにして参加中か参加可能か判別する連想配列
 		HashMap<Integer, Boolean> joinJudge = new HashMap<Integer, Boolean>();
 		//最初は不参加であるfalseを全てのキーの値に代入
 		for(int i=0;i<permissionBoard.size();i++) {
@@ -335,7 +347,7 @@ public class BoardServlet extends HttpServlet {
 			int id=boardInfo[i].getBoardId();
 			joinJudge.put(id, true);
 		}
-		//記事IDをキーにして参加中か参加可能か判別する連想配列をセッションに格納
+		//掲示板IDをキーにして参加中か参加可能か判別する連想配列をセッションに格納
 		session.setAttribute("joinJudge",joinJudge);
 
 		//所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)
@@ -347,6 +359,12 @@ public class BoardServlet extends HttpServlet {
 		//セッションに格納
 		session.setAttribute("postInfoBeanList",PostInfoList);
 
+		//ログインユーザーの定型文情報を取得
+		ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
+		TemplateInfoList=dao.GetTemplates(userInfo.getUserID());
+		//セッションに格納
+		session.setAttribute("TemplateInfoList",TemplateInfoList);
+
 		//記事IDをキーにして、その確認済み数を取得する連想配列
 		HashMap<Integer, Integer> readCount = new HashMap<Integer, Integer>();
 		//記事IDをキーにして、ログインユーザーが確認済みしてるかを取得する連想配列
@@ -355,16 +373,20 @@ public class BoardServlet extends HttpServlet {
 		HashMap<Integer, Integer> comentCount= new HashMap<Integer, Integer>();
 		//所属する掲示板のすべての記事のコメント数、確認済み数を連想配列に格納
 		for(int i=0;i<PostInfoList.size();i++) {
-			for(int x=0;x<PostInfoList.get(i).length;x++) {
-				int postId=PostInfoList.get(i)[x].getPostId();
-				ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
-				readCount.put(postId, readInfo.size());
-				comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
-				//ログインユーザーが記事に確認済みしてるかを取得する連想配列に格納
-				userRead.put(postId, false);
-				for(int y=0;y<readInfo.size();y++) {
-					if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
-						userRead.put(postId, true);
+			if(PostInfoList.get(i)==null) {
+				System.out.println(i+"null");
+			}else {
+				for(int x=0;x<PostInfoList.get(i).length;x++) {
+					int postId=PostInfoList.get(i)[x].getPostId();
+					ArrayList<ReadInfoBean> readInfo= dao.GetReadInfo(postId);
+					readCount.put(postId, readInfo.size());
+					comentCount.put(postId, dao.GetCommentInfo(postId,"post").size());
+					//ログインユーザーが記事に確認済みしてるかを取得する連想配列に格納
+					userRead.put(postId, false);
+					for(int y=0;y<readInfo.size();y++) {
+						if(userInfo.getUserID()==readInfo.get(y).getReadUserId()) {
+							userRead.put(postId, true);
+						}
 					}
 				}
 			}
@@ -375,8 +397,6 @@ public class BoardServlet extends HttpServlet {
 		session.setAttribute("userRead",userRead);
 		//コメント数を取得する連想配列をセッションに格納
 		session.setAttribute("comentCount",comentCount);
-
-
 
 
 		//--------------記事クリック時、記事詳細へ遷移--------------
@@ -415,6 +435,14 @@ public class BoardServlet extends HttpServlet {
 			//掲示板詳細サーブレットに遷移
 			rd = req.getRequestDispatcher("/boardDetail");
 			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("template")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/template");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("memberPage")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/member");
+			rd.forward(req, resp);
 		}else{
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
@@ -422,5 +450,8 @@ public class BoardServlet extends HttpServlet {
 		}
 
 	}
+
+
+
 
 }

@@ -93,6 +93,17 @@ public class PostDetailServlet extends HttpServlet {
 		}
 
 		//--------------掲示板詳細画面に必要なDB情報を取得し、セッションに格納--------------
+		//全ユーザー情報をDBから取得
+		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
+		userlist.addAll(dao.GetAllMembers());
+		//ユーザーIDをキーにして、そのユーザー情報を取得する連想配列
+		HashMap<Integer, UserInfoBean> userIdHash = new HashMap<Integer, UserInfoBean>();
+		for(int i=0;i<userlist.size();i++) {
+			userIdHash.put(userlist.get(i).getUserID(),userlist.get(i));
+		}
+		//連想配列をセッションに格納
+		session.setAttribute("userIdHash", userIdHash);
+
 		//記事IDのbeanをセッションから取得
 		PostInfoBean postBean=new PostInfoBean();
 		postBean=(PostInfoBean)session.getAttribute("postBean");
@@ -164,7 +175,7 @@ public class PostDetailServlet extends HttpServlet {
 			}
 			session.setAttribute("postUserRead",bool);
 			//詳細コメントのコメント数をセッションに格納
-			session.setAttribute("postCommentCount",dao.GetCommentInfo(commentBean.getCommentId(),"comment").size());
+			session.setAttribute("detailCommentCount",dao.GetCommentInfo(commentBean.getCommentId(),"comment").size());
 
 			//詳細コメントのコメントをリスト配列で取得
 			CommentInfoList=new ArrayList<CommentInfoBean>();
@@ -255,6 +266,10 @@ public class PostDetailServlet extends HttpServlet {
 		}else if(formName!=null&&formName.equals("board")) {
 			//掲示板作成サーブレット画面に遷移
 			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("memberPage")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/member");
 			rd.forward(req, resp);
 		}else {
 			//記事詳細画面に遷移

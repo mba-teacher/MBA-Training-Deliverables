@@ -16,6 +16,8 @@
 <!--				セッションから情報を取得 	        -->
 <!-- ログイン中のユーザー情報を取得 -->
 <% UserInfoBean userInfo=(UserInfoBean)session.getAttribute("userInfoBean"); %>
+<%-- ユーザーIDをキーにして、そのユーザー情報を取得する連想配列を取得 --%>
+<% HashMap<Integer, UserInfoBean> userIdHash = (HashMap<Integer, UserInfoBean>)session.getAttribute("userIdHash");%>
 <!-- 詳細表示している、メインの一番上の記事の情報を取得 -->
 <% PostInfoBean post = (PostInfoBean)session.getAttribute("postBean"); %>
 <!-- 詳細表示している、メインの一番上のコメントの情報を取得 -->
@@ -38,14 +40,16 @@
 <% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
 <%-- 掲示板IDをキーにして参加中か参加可能か判別する連想配列を取得 --%>
 <% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
+<script>
+//ログインユーザーのID
+var userId='<%out.print(userInfo.getUserID());%>';
+</script>
 
 	<div class="flex_container">
 		<div class="nav-area">
-
 			<div class="logo-area">
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
-
 			<!-- <a href="#"> -->
 				<img src="<%=request.getContextPath()%><%= userInfo.getProfileImgPath() %>" class="nav-icon" onclick="myPage()" id="my-icon">
 			<!-- </a> -->
@@ -120,10 +124,12 @@
 					<%if(detailType.equals("post")){%>
 							<!-- 記事IDとコメントIDのかぶり防止に記事IDを負の値にしている -->
 							<%int postId=post.getPostId()*-1;%>
+							<%int postUserId=post.getPostUserId();%>
 						<div class="post" name="mainDtail" id="<%out.print(postId);%>">
-							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
+						<img src="<%=request.getContextPath()%><%= userIdHash.get(postUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(postUserId);%>')">
+							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>
 							<div class="post-board-name"><%= post.getPostTitle() %></div>
-							<div class="post-user-name">投稿者名</div>
+							<div class="post-user-name"><%=userIdHash.get(postUserId).getUserName() %></div>
 							<div class="post-date"><%=post.getPostDate()%></div>
 							<div class="clear"></div>
 							<div class="post-letter"><%=post.getPostContents()%><br></div>
@@ -154,17 +160,19 @@
 						</div>
 						<%}else if(detailType.equals("comment")){%>
 						<% int detailId=detailComment.getCommentId();%>
+						<% int detailUserId=detailComment.getCommentUserId();%>
 						<div class="post" name="mainDtail" id="<%out.print(detailId);%>">
-							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
+							<img src="<%=request.getContextPath()%><%= userIdHash.get(detailUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(detailUserId);%>')">
+							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>
 							<div class="post-board-name">コメント</div>
-							<div class="post-user-name">投稿者名</div>
+							<div class="post-user-name"><%=userIdHash.get(detailUserId).getUserName() %></div>
 							<div class="post-date"><%= detailComment.getCommentDate() %></div>
 							<div class="clear"></div>
 							<div class="post-letter"><%=detailComment.getCommentContents()%><br></div>
 							<div class="post-icon-area">
 								<div class="comment">
 									<img src="<%=request.getContextPath()%>/src/img/mb_i_comment.png">
-									<span class="number"><%= session.getAttribute("postCommentCount") %></span>コメント
+									<span class="number"><%= session.getAttribute("detailCommentCount") %></span>コメント
 								</div>
 								<div class="good">
 									<img class="readButton" src="<%=request.getContextPath()%>/src/img/mb_j_good.png" onclick="readClick('<%out.print(detailId);%>')">
@@ -190,11 +198,13 @@
 
 						<% for (int i = 0; i < comment.size(); i++ ) { %>
 						<%int commentId= comment.get(i).getCommentId();%>
+						<% int commentUserId=detailComment.getCommentUserId();%>
 						<div class="post post-comment" id="<%out.print(commentId);%>">
-							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
-							<div class="post-board-name"><%= commentId %></div>
+						<img src="<%=request.getContextPath()%><%= userIdHash.get(commentUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(commentUserId);%>')">
+							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>
+							<%-- <div class="post-board-name"><%= commentId %></div> --%>
 							<%-- <div class="post-comment-for"><%= post.getPostTitle() %>へのコメント</div> --%>
-							<div class="post-user-name">投稿者名</div>
+							<div class="post-user-name"><%=userIdHash.get(commentUserId).getUserName() %></div>
 							<div class="post-date"><%= comment.get(i).getCommentDate() %></div>
 							<div class="clear"></div>
 							<div class="post-letter"><%= comment.get(i).getCommentContents() %></div>
@@ -226,6 +236,7 @@
 
 							<% for (int x = 0; x < commentChain.get(i).size(); x++ ) { %>
 							<%int commentChainId= commentChain.get(i).get(x).getCommentId();%>
+							<% int chainUserId=commentChain.get(i).get(x).getCommentUserId();%>
 							<div class="tree-area">
 							<div class="comment-branch">
 								<div class="branch-border border-top"></div>
@@ -234,10 +245,11 @@
 								<%} %>
 							</div>
 							<div class="post post-comment post-tree" id="<%out.print(commentChainId);%>">
-								<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
-								<div class="post-board-name"><%= commentChainId %></div>
+							<img src="<%=request.getContextPath()%><%= userIdHash.get(chainUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(chainUserId);%>')">
+								<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>
+								<%-- <div class="post-board-name"><%= commentChainId %></div> --%>
 								<%-- <div class="post-comment-for"><%= post.getPostTitle() %>へのコメントのコメント</div> --%>
-								<div class="post-user-name">投稿者名</div>
+								<div class="post-user-name"><%=userIdHash.get(chainUserId).getUserName() %></div>
 								<div class="post-date"><%= commentChain.get(i).get(x).getCommentDate() %></div>
 								<div class="clear"></div>
 								<div class="post-letter"><%= commentChain.get(i).get(x).getCommentContents() %></div>
@@ -348,6 +360,7 @@
 		<form action="postDetail" method="post" id="hiddenForm">
 			<input type="hidden" name="formName" id="formNameHidden">
 			<input type="hidden" name="postId" id="postIdHidden">
+			<input type="hidden" name="memberId" id="memberId">
 		</form>
 
 	</div>
@@ -368,7 +381,7 @@ $('.post').click(function(event){
 		postIdHidden.value=$(this).attr('id');
 		formNameHidden.value="postEdit";
 		hiddenForm.submit();
-	}else if(target.attr('class')!=="readButton" && $(this).attr('name')!=="mainDtail"){
+	}else if(target.attr('class')!=="readButton" && $(this).attr('name')!=="mainDtail"&& target.attr('class')!=="post-icon"){
 		postIdHidden.value=$(this).attr('id');
 		formNameHidden.value="commentDetail";
 		hiddenForm.submit();
@@ -396,6 +409,21 @@ function addressBook(){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var formNameHidden = document.getElementById( "formNameHidden" ) ;
 	formNameHidden.value="addressBook";
+	hiddenForm.submit();
+}
+
+//記事のプロフィールアイコンをクリック時、サーブレット経由でメンバーページ画面へ遷移
+//自分のアイコンの場合、マイページに遷移
+function memberPage(id){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" );
+	var memberId = document.getElementById( "memberId" );
+	var name="memberPage";
+	memberId.value=id;
+	if(id===userId){
+			name="myPage";
+		}
+	formNameHidden.value=name;
 	hiddenForm.submit();
 }
 
