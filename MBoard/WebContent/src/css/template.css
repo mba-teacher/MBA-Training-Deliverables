@@ -117,7 +117,7 @@ input[type="text"]{
 }
 
 .template_Column{
-	width:200px;
+	/* width:200px; */
 	text-align: left;
 }
 
@@ -127,6 +127,12 @@ input[type="text"]{
     border:none;
     border-bottom:solid 1px silver;
     border-collapse: collapse;
+    height: 40px;
+}
+
+/*---定型文一覧の1セル分の横幅---*/
+td {
+	width: 50px;
 }
 
 .foot{

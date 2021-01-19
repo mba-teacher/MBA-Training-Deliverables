@@ -104,11 +104,10 @@
 										<div class="post"><%= pib[i].getPostContents() %><!-- 投稿内容 --></div>
 									</div>
 									<% count++; %>
-									<% System.out.println("count:" + count); %>
 								<% } %>
 							<% } %>
 							<% session.setAttribute("count", count); %>
-							<% System.out.println("遷移前のcount:" + count); %>
+							<%-- <% System.out.println("遷移前のcount:" + count); %> --%>
 						</div>
 						<% if (count < pib.length) { %>
 							<div class="scroll">

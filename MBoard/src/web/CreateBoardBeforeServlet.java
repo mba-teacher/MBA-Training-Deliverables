@@ -67,7 +67,7 @@ public class CreateBoardBeforeServlet extends HttpServlet {
 			}
 			req.setAttribute("allMembers", uibs);
 		}
-		//System.out.println("servlet:" + url);
+
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}

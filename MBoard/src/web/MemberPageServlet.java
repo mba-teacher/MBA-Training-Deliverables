@@ -37,7 +37,7 @@ public class MemberPageServlet extends HttpServlet {
 
 			url = "/src/jsp/member_page.jsp";
 		}
-		//System.out.println("servlet:" + url);
+
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}

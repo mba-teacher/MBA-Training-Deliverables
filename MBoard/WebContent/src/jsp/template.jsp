@@ -127,10 +127,10 @@ var tempContent ={
 			<p >定型文一覧</p>
 			<table id="table" border="1"  >
 			    <tr class=foot>
-				        <td>
+				        <td colspan="1">
 				            <input type="button" value="＋" id="coladd" onclick="coladd()">
 				        </td>
-				        <td  colspan="2">
+				        <td colspan="4">
 				            定型文を追加
 				        </td>
 			    	</tr>
@@ -242,6 +242,8 @@ setTimeout(function(){    //x秒後に実行
 				var cell3 = row.insertCell();
 				//クラスを追加
 				cell1.className = 'template_Column';
+				//セル結合
+				cell1.colSpan = 3;
 
 				//行数と
 				rowCount++;

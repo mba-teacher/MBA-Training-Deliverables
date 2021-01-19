@@ -16,7 +16,13 @@ $(function(){
 	});
 
 	//---通知ポップアップ---
+	$("#alarm-show").click(function(){
+		$(".popup-alarm-list").fadeIn(100);
+	});
 
+	$(".link-hide").click(function(){
+		$(".popup-alarm-list").fadeOut(100);
+	});
 
 	//---その他ポップアップ---
 	$("#link-botoom-show").click(function(){

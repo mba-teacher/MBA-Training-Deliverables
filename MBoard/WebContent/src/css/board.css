@@ -398,6 +398,8 @@ textarea{
 	align-items:center;
 	margin-left: auto;
 	margin-right:10px;
+	/* カーソル設定 */
+	cursor: default;
 }
 
 .board-leave {
@@ -413,6 +415,8 @@ textarea{
 	margin-right:10px;
 	border:3px solid #ff9100;
 	box-sizing: border-box;
+	/* カーソル設定 */
+	cursor: pointer;
 }
 
 .popup-board-title{
@@ -444,6 +448,8 @@ textarea{
 	align-items:center;
 	margin-left: auto;
 	margin-right:20px;
+	/* カーソル設定 */
+	cursor: pointer;
 }
 
 .popup-board-close img{
@@ -488,7 +494,8 @@ textarea{
 }
 
 .property-item {
-	margin:3px 0 0 10px;
+	margin: 3px 0 0 10px;
+	cursor: default;
 }
 
 .property-item:last-of-type {

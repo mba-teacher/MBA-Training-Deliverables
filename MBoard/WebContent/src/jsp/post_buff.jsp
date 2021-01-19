@@ -15,8 +15,6 @@
 <body>
 <% PostInfoBean[] pib = (PostInfoBean[])session.getAttribute("postInfoBean"); %>
 <% int count = (int)session.getAttribute("count"); %>
-<%-- <%! int count = 1; %> --%>
-<%-- <% System.out.println("post_buff到着"); %> --%>
 
 	<div class="scroll">
 		<% int max = count + 2; %>
@@ -37,7 +35,6 @@
 		</div>
 		<% } %>
 		<% session.setAttribute("count", count); %>
-		<% System.out.println("count:" + count); %>
 		<% if (count < pib.length) {%>
 			<a class="jscroll-next" href="<%=request.getContextPath()%>/src/jsp/post_buff.jsp">次の記事へ</a>
 		<% } %>

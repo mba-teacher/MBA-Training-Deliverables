@@ -103,7 +103,7 @@
 
 /*----------↓アクセス制限----------*/
 
-input, .access {
+input[type="text"], .access {
 	width:290px;
 	height:30px;
 	border-radius:8px;

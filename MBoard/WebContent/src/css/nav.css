@@ -106,14 +106,57 @@ body {
 }
 
 
+/*----------↓通知ポップアップ----------*/
+.popup-alarm-list {
+	display: none;
+}
+
+.popup-alarm-list .popup-content {
+	position:fixed;
+	top: auto;
+	bottom: 10px;
+	left:90px;
+	width:290px;
+	height:500px;
+	background-color:white;
+	border-radius:8px;
+	border:1px solid #999;
+	padding: 1px 0;
+}
+
+.alarm-list-header {
+	border-bottom: solid 1px #9a9a9a;
+	padding-left: 10px;
+	padding-top: 2px;
+	height: 5%;
+}
+
+.popup-alarm-list .popup-content ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: scroll;
+	height: 95%;
+	font-size: 14px;
+}
+
+.alarm-list-item {
+	border: solid 0.5px #9a9a9a;
+}
+
+.bold {
+	font-weight: bold;
+}
+
 /*----------↓その他ポップアップ----------*/
 .popup-bottom-link {
 	display:none;
 }
 
-.popup-content{
+.popup-bottom-link .popup-content{
 	position:fixed;
-	bottom: 200px;
+	top: auto;
+	bottom: 10px;
 	left:90px;
 	width:290px;
 	height:100px;

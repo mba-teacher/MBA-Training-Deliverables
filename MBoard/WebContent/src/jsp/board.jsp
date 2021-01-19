@@ -71,17 +71,14 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 			<%-- <a href="<%=request.getContextPath()%>/addressbook"> --%>
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
 			<!-- </a> -->
-			<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
-			</a>
+			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 
 			<div class="nav-bottom">
-				<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
-				</a>
-				<a href="#">
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon">
-				</a>
+				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon" id="alarm-show">
+				<%-- その他のポップアップを出すだけなので遷移先なし --%>
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
 
 		</div>
@@ -193,11 +190,38 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_LINEWORKS.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_calendar.png">
 					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_attendance.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_drive.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_mail.png">
+				</div>
+			</div>
+		</div>
+
+		<div class="popup-alarm-list">
+			<div class="link-hide popup-bg"></div>
+			<div class="popup-content">
+				<div class="alarm-list-header">通知</div>
+				<ul>
+					<li class="alarm-list-item">
+						<p><span class="bold">ユーザー名</span>があなたのコメントに反応しました。</p>
+						<p class="alarm-detail">投稿内容、投稿内容</p>
+					</li>
+					<li class="alarm-list-item">
+						<p><span class="bold">ユーザー名</span>があなたのコメントに反応しました。</p>
+						<p class="alarm-detail">投稿内容、投稿内容</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="popup-bottom-link">
+			<div class="link-hide popup-bg"></div>
+			<div class="popup-content">
+				<div class="popup-icon">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
 				</div>
 			</div>
 		</div>
@@ -254,18 +278,20 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 			</div>
 		</div>
 
+		<!-- 記事投稿以外の遷移イベントはすべてこのフォームを通る。
+		いいねボタン(確認済みボタン)押下時に数値は変わるが、実際にDB更新されるのは遷移される時なので、
+		遷移時に毎回BoardServletを通り、いいねテーブル更新後に、サーブレットから別ページに飛ぶようにしている。 -->
+		<form action="board" method="post" id="hiddenForm">
+			<input type="hidden" name="formName" id="formNameHidden">
+			<input type="hidden" name="postId" id="postIdHidden">
+			<input type="hidden" name="boardId" id="boardIdHidden">
+			<input type="hidden" name="pageType" id="pageType">
+			<input type="hidden" name="memberId" id="memberId">
+		</form>
+
 	</div>
 
-<!-- 記事投稿以外の遷移イベントはすべてこのフォームを通る。
-	いいねボタン(確認済みボタン)押下時に数値は変わるが、実際にDB更新されるのは遷移される時なので、
-	遷移時に毎回BoardServletを通り、いいねテーブル更新後に、サーブレットから別ページに飛ぶようにしている。 -->
-	<form action="board" method="post" id="hiddenForm">
-		<input type="hidden" name="formName" id="formNameHidden">
-		<input type="hidden" name="postId" id="postIdHidden">
-		<input type="hidden" name="boardId" id="boardIdHidden">
-		<input type="hidden" name="pageType" id="pageType">
-		<input type="hidden" name="memberId" id="memberId">
-	</form>
+
 
 <script>
 
