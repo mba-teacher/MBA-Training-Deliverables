@@ -187,7 +187,7 @@ textarea{
 	border:none;
 }
 
-.post-form-content{
+#post-form-content{
 	margin-top:10px;
 	width:98%;
 	height:150px;
@@ -519,7 +519,7 @@ textarea{
 	top:360px;
 	left:470px;
 	width:160px;
-	height:100px;
+	height:350px;
 	background-color:white;
 	box-shadow: 0 0px 10px 0 rgba(0, 0, 0, .4);
 	border-radius:8px;

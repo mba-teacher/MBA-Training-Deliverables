@@ -41,7 +41,7 @@
 			</div>
 
 			<!-- <a href="#"> -->
-				<img src="<%=request.getContextPath()%><%= userInfo.getProfileImgPath() %>" class="nav-icon" onclick="myPage()">
+				<img src="<%=request.getContextPath()%><%= userInfo.getProfileImgPath() %>" class="nav-icon" onclick="myPage()" id="my-icon">
 			<!-- </a> -->
 			<%-- <a href="<%=request.getContextPath()%>/board"> --%>
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon" onclick="board()">
@@ -142,7 +142,7 @@
 
 					<div class="board-header">
 						<div class="board-name-area">
-							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon">
+							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon"> --%>
 							<div class="board-name">会話詳細</div>
 							<!-- <img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu"> -->
 						</div>
@@ -242,7 +242,7 @@
 						<div class="post post-comment" id="<%out.print(commentId);%>">
 							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 							<div class="post-board-name"><%= commentId %></div>
-							<div class="post-comment-for"><%= post.getPostTitle() %>へのコメント</div>
+							<%-- <div class="post-comment-for"><%= post.getPostTitle() %>へのコメント</div> --%>
 							<div class="post-user-name">投稿者名</div>
 							<div class="post-date"><%= comment.get(i).getCommentDate() %></div>
 							<div class="clear"></div>
@@ -285,7 +285,7 @@
 							<div class="post post-comment post-tree" id="<%out.print(commentChainId);%>">
 								<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
 								<div class="post-board-name"><%= commentChainId %></div>
-								<div class="post-comment-for"><%= post.getPostTitle() %>へのコメントのコメント</div>
+								<%-- <div class="post-comment-for"><%= post.getPostTitle() %>へのコメントのコメント</div> --%>
 								<div class="post-user-name">投稿者名</div>
 								<div class="post-date"><%= commentChain.get(i).get(x).getCommentDate() %></div>
 								<div class="clear"></div>

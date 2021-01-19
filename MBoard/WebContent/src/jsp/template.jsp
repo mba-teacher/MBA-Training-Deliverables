@@ -68,7 +68,7 @@ var tempContent ={
 			</div>
 
 			 <a href="<%=request.getContextPath()%>/mypage">
-				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" >
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" id="my-icon">
 			</a>
 			<a href="<%=request.getContextPath()%>/board">
 				<img src="src/img/mb_0_boad.png" class="nav-icon">
@@ -109,7 +109,7 @@ var tempContent ={
 		<div class=top>
 			<h1 class=title>定型文編集画面</h1>
 		 	<p class="notice"><%out.print(session.getAttribute("notice"));%></p>
-			<form class="back_button"><input type="button" value="戻る" ></form>
+			<!-- <form class="back_button"><input type="button" value="戻る" ></form> -->
 		</div>
 
 	<div class=template>

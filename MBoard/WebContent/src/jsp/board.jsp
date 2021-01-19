@@ -43,6 +43,12 @@ boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 <% } %>
 //選択中の掲示板のID
 var selectBoardId=boardId[0];
+//定型文の内容を格納する配列
+var templateContent=[];
+//DBから取得した定型文情報をそれぞれの配列に格納
+<% for (int i = 0; i < TemplateList.size(); i++ ) { %>
+templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
+<% } %>
 </script>
 
 	<div class="flex_container">
@@ -53,7 +59,7 @@ var selectBoardId=boardId[0];
 			</div>
 
 			<%-- <a href="<%=request.getContextPath()%>/mypage"> --%>
-				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()">
+				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()" id="my-icon">
 			<!-- </a> -->
 			<!-- <a href=""> -->
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
@@ -103,6 +109,7 @@ var selectBoardId=boardId[0];
 					<div class="board-header">
 						<div class="board-name-area">
 							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon">
+							<img src="<%=request.getContextPath()%><%= bib[0].getBoardImgPath() %>" >
 							<div id="boardName" class="board-name"><%= bib[0].getBoardCategory() %></div>
 							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
 						</div>
@@ -112,21 +119,11 @@ var selectBoardId=boardId[0];
 						<form action="board" method="post" class="form" id="postForm">
 							<input class="post-form" name="postTitle" placeholder="なんでも投稿できます">
 							<div class="post-detail">
-								<textarea class="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
+								<textarea id="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
 										<div class="template-icon">
 											<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png" class="template-menu" >
-										</div>
-
-										<div class="popup-template-property">
-											<div class="link-hide template-property-bg"></div>
-											<div class="template-property-area">
-												<div class="template-item">定型文一覧　<input type="button" value="編集" onclick="template()"></input></div>
-												<%for(int i=0;i<TemplateList.size();i++){ %>
-													<div class="template-item" onclick="setTemplate('<%out.print(i);%>')"><%= TemplateList.get(i).getTempleName() %></div>
-												<%} %>
-											</div>
 										</div>
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
@@ -144,9 +141,10 @@ var selectBoardId=boardId[0];
 								<div class="panel">
 									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
 								<div class="post" name='<%out.print(pibList.get(i)[x].getPostId());%>'>
-								<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">
+								<img src="<%=request.getContextPath()%><%= pibList.get(i)[x].getPostUserId() %>" class="post-icon">
+								<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
-								<div class="post-user-name">投稿者名</div>
+								<div class="post-user-name"><%= pibList.get(i)[x].getPostUserId() %></div>
 								<div id="aaaaaaa" class="post-date"><%= pibList.get(i)[x].getPostDate() %></div>
 								<div class="clear"></div>
 								<div class="post-letter"><%= pibList.get(i)[x].getPostContents() %></div>
@@ -170,7 +168,7 @@ var selectBoardId=boardId[0];
 									</div>
 								</div>
 								<div class="post-detail-button">
-									<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png">
+									<%-- <img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png"> --%>
 								</div>
 								</div>
 									<% } %>
@@ -218,7 +216,8 @@ var selectBoardId=boardId[0];
 
 					<%for(int i=0;i<permissionBoardList.size();i++){ %>
 					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
+						<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png"> --%>
+						<img src="<%=request.getContextPath()%><%= permissionBoardList.get(i).getBoardImgPath() %>" >
 						<p class="popup-board-name"><%= permissionBoardList.get(i).getBoardCategory() %></p>
 						<%int id=permissionBoardList.get(i).getBoardId(); %>
 						<%if(joinJudge.get(id)){ %>
@@ -239,6 +238,16 @@ var selectBoardId=boardId[0];
 				<div class="property-item" onclick="boardDetail()" >掲示板詳細</div>
 				<div class="property-item" >通知設定</div>
 				<div class="property-item" onclick="leaveBoard()">掲示板から退出</div>
+			</div>
+		</div>
+
+		<div class="popup-template-property">
+			<div class="link-hide template-property-bg"></div>
+			<div class="template-property-area">
+				<div class="template-item">定型文一覧　<input type="button" value="編集" onclick="template()"></input></div>
+				<%for(int i=0;i<TemplateList.size();i++){ %>
+				<div class="template-item" onclick="setTemplate('<%out.print(i);%>')"><%= TemplateList.get(i).getTempleName() %></div>
+				<%} %>
 			</div>
 		</div>
 
@@ -384,7 +393,10 @@ function leaveBoard(){
 }
 
 //定型文を投稿フォームに代入
-function setTemplate(){
+function setTemplate(i){
+	var postFormContent = document.getElementById( "post-form-content") ;
+	postFormContent.value+=templateContent[i];
+
 }
 
 //「掲示板から退出」テキスト押下時

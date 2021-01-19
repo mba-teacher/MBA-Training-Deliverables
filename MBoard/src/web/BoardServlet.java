@@ -98,6 +98,19 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		//--------------掲示板本体画面に必要なDB情報を取得し、セッションに格納--------------
+//		//全ユーザー情報をDBから取得
+//		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
+//		userlist.addAll(dao.GetAllMembers());
+//		//ユーザーIDをキーにして、そのユーザー情報を取得する連想配列
+//		HashMap<Integer, Integer> userIdHash = new HashMap<Integer, Integer>();
+//		for(int i=0;i<userlist.size();i++) {
+//
+//		}
+//		//セッションに格納
+//		session.setAttribute("userList", userlist);
+
+
+
 		//参加可能掲示板の掲示板情報をDBから取得
 		ArrayList<BoardPermissionInfoBean> permission=dao.GetPermissionInfo(userInfo.getUserID());
 		ArrayList<BoardInfoBean> permissionBoard=dao.GetBoards(permission);
