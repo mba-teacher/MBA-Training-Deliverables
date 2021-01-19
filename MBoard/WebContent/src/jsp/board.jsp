@@ -15,6 +15,8 @@
 <!--				セッションから情報を取得 	        -->
 <!-- ログイン中のユーザー情報を取得 -->
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
+<%-- ユーザーIDをキーにして、そのユーザー情報を取得する連想配列を取得 --%>
+<% HashMap<Integer, UserInfoBean> userIdHash = (HashMap<Integer, UserInfoBean>)session.getAttribute("userIdHash");%>
 <%-- ログインユーザーの参加可能な掲示板情報をリスト配列で取得 --%>
 <% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
 <%-- ログインユーザーの参加中の示板情報をリスト配列で取得 --%>
@@ -32,6 +34,8 @@
 <!-- コメントIDをキーにして、そのコメント数を取得する連想配列を取得 -->
 <% HashMap<Integer, Boolean> userRead = (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
 <script>
+//ログインユーザーのID
+var userId='<%out.print(myb.getUserID());%>';
 //掲示板の名前を格納する配列
 var boardName=[];
 //掲示板のIDを格納する配列
@@ -140,11 +144,13 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<% for (int i = 0; i < pibList.size(); i++ ) { %>
 								<div class="panel">
 									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
-								<div class="post" name='<%out.print(pibList.get(i)[x].getPostId());%>'>
-								<img src="<%=request.getContextPath()%><%= pibList.get(i)[x].getPostUserId() %>" class="post-icon">
-								<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>
+								<% int postId =pibList.get(i)[x].getPostId();%>
+								<% int postUserId =pibList.get(i)[x].getPostUserId();%>
+								<div class="post" name='<%out.print(postId);%>'>
+								<img src="<%=request.getContextPath()%><%= userIdHash.get(postUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(postUserId);%>')">
+								<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">--%>
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
-								<div class="post-user-name"><%= pibList.get(i)[x].getPostUserId() %></div>
+								<div class="post-user-name"> <%=userIdHash.get(postUserId).getUserName() %></div>
 								<div id="aaaaaaa" class="post-date"><%= pibList.get(i)[x].getPostDate() %></div>
 								<div class="clear"></div>
 								<div class="post-letter"><%= pibList.get(i)[x].getPostContents() %></div>
@@ -174,9 +180,6 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 									<% } %>
 								</div>
 							<% } %>
-
-
-
 						</div>
 
 					</div>
@@ -261,6 +264,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 		<input type="hidden" name="postId" id="postIdHidden">
 		<input type="hidden" name="boardId" id="boardIdHidden">
 		<input type="hidden" name="pageType" id="pageType">
+		<input type="hidden" name="memberId" id="memberId">
 	</form>
 
 <script>
@@ -317,7 +321,7 @@ $('.submit').on('click', function () {
 //記事をクリック時
 $('.post').click(function(event){
 	var target = $(event.target);
-	if(target.attr('class')!=="readButton"){
+	if(target.attr('class')!=="readButton"&& target.attr('class')!=="post-icon"){
 		var hiddenForm = document.getElementById( "hiddenForm" ) ;
 		var postIdHidden = document.getElementById( "postIdHidden" ) ;
 		var formNameHidden = document.getElementById( "formNameHidden" ) ;
@@ -360,6 +364,21 @@ function boardDetail(){
 	var boardIdHidden = document.getElementById( "boardIdHidden" )
 	formNameHidden.value="boardDetail";
 	boardIdHidden.value=selectBoardId;
+	hiddenForm.submit();
+}
+
+//記事のプロフィールアイコンをクリック時、サーブレット経由でメンバーページ画面へ遷移
+//自分のアイコンの場合、マイページに遷移
+ function memberPage(id){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" );
+	var memberId = document.getElementById( "memberId" );
+	var name="memberPage";
+	memberId.value=id;
+	if(id===userId){
+			name="myPage";
+		}
+	formNameHidden.value=name;
 	hiddenForm.submit();
 }
 

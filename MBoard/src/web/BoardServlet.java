@@ -98,18 +98,16 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		//--------------掲示板本体画面に必要なDB情報を取得し、セッションに格納--------------
-//		//全ユーザー情報をDBから取得
-//		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
-//		userlist.addAll(dao.GetAllMembers());
-//		//ユーザーIDをキーにして、そのユーザー情報を取得する連想配列
-//		HashMap<Integer, Integer> userIdHash = new HashMap<Integer, Integer>();
-//		for(int i=0;i<userlist.size();i++) {
-//
-//		}
-//		//セッションに格納
-//		session.setAttribute("userList", userlist);
-
-
+		//全ユーザー情報をDBから取得
+		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
+		userlist.addAll(dao.GetAllMembers());
+		//ユーザーIDをキーにして、そのユーザー情報を取得する連想配列
+		HashMap<Integer, UserInfoBean> userIdHash = new HashMap<Integer, UserInfoBean>();
+		for(int i=0;i<userlist.size();i++) {
+			userIdHash.put(userlist.get(i).getUserID(),userlist.get(i));
+		}
+		//連想配列をセッションに格納
+		session.setAttribute("userIdHash", userIdHash);
 
 		//参加可能掲示板の掲示板情報をDBから取得
 		ArrayList<BoardPermissionInfoBean> permission=dao.GetPermissionInfo(userInfo.getUserID());
@@ -220,6 +218,10 @@ public class BoardServlet extends HttpServlet {
 		}else if(formName!=null&&formName.equals("template")) {
 			//掲示板詳細サーブレットに遷移
 			rd = req.getRequestDispatcher("/template");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("memberPage")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/member");
 			rd.forward(req, resp);
 		}else{
 			//掲示板本体画面に遷移
