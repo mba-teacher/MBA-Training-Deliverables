@@ -60,8 +60,11 @@ public class ArticleEditServlet extends HttpServlet {
 			rd.forward(req, resp);
 		}else if(req.getParameter("save")!=null){
 			String editType= (String)session.getAttribute("editType");
+			String postContent = req.getParameter("post-content");
+			postContent=postContent.replace("\r\n", "<br>");
 			if(editType.equals("post")) {
 				PostInfoBean editPost = (PostInfoBean)session.getAttribute("editPost");
+				editPost.setPostContents(postContent);
 				dao.UpdatePost(editPost);
 			}else if(editType.equals("comment")) {
 				CommentInfoBean editComment=(CommentInfoBean)session.getAttribute("editComment");

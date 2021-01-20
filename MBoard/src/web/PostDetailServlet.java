@@ -142,23 +142,13 @@ public class PostDetailServlet extends HttpServlet {
 		//記事かコメントのIDを取得
 		String detailId = req.getParameter("postId");
 		//コメントの詳細表示の場合-----------------------------
-		if((formName!=null&&formName.equals("commentDetail"))||session.getAttribute("detailType").equals("comment")) {
+		if((formName!=null&&formName.equals("commentDetail"))||(session.getAttribute("detailType").equals("comment")&&formName!=null&&!(formName.equals("memberPage")||formName.equals("myPage")||formName.equals("board")))) {
 			//詳細画面が記事かコメントか判別するをセッションに記事(comment)を代入
 			session.setAttribute("detailType","comment");
-			//フォームから受け取ったコメントIDと一致するコメントのbeanを探す
+			//フォームから受け取ったコメントIDと一致するコメントのbeanを取得
 			CommentInfoBean commentBean=new CommentInfoBean();
-			for(int i=0;i<CommentInfoList.size();i++) {
-				if(CommentInfoList.get(i).getCommentId()==Integer.parseInt(detailId)) {
-					commentBean=CommentInfoList.get(i);
-				}
-			}
-			for(int a=0;a<CommentChainList.size();a++) {
-				for(int b=0;b<CommentChainList.get(a).size();b++) {
-					if(CommentChainList.get(a).get(b).getCommentId()==Integer.parseInt(detailId)) {
-						commentBean=CommentChainList.get(a).get(b);
-					}
-				}
-			}
+			int id=Integer.parseInt(detailId);
+			commentBean = dao.GetComment(id);
 			//詳細表示するコメントのbeanをセッションに格納
 			session.setAttribute("commentBean",commentBean);
 

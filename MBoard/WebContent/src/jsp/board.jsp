@@ -140,6 +140,9 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<div id="panelGroup" class="panel-group">
 						<% for (int i = 0; i < pibList.size(); i++ ) { %>
 								<div class="panel">
+								<%if(pibList.get(i)==null){ %>
+								 <p> まだ記事がありません</p>
+								<%}else{%>
 									<% for (int x = 0; x < pibList.get(i).length; x++ ) { %>
 								<% int postId =pibList.get(i)[x].getPostId();%>
 								<% int postUserId =pibList.get(i)[x].getPostUserId();%>
@@ -175,6 +178,8 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 								</div>
 								</div>
 									<% } %>
+
+									<%}%>
 								</div>
 							<% } %>
 						</div>

@@ -106,13 +106,13 @@ var userId='<%out.print(userInfo.getUserID());%>';
 						<form action="postDetail" method="post" class="form" id="postForm">
 							<input class="post-form" name="postTitle" placeholder="返信する" readonly>
 							<div class="post-detail">
-								<textarea class="post-form-content" name="postContent" placeholder="返信内容"  wrap="hand"></textarea>
+								<textarea id="post-form-content" name="postContent" placeholder="返信内容"  wrap="hand"></textarea>
 								<div class="post-option">
-									<div class="post-option-icon">
+									<div class="post-option-icon"><%--
  										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 										<!--<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> -->
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> --> --%>
 									</div>
 									<input type="hidden" name="formName" value="makeComment" >
 									<input type="submit" value="送信" class="submit">
@@ -198,7 +198,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 
 						<% for (int i = 0; i < comment.size(); i++ ) { %>
 						<%int commentId= comment.get(i).getCommentId();%>
-						<% int commentUserId=detailComment.getCommentUserId();%>
+						<% int commentUserId=comment.get(i).getCommentUserId();%>
 						<div class="post post-comment" id="<%out.print(commentId);%>">
 						<img src="<%=request.getContextPath()%><%= userIdHash.get(commentUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(commentUserId);%>')">
 							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon"> --%>

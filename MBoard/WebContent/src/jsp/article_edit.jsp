@@ -32,7 +32,7 @@
 			<form name="nav-trans" method="post">
 
 			<input type="image" src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"
-			id="my-icon" formaction="<%=request.getContextPath()%>/mypage">
+			id="my-icon" formaction="<%=request.getContextPath()%>/mypage" value="">
 
 			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
 			formaction="<%=request.getContextPath()%>/board">
@@ -75,16 +75,16 @@
 							<% }%>
 							<div class="post-detail">
 								<% if(editType.equals("post")){%>
-									<textarea class="post-form-content" name="post-content" placeholder="なんでも投稿できます"><%= post.getPostContents().replace("<br>", "\n") %></textarea>
+									<textarea class="post-form-content" name="post-content" placeholder="編集できます"><%= post.getPostContents().replace("<br>", "\n") %></textarea>
 								<% }else if(editType.equals("comment")){%>
-									<textarea class="post-form-content" name="post-content" placeholder="なんでも投稿できます" ><%= comment.getCommentContents().replace("<br>", "\n") %></textarea>
+									<textarea class="post-form-content" name="post-content" placeholder="編集できます" ><%= comment.getCommentContents().replace("<br>", "\n") %></textarea>
 								<% }%>
 								<div class="post-option">
-									<div class="post-option-icon">
+									<div class="post-option-icon"><!--
 										<img src="src/img/mb_g_letteredit.png">
 										<img src="src/img/mb_g_letteredit.png">
 										<img src="src/img/mb_g_letteredit.png">
-										<img src="src/img/mb_g_letteredit.png">
+										<img src="src/img/mb_g_letteredit.png"> -->
 									</div>
 								</div>
 							</div>
