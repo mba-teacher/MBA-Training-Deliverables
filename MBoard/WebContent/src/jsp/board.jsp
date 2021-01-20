@@ -109,7 +109,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 				<div class="board-content-area">
 					<div class="board-header">
 						<div class="board-name-area">
-							<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon">
+							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon"> --%>
 							<img src="<%=request.getContextPath()%><%= bib[0].getBoardImgPath() %>" >
 							<div id="boardName" class="board-name"><%= bib[0].getBoardCategory() %></div>
 							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
@@ -117,7 +117,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 					</div>
 
 					<div class="board-content">
-						<form action="board" method="post" class="form" id="postForm">
+						<form action="board" method="post" class="form" id="postForm" name="postForm"  >
 							<input class="post-form" name="postTitle" placeholder="なんでも投稿できます">
 							<div class="post-detail">
 								<textarea id="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
@@ -133,6 +133,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 								</div>
 							</div>
 						</form>
+						<!-- <p id="errortext" style="display: none; color: red; width:calc(100% - 220px);">空白項目があります</p> -->
 
 						<textarea class="search"></textarea>
 
@@ -348,6 +349,24 @@ jQuery(function($){
 $('.submit').on('click', function () {
 	  $(this).css('pointer-events','none');
 	});
+
+//記事投稿フォームクリック時、空白じゃないか判定
+/* function postFormCheck() {
+	var flag = 0;
+	//タイトルか内容が空白の場合、警告表示
+    if( document.postForm.postTitle.value === "" || document.postForm.postContent.value === "" ){
+        flag = 1;
+        //document.getElementById( 'errortext' ).style.display = "table"; //表示
+    }else{
+        //document.getElementById( 'errortext' ).style.display = "none"; //非表示
+    }
+    alert(flag);
+    if(flag == 1) {
+    	return false;  //送信しない
+    } else {
+    	return true;   //送信実行
+    }
+} */
 
 //記事をクリック時
 $('.post').click(function(event){

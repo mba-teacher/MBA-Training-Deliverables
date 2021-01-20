@@ -68,6 +68,7 @@ public class ArticleEditServlet extends HttpServlet {
 				dao.UpdatePost(editPost);
 			}else if(editType.equals("comment")) {
 				CommentInfoBean editComment=(CommentInfoBean)session.getAttribute("editComment");
+				editComment.setCommentContents(postContent);
 				dao.UpdateComment(editComment);
 			}
 			rd = req.getRequestDispatcher("/board");

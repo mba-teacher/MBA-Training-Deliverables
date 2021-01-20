@@ -114,6 +114,9 @@ var userId='<%out.print(userInfo.getUserID());%>';
 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> --> --%>
 									</div>
+									<%if(detailType.equals("comment")){%>
+									<input type="hidden" name="postId" value="<%out.print(detailComment.getCommentId());%>" >
+									<%}%>
 									<input type="hidden" name="formName" value="makeComment" >
 									<input type="submit" value="送信" class="submit">
 								</div>

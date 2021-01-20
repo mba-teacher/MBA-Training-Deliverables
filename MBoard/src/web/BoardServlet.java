@@ -236,8 +236,6 @@ public class BoardServlet extends HttpServlet {
 
 
 
-
-
 //------------------------------------------------------------------------------------------
 
 	@Override
@@ -373,7 +371,6 @@ public class BoardServlet extends HttpServlet {
 		//所属する掲示板のすべての記事のコメント数、確認済み数を連想配列に格納
 		for(int i=0;i<PostInfoList.size();i++) {
 			if(PostInfoList.get(i)==null) {
-				System.out.println(i+"null");
 			}else {
 				for(int x=0;x<PostInfoList.get(i).length;x++) {
 					int postId=PostInfoList.get(i)[x].getPostId();
@@ -449,8 +446,5 @@ public class BoardServlet extends HttpServlet {
 		}
 
 	}
-
-
-
 
 }
