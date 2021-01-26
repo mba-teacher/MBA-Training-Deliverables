@@ -63,7 +63,7 @@ public class DAO {
 
 		try{
 			//SQL文の指定に使う要素を格納する配列の定義
-			String[] whereTables = {UserInfoBean.LOGIN_ID_COLUMN,UserInfoBean.LOGIN_PASS_COLUMN};
+			String[] whereTables = {UserInfoBean.EMAIL_ADDRESS_COLUMN,UserInfoBean.LOGIN_PASS_COLUMN};
 			String[] whereValues = {user,pass};
 
 			//上記の配列を使用しSQLの呼び出し
