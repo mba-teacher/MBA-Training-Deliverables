@@ -1466,21 +1466,34 @@ public class DAO {
 	/*メソッド名:DeleteBoard()
 	 *引数:int boardId
 	 *戻り値:無し
-	 *処理:Board_Infoに掲示板管理IDを指定してSQL分を発行し、掲示板の情報を削除する。
+	 *処理:Board_Member_Infoに掲示板管理IDを指定してSQL分を発行し、掲示板のメンバー情報を削除する。
+	 *     Board_Permission_Infoに掲示板管理IDを指定してSQL分を発行し、掲示板の権限情報を削除する。
+	 *     Board_Infoに掲示板管理IDを指定してSQL分を発行し、掲示板の情報を削除する。
 	*/
 
-	public BoardInfoBean DeleteBoard(int boardId) throws ClassNotFoundException {
+	public BoardInfoBean DeleteBoard(int boardId) {
 		try {
 			//MySQLに接続する
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url + dbName, user, pass);
 			stmt = conn.createStatement();
 
-			//SQL文作成
+        	//Board_Member_Infoに対して発行するSQL文を作成
+        	String querym = "DELETE FROM Board_Member_Info WHERE Board_ID="+boardId;
+        	stmt.executeUpdate(querym);
+
+        	//Board_Permission_Infoに対して発行するSQL文を作成
+        	String queryp = "DELETE FROM Board_Permission_Info WHERE Board_ID="+boardId;
+        	stmt.executeUpdate(queryp);
+
+			//Board_Infoに対して発行するSQL文を作成
         	String query = "DELETE FROM Board_Info WHERE Board_ID="+boardId;
-        	int dele = stmt.executeUpdate(query);
+			//int dele =
+        	stmt.executeUpdate(query);
 
 		}catch(SQLException e){
+			e.printStackTrace();
+		}catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		//戻り値はないのでnullで返す
