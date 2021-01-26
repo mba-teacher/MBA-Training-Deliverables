@@ -26,7 +26,7 @@
 		<div class="nav-area">
 
 			<div class="logo-area">
-				<img src="src/img/logo_white.png">
+				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
 			<form name="nav-trans" method="post">
@@ -60,7 +60,7 @@
 				<div class="board-detail-content-area">
 
 					<%-- 掲示板名表示ヘッダー --%>
-					<div class="board-header">
+					<div class="board-header header-bg color<%=bib.getBoardColor()%>">
 						<div class="board-name-area">
 							<%-- ★↓掲示板画像のパス階層、要調整 --%>
 							<img src="src/img/<%=bib.getBoardImgPath() %>.png" class="board-icon">
@@ -74,11 +74,8 @@
 					<div class="board-content">
 						<div class="board-detail-area">
 							<div class="heading">掲示板詳細</div>
-							<div class="board-detail">掲示板詳細
-							<br><br><br><br><br><br><br><br><br>
-							<br><br><br><br><br><br><br><br><br>
-							<%= bib.getBoardContents() %></div>
-							<div class="heading">参加メンバー</div>
+							<div class="board-detail"><%= bib.getBoardContents() %></div>
+							<div class="heading">メンバー</div>
 							<div class="board-users">
 
 								<% for(int i=0;i<userlist.size();i++){ %>
@@ -123,7 +120,7 @@
 
 	</div>
 
-	<script src="src/js/nav.js"></script>
-	<script src="src/js/board.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
+	<script src="<%=request.getContextPath()%>/src/js/board.js"></script>
 </body>
 </html>

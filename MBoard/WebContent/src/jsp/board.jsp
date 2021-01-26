@@ -62,15 +62,12 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 				<img src="<%=request.getContextPath()%>/src/img/logo_white.png">
 			</div>
 
-			<%-- <a href="<%=request.getContextPath()%>/mypage"> --%>
-				<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()" id="my-icon">
-			<!-- </a> -->
-			<!-- <a href=""> -->
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
-			<!-- </a> -->
-			<%-- <a href="<%=request.getContextPath()%>/addressbook"> --%>
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
-			<!-- </a> -->
+			<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()" id="my-icon">
+
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
+
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
+
 			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
 			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
 
@@ -95,7 +92,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<!--切り替え可能な掲示板タブ-->
 						<ul id="tabGroup" class="tab-group">
 							<% for (int i = 0; i < bib.length; i++ ) { %>
-								<li class="tab">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<li class="tab color<%=bib[i].getBoardColor()%>">掲示板名:<%= bib[i].getBoardCategory() %></li>
 							<% } %>
 						</ul>
 
@@ -120,7 +117,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<form action="board" method="post" class="form" id="postForm" name="postForm"  >
 							<input class="post-form" name="postTitle" placeholder="なんでも投稿できます">
 							<div class="post-detail">
-								<textarea id="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="hand"></textarea>
+								<textarea id="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="soft"></textarea>
 								<div class="post-option">
 									<div class="post-option-icon">
 										<div class="template-icon">
@@ -309,7 +306,7 @@ var panelGroup = document.getElementById( "panelGroup" ) ;
 var tabFirstLi = ulElement.firstElementChild ;
 var panelFirst = panelGroup.firstElementChild ;
 //一番上の掲示板タブを表示させる
-tabFirstLi.className="tab is-active";
+tabFirstLi.classList.add("is-active");
 panelFirst.className="panel is-show";
 
 

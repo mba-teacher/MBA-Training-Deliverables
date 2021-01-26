@@ -91,3 +91,11 @@
 .user-name {
 	text-align:center;
 }
+
+
+
+/*ヘッダー背景*/
+.header-bg {
+	background:var(--tab-color);
+	margin-top: 20px;
+}
