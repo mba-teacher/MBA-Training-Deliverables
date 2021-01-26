@@ -176,7 +176,7 @@ body {
 
 .mypage_content{
 	width:calc(100vw - 80px);
-	background-color:#ddd;
+	background-color:#ddeaef;
 	border-radius:0 0 0 0 ;
 	text-align:center;
 }

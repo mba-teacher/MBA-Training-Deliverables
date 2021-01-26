@@ -130,7 +130,7 @@ input[name="tab_item"] {
 	padding:0px 0px 0;
 	clear:both;
 	overflow:hidden;
-	height:1000px;
+
 }
 
 .post_area{
@@ -139,6 +139,14 @@ input[name="tab_item"] {
 	height:250px;
 	margin-bottom:10px;
 	border-radius:8px;
+}
+
+.profile_area{
+	background:white;
+	box-sizing:border-box;
+	padding:20px ;
+	border-radius:8px;
+	margin-top:16px;
 }
 
 .icon_area{

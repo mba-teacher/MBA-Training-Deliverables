@@ -14,15 +14,17 @@ h1{
 	background-color: #fff;
 	border-radius:8px;
 	display: table;
-	margin: 20px 0;
+	margin: 20px 20px;
 	padding: 0px 4px;
 }
 
-.addresandgroup{
-	padding:20px ;
-	width: 1050px;
-}
 
+.addresandgroup{
+
+	width:calc(100vw - 80px);
+	border-radius:0 0 0 0 ;
+
+}
 
 
 
@@ -30,11 +32,14 @@ h1{
 
 .tabs {
 	margin-top:10px;  /* 50px */
+	margin-left:auto;
+	margin-right:auto;
+
 	padding-bottom:40px;
 	/* background-color:#fff; */
 	width:100%;  /* 500px */
 	min-width: 500px;
-	max-width:calc(100vw - 80px);
+	max-width:1000px;
 	/* margin:10px auto 0 auto; */
 }
 
@@ -91,7 +96,7 @@ input[name="tab_item"] {
 	clear:both;
 	overflow:hidden;
 	height:100%;
-	width:1050px;
+	width: 100%;
 }
 
 /*--------アドレスの内容--------*/
@@ -182,9 +187,9 @@ input[name="tab_item"] {
 /*--------↓検索用--------*/
 .serch {
 	position: absolute;
-	top: 110px;
-	left: 850px;
-	margin: 5px 10px;
+	top: 100px;
+
+	margin: 5px 800px;
 	font-size:20px;
 	transform: translateX(-50%);
     border-radius:8px;
