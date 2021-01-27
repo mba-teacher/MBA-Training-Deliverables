@@ -44,7 +44,7 @@
 .create-icon {
 	width:120px;
 	height:120px;
-	background-color:#aaa;
+	background-color:#ffffea;
 	border-radius:50%;
 	border: solid 0.5px #444;
 }
@@ -77,6 +77,16 @@
 .browse-button:hover {
 	opacity: 0.75;
 }
+
+/*-----------↓頭文字表示用-------------*/
+.create-icon .initial {
+	font-size: 50px;
+	font-weight: bold;
+	text-align: center;
+	margin: 0;
+	padding-top: 25px;
+}
+
 
 
 /*----------↓掲示板名----------*/
@@ -293,6 +303,10 @@ input[type=checkbox]:checked+label .checkbox::after{
 
 .cancel:hover,.submit:hover {
 	opacity: 0.75;
+}
+
+.cancel:focus,.submit:focus {
+	outline: none;
 }
 
 .cancel {

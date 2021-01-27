@@ -15,6 +15,9 @@
 <body>
 <%-- ユーザー自身のユーザー情報をセッションから受け取る --%>
 <% UserInfoBean myb = (UserInfoBean)session.getAttribute("userInfoBean"); %>
+<%-- プロフィール画像の表示内容を判断する --%>
+<% String name = myb.getUserName().substring(0, 1); %>
+<% String imgPath = myb.getProfileImgPath(); %>
 
 	<div class="flex_container">
 		<div class="nav-area">
@@ -26,13 +29,13 @@
 			<form name="nav-trans" method="post">
 
 			<input type="image" src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon"
-			id="my-icon" formaction="<%=request.getContextPath()%>/mypage">
+			id="my-icon" formaction="<%=request.getContextPath()%>/mypage" value="マイページ">
 
 			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
-			formaction="<%=request.getContextPath()%>/board">
+			formaction="<%=request.getContextPath()%>/board" value="掲示板">
 
 			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon"
-			formaction="<%=request.getContextPath()%>/addressbook">
+			formaction="<%=request.getContextPath()%>/addressbook" value="アドレス帳">
 
 			<%-- 外部リンク一覧のポップアップを出すだけなので遷移先なし --%>
 			<img src="<%=request.getContextPath()%>/src/img/mb_0_link.png" class="nav-icon" id="link-show">
@@ -53,10 +56,14 @@
 				<div class="create-area">
 					<h1 class="page-title">プロフィール編集</h1>
 					<form action="<%=request.getContextPath()%>/profileEdit" method="post" name="profileForm" enctype="multipart/form-data"  onsubmit="return formCheck()">
-						<p>プロフィールアイコン</p>
+						<p>プロフィール画像</p>
 						<div class="create-icon-area">
 							<div class="create-icon">
-								<img id="before" src="<%=request.getContextPath()%><%=myb.getProfileImgPath()%>">
+								<% if(imgPath == null || imgPath.equals("null") || imgPath.isEmpty()){ %>
+								<p id="before" class="initial"><%=name%></p>
+								<% } else { %>
+								<img id="before" src="<%=request.getContextPath()%><%=imgPath%>">
+								<% } %>
 								<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 								<!--  -->
 							</div>
@@ -66,30 +73,32 @@
 
 						<div>
 							<p>表示名<span class="requierdItem">*</span></p>
-							<input type="text" name="user_name" value="<%=myb.getUserName()%>">
-							<%-- placeholder="表示名"  --%>
+							<input type="text" name="user_name" value="<%=myb.getUserName()%>"
+							 placeholder="表示名を入力してください。">
 						</div>
 						<div>
 							<p>メールアドレス<span class="requierdItem">*</span><span class="alertarea"></span></p>
-							<input type="text" name="email_address" value="<%=myb.getEmailAdress()%>" class="email">
-							<%-- placeholder="メールアドレス" --%>
+							<input type="text" name="email_address" value="<%=myb.getEmailAdress()%>"
+							 placeholder="メールアドレスを入力してください。" class="email">
 						</div>
 						<div>
-							<p>LINEWORKSアドレス<span class="requierdItem">*</span></p>
-							<input type="text" name="line_works_id" value="<%=myb.getLineWorksID()%>">
-							<%-- placeholder="LINEWORKSアドレス" --%>
+							<p>LINEWORKSのアドレス<span class="requierdItem">*</span></p>
+							<input type="text" name="line_works_id" value="<%=myb.getLineWorksID()%>"
+							 placeholder="LINEWORKSのアドレスを入力してください。">
 						</div>
 						<div>
 							<p>スキル</p>
-							<input type="text" name="" placeholder="スキル" value="テキトーに入れてます">
+							<input type="text" name="" value=""
+							 placeholder="スキルを入力してください。">
 						</div>
 						<div>
 							<p>趣味・興味</p>
-							<input type="text" name="" placeholder="趣味・興味" value="テキトーに入れてます">
+							<input type="text" name="" value=""
+							 placeholder="趣味・興味を入力してください。">
 						</div>
 
 						<p>自己紹介</p>
-						<textarea class="create-detail" placeholder="自己紹介">データベースにないのでまだ確認できません</textarea>
+						<textarea class="create-detail" placeholder="自己紹介を入力してください。"></textarea>
 						<div class="submit-area">
 							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/mypage'">
 							<input type="submit" name="" value="保存" class="submit">

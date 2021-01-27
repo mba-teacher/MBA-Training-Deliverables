@@ -17,29 +17,30 @@ import com.mysql.jdbc.StringUtils;
 import data.DAO;
 import data.UserInfoBean;
 
+//locationはサーバー上に上げた場合の絶対パスなのでローカル上では確認できないです
 @WebServlet("/profileEdit")
-@MultipartConfig(location="C:\\Users\\wn8-n\\Desktop\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\profile")
+@MultipartConfig(location="/temp")
 public class ProfileEditAfterServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession s = req.getSession(false);
 		String url = "/mypage";
 		if (s == null) {
-			url = "http://localhost:8080/MBoard/src/jsp/login.jsp";
+			url = "src/jsp/login.jsp";
 		} else {
 			DAO d = new DAO();
 			UserInfoBean uib = (UserInfoBean)s.getAttribute("userInfoBean");
 			String profileImg = null;
 
 			//画像を格納するパス
-			//一時的に格納するパスはローカルリポジトリの絶対パスを入れています
-			String ImgPath = "C:\\Users\\wn8-n\\Desktop\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\profile";
-			//掲示板名（画像の名前を掲示板名と同一にする）
+			//パスは絶対パスを設定
+			String ImgPath = getServletContext().getRealPath("/src/img/profile");
+			//ユーザー名（画像の名前をユーザー名と同一にする）
 			String Name = uib.getLoginID();
 			Part part = req.getPart("profile-icon");
 			String filePath = null;
 			if(part.getSize()>0) {
-				filePath = ImgPath + "\\" + Name + ".jpg";
+				filePath = ImgPath + "/" + Name + ".jpg";
 				part.write(filePath);
 				part.delete();
 				//DB用のパス
@@ -54,7 +55,6 @@ public class ProfileEditAfterServlet extends HttpServlet {
 			}
 			//DBを更新する
 			d.UpdateMyUserInfo(uib);
-			//System.out.println("Update my userinfo.");
 			//セッションを更新
 			s.setAttribute("userInfoBean", uib);
 
