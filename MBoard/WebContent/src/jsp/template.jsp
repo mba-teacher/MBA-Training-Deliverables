@@ -116,19 +116,20 @@ var tempContent ={
 
 	<script src="src/js/nav.js"></script>
 
-		<div class=top>
-			<h1 class=title>定型文編集画面</h1>
+		<div class="top">
+<!-- 修正箇所 --><h1 class=title>定型文編集</h1>
 		 	<p class="notice"><%out.print(session.getAttribute("notice"));%></p>
-			<!-- <form class="back_button"><input type="button" value="戻る" ></form> -->
+<!-- 修正箇所 --><form action = "http://localhost:8080/MBoard/board"method="get" class="back_button"><input type="submit" value="戻る" ></form>
 		</div>
 
-	<div class=template>
+	<div class="template">
 		<div class="template_list">
 			<p >定型文一覧</p>
 			<table id="table" border="1"  >
 			    <tr class=foot>
 				        <td colspan="1">
-				            <input type="button" value="＋" id="coladd" onclick="coladd()">
+<!-- 修正箇所 -->
+							<img id="coladd" src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" onclick="coladd()">
 				        </td>
 				        <td colspan="4">
 				            定型文を追加
@@ -139,8 +140,8 @@ var tempContent ={
 
 		<div class="change_area">
 			 <form action="template" method="post" name="form" id="save">
-			 <input id="template_title" type="text" placeholder="定型文名前"  value="" name="tempName"><br>
-			 <textarea id="template_content"  placeholder="定型文内容"  name="tempContent"  wrap="hand"></textarea><br>
+			 <input id="template_title" type="text" placeholder="タイトル"  value="" name="tempName"><br>
+			 <textarea id="template_content"  placeholder="本文を入力"  name="tempContent"  wrap="soft"></textarea><br>
 			 <input class="template_save" type="submit" value="保存" >
 			 <input type="hidden"  name="action" id="saveAction" value="" >
 	      	 <input type="hidden" id="saveHidden" name="tempId" value="" >
@@ -154,7 +155,7 @@ var tempContent ={
 		 <div class="modal js-modal">
 		     <div class="modal__bg js-modal-close"></div>
 		     <div class="modal__content">
-				<p>本当に削除してもよろしいですか</p>
+<!-- 修正箇所 --><p>本当に削除してもよろしいですか？</p>
 				<input type="button" value="キャンセル" class="js-modal-close"  onclick="popUpClose()">
 				<form action="template" method="post" name="form" id="delete" >
 					<input type="submit" value="OK"  id="" >

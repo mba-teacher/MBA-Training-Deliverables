@@ -67,7 +67,8 @@ public class TemplateServlet extends HttpServlet {
 				bean.setTempleName(tempName);
 				bean.setTempleContents(tempContent);
 				dao.UpdateTemplate(bean);
-				session.setAttribute("notice", "定型文を更新しました");
+				session.setAttribute("notice", "変更を保存しました");
+	//↑文言修正
 				break;
 			default:
 				;
