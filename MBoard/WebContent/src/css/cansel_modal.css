@@ -35,6 +35,11 @@
      box-sizing: border-box;
 }
 
+.modal__content {
+	font-weight:bold;
+	text-align:center;
+}
+
 
 .btn_box{
 	justify-content:space-between;
@@ -48,34 +53,38 @@
     top:60px;
     width:180px;
     text-align:center;
-    border:solid 2px #414141;
     border-radius:8px;
-    color:#000;
+    color:#fff;
     font-size:20px;
-    background-color: #ffffff;
+    background-color: #ff9100;
 	cursor: pointer;
+	border:none;
+	outline:none;
+	font-weight:bold;
 }
 
 .js-modal-close:hover {
-	background-color:#efefef;
+	opacity:0.8;
 }
 
 .mobal_btn2{
 	position:relative;
-    border:solid 2px #414141;
     padding:15px /*50px*/;
     top:60px;
     text-align:center;
     border-radius:8px;
-    color:#000;
+    color:#fff;
     font-size:20px;
     width:180px;
-    background-color: #ffffff;
+    background-color: #ff9100;
 	cursor: pointer;
+	border:none;
+	outline:none;
+	font-weight:bold;
 }
 
 .mobal_btn2:hover {
-	background-color:#efefef;
+	opacity:0.8;
 }
 
 

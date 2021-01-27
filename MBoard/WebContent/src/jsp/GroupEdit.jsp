@@ -142,7 +142,7 @@
 	<form action="http://localhost:8080/MBoard/GroupEdit" method="POST" onsubmit="return true;">
 		<!-- ポップアップ -->
 		<div id="delepop">
-			<p>本当に削除してもよろしいですか？</p>
+			<h2>本当に削除してもよろしいですか？</h2>
 			<br>
 			<div id="deleteId"></div>
 

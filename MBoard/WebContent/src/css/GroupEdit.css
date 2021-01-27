@@ -1,5 +1,13 @@
 @charset "UTF-8";
 
+h1 {
+	width: 100%;
+	max-width: 560px;
+	font-size: 2em;
+	text-align: left;
+	margin-top: 20px;
+	padding:0px 7%;
+}
 
 #group{
 	position:relative;
@@ -161,16 +169,18 @@ p#tx{
     top: 50%;
     width: 400px;
     height: 200px;
-    margin-left: -150px;
-    margin-top: -100px;
+	transform:translate(-50%, -50%);
     background-color:white;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
+    padding:40px;
 }
-#delepop p{
+#delepop h2{
 	display: inline-block;
 	width: 400px;
 	line-height: 80px;
+	font-weight:bold;
+	text-align:center;
 }
 
 input.button1 {
@@ -179,6 +189,12 @@ input.button1 {
 	/* ボタンの大きさを固定指定*/
    	width: 60px;
     height: 32px;
+    background:#ff9100;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    color:#fff;
+    font-weight:bold;
 }
 input.button2 {
     /* 文字サイズを0.9emに指定 */
@@ -186,6 +202,12 @@ input.button2 {
 	/* ボタンの大きさを固定指定 */
    	width: 100px;
     height: 40px;
+    background:#ff9100;
+    color:#fff;
+    font-weight:bold;
+    border:none;
+    outline:none;
+    border-radius:8px;
 }
 input.button3 {
     /* 文字サイズを0.9emに指定 */
@@ -193,6 +215,12 @@ input.button3 {
 	/* ボタンの大きさを固定指定 */
    	width: 130px;
     height: 40px;
+    background:#ff9100;
+    color:#fff;
+    font-weight:bold;
+    border-radius:8px;
+    border:none;
+    outline:none;
 }
 input.button4 {
     /* 文字サイズを0.9emに指定 */
@@ -200,6 +228,12 @@ input.button4 {
 	/* ボタンの大きさを固定指定 */
    	width: 65px;
     height: 40px;
+    border-radius:8px;
+    background:#ff9100;
+    color:#fff;
+    font-weight:bold;
+    border:none;
+    outline:none;
 }
 
 .inner {
