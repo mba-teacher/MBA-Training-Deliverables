@@ -32,8 +32,9 @@
 			</div>
 
 			<form name="nav-trans" method="post">
-			<%-- 同一ページには遷移しない設定のため遷移先なし --%>
-			<img src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon" id="my-icon">
+
+			<input type="image" src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon"
+			formaction="<%=request.getContextPath()%>/mypage" id="my-icon">
 
 			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
 			formaction="<%=request.getContextPath()%>/board">
@@ -77,10 +78,10 @@
 				</div>
 
 				<div class="tabs">
-					<input id="post" type="radio" name="tab_item" checked> <label
-						class="tab_item" for="post">投稿した記事</label> <input id="profile"
-						type="radio" name="tab_item"> <label class="tab_item"
-						for="profile">プロフィール</label>
+					<input id="profile" type="radio" name="tab_item">
+					 <label class="tab_item" for="profile">プロフィール</label>
+					<input id="post" type="radio" name="tab_item" checked>
+					 <label class="tab_item" for="post">投稿した記事</label>
 
 					<div class="tab_content" id="post_content">
 						<div class="tab_content_description">
