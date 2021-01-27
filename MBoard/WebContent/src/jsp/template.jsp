@@ -119,7 +119,7 @@ var tempContent ={
 		<div class="top">
 <!-- 修正箇所 --><h1 class=title>定型文編集</h1>
 		 	<p class="notice"><%out.print(session.getAttribute("notice"));%></p>
-<!-- 修正箇所 --><form action = "http://localhost:8080/MBoard/board"method="get" class="back_button"><input type="submit" value="戻る" ></form>
+<!-- 修正箇所 --><form action = "http://localhost:8080/MBoard/board"method="get" class="back_button"><input type="submit" class="backbtn" value="戻る" ></form>
 		</div>
 
 	<div class="template">
@@ -143,7 +143,7 @@ var tempContent ={
 			 <input id="template_title" type="text" placeholder="タイトル"  value="" name="tempName"><br>
 			 <textarea id="template_content"  placeholder="本文を入力"  name="tempContent"  wrap="soft"></textarea><br>
 			 <input class="template_save" type="submit" value="保存" >
-			 <input type="hidden"  name="action" id="saveAction" value="" >
+			 <input type="hidden"  name="action" id="saveAction" value="" class="notice">
 	      	 <input type="hidden" id="saveHidden" name="tempId" value="" >
 			 <input class="template_soufu" type="button" value="添付" >
 			 <input class="template_kakou" type="button" value="加工" >
@@ -155,11 +155,11 @@ var tempContent ={
 		 <div class="modal js-modal">
 		     <div class="modal__bg js-modal-close"></div>
 		     <div class="modal__content">
-<!-- 修正箇所 --><p>本当に削除してもよろしいですか？</p>
-				<input type="button" value="キャンセル" class="js-modal-close"  onclick="popUpClose()">
-				<form action="template" method="post" name="form" id="delete" >
-					<input type="submit" value="OK"  id="" >
-					<input type="hidden"  name="action" id="deleteAction" value="" >
+<!-- 修正箇所 --><h2>本当に削除してもよろしいですか？</h2>
+				<input type="button" value="キャンセル" class="js-modal-close modal_cancel"  onclick="popUpClose()">
+				<form action="template" method="post" name="form" id="delete" class="modal_form" >
+					<input type="submit" value="OK"  id="" class="modal_ok">
+					<input type="hidden"  name="action" id="deleteAction" value="" class="notice">
 	      			<input type="hidden" id="deleteHidden" name="tempId" value="" >
 				</form>
 		     </div>
@@ -253,8 +253,8 @@ setTimeout(function(){    //x秒後に実行
 				if(deleteList.length>0){
 					deleteList.sort();
 					cell1.innerHTML = tempName[deleteList[0]];
-					cell2.innerHTML = '<input type="button" value="編集"  id='+deleteList[0]+' onclick="edit(this)">';
-					cell3.innerHTML =  '<input type="button" value="削除"  id='+deleteList[0]+' onclick="popUp(this)">';
+					cell2.innerHTML = '<input type="button" value="編集" class="list_edit"  id='+deleteList[0]+' onclick="edit(this)">';
+					cell3.innerHTML =  '<input type="button" value="削除" class="list_delete" id='+deleteList[0]+' onclick="popUp(this)">';
 					deleteList.shift();
 				}else{
 					if(tempName["edit"+rowCount]=="null"){
@@ -262,8 +262,8 @@ setTimeout(function(){    //x秒後に実行
 					}else{
 						cell1.innerHTML =  '<input type="text" placeholder="定型文名前" value="'+tempName['edit'+rowCount]+'" readonly id='+"edit"+rowCount+"name"+' >';
 					}
-					cell2.innerHTML = '<input type="button" value="編集"  id='+"edit"+rowCount+' onclick="edit(this)">';
-					cell3.innerHTML =  '<input type="button" value="削除"  id='+"edit"+rowCount+' onclick="popUp(this)">';
+					cell2.innerHTML = '<input type="button" value="編集" class="list_edit" id='+"edit"+rowCount+' onclick="edit(this)">';
+					cell3.innerHTML =  '<input type="button" value="削除" class="list_delete" id='+"edit"+rowCount+' onclick="popUp(this)">';
 				}
 			}
 		}

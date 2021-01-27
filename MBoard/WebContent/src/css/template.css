@@ -45,12 +45,27 @@ input[type="text"]{
 
 }
 
+.backbtn {
+	background:#ff9100;
+	color:#fff;
+	border:none;
+	outline:none;
+	cursor:pointer;
+	border-radius:8px;
+	padding:8px 15px;
+	font-weight:bold;
+}
+
 /*--定型文一覧--*/
 .template_list{
 	position:relative;
 	top :100px;
 	left:60px;
 	height: 80%;
+}
+
+.template_list p {
+	font-weight:bold;
 }
 
 #table{
@@ -102,18 +117,62 @@ input[type="text"]{
    	position:relative;
 	bottom:5px;
 	right:40px;
+	background:#fff;
+	color:#ff9100;
+	border:2px solid #ff9100;
+	outline:none;
+	border-radius:8px;
+	padding:1px 7px;
+	cursor:pointer;
 }
 
 .template_kakou{
    	position:relative;
 	bottom:5px;
 	right:30px;
+	background:#fff;
+	color:#ff9100;
+	border:2px solid #ff9100;
+	outline:none;
+	border-radius:8px;
+	padding:1px 7px;
+	cursor:pointer;
 }
 
 .template_save{
    	position:relative;
 	bottom:5px;
 	left:750px;
+	background:#ff9100;
+	color:#fff;
+	border:none;
+	outline:none;
+	border-radius:8px;
+	padding:2px 8px;
+	cursor:pointer;
+}
+
+.list_edit {
+	background:#ff9100;
+	color:#fff;
+	border:none;
+	outline:none;
+	border-radius:8px;
+	padding:2px 8px;
+	margin-right:3px;
+	cursor:pointer;
+}
+
+.list_delete {
+	background:#fff;
+	color:#ff9100;
+	border:2px solid #ff9100;
+	box-sizing:border-box;
+	outline:none;
+	border-radius:8px;
+	padding:2px 8px;
+	margin-right:5px;
+	cursor:pointer;
 }
 
 .template_Column{
@@ -162,5 +221,44 @@ td {
     position: absolute;
     top: 50%;
     transform: translate(-50%,-50%);
-    width: 60%;
+    border-radius:8px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.modal__content h2 {
+	width:100%;
+	text-align:center;
+}
+
+.modal_form {
+	float:left;
+}
+
+.modal_cancel, .modal_ok {
+	width:150px;
+	height:40px;
+	border-radius:8px;
+	box-sizing:border-box;
+	background:#fff;
+	border:2px solid #ff9100;
+	color:#ff9100;
+	outline:none;
+	font-weight:bold;
+}
+
+.modal_ok {
+	margin-left:30px;
+	background:#ff9100;
+	color:#fff;
+	border:none;
+}
+
+.notice {
+	background:white;
+	border-radius:8px;
+	color:black;
+	box-shadow: 0 0px 10px 0 rgba(0, 0, 0, .4);
+	padding:5px 50px;
 }
