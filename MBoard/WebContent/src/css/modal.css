@@ -67,12 +67,6 @@ p.js-modal-close:active {
     cursor: pointer;
 }
 
-/*------少しデザイン変更------*/
-.mobal_btn1:hover{
-	background-color:#efefef;
-	/* opacity: 0.8; */
-}
-
 .mobal_btn2{
 	font-size: 0.9em;
 	width: 480px;
@@ -88,9 +82,20 @@ p.js-modal-close:active {
     cursor: pointer;
 }
 
-/*------少しデザイン変更------*/
-.mobal_btn2:hover{
-	background-color:#efefef;
-	/* opacity: 0.8; */
+/*------デザイン変更------*/
+
+.mobal_btn1, .mobal_btn2 {
+	background:#ff9100;
+	border-radius:8px;
+	font-weight:bold;
+	color:white;
+	border:none;
 }
 
+.mobal_btn1:hover, .mobal_btn2:hover {
+	opacity: 0.8;
+}
+
+.modal_title {
+	font-weight:bold;
+}

@@ -57,7 +57,7 @@
 			<div class="modal__bg js-modal-close"></div>
 			<div class="modal__content">
 				<p class="js-modal-close">×</p>
-				<p>アカウント関連</p>
+				<p class="modal_title">アカウント関連</p>
 				<div class="btn_box">
 					<input type="submit" class="mobal_btn1" formaction="<%=request.getContextPath()%>/src/jsp/create_user.jsp" value="アカウント作成">
 					<input type="submit" class="mobal_btn2" formaction="<%=request.getContextPath()%>/editAccount" value="アカウント修正・削除">
