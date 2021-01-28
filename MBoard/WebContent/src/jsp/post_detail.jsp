@@ -363,7 +363,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 			<div class="popup-property-area">
 				<div class="property-item" onclick="boardDetail()">掲示板詳細</div>
 				<div class="property-item">通知設定</div>
-				<div class="property-item" onclick="leaveBoard()">掲示板から退出</div>
+				<div class="property-item" onclick="popUp()">掲示板から退出</div>
 			</div>
 		</div>
 
@@ -377,6 +377,19 @@ var userId='<%out.print(userInfo.getUserID());%>';
 			<input type="hidden" name="pageType" id="pageType">
 			<input type="hidden" name="memberId" id="memberId">
 		</form>
+
+		<!-- 		ポップアップウインドウ -->
+		 <div class="modal js-modal">
+		     <div class="modal__bg js-modal-close"></div>
+		     <div class="modal__content">
+			<h2>本当に退出してもよろしいですか？</h2>
+				<input type="button" value="キャンセル" class="js-modal-close modal_cancel"  onclick="popUpClose()">
+				<input type="submit" value="OK"  id="" class="modal_ok" onclick="leaveBoard()">
+				<input type="hidden"  name="action" id="deleteAction" value="" class="notice">
+	      		<input type="hidden" id="deleteHidden" name="tempId" value="" >
+		     </div>
+		 </div>
+
 
 	</div>
 

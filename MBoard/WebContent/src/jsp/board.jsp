@@ -124,12 +124,12 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon"> --%>
 							<%-- <img src="<%=request.getContextPath()%><%= bib[0].getBoardImgPath() %>" > --%>
 							<div id="boardName" class="board-name">選択中の掲示板<%-- <%= bib[0].getBoardCategory() %> --%></div>
-							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
+							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu" >
 						</div>
 					</div>
 
 					<div class="board-content">
-						<form action="board" method="post" class="form" id="postForm" name="postForm"  >
+						<form action="board" method="post" class="form" id="postForm" name="postForm" onsubmit="return postFormCheck()" >
 							<input class="post-form" name="postTitle" placeholder="なんでも投稿できます">
 							<div class="post-detail">
 								<textarea id="post-form-content" name="postContent" placeholder="なんでも投稿できます"  wrap="soft"></textarea>
@@ -141,7 +141,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
 									<input type="hidden" name="formName" value="makePost" >
-									<input type="submit" value="投稿" class="submit">
+									<input type="submit" value="投稿"  class="submit" id="postSubmit" >
 								</div>
 							</div>
 						</form>
@@ -287,7 +287,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 			<div class="popup-property-area">
 				<div class="property-item" onclick="boardDetail()" >掲示板詳細</div>
 				<div class="property-item" >通知設定</div>
-				<div class="property-item" onclick="leaveBoard()">掲示板から退出</div>
+				<div class="property-item" onclick="popUp()">掲示板から退出</div>
 			</div>
 		</div>
 
@@ -311,6 +311,31 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 			<input type="hidden" name="pageType" id="pageType">
 			<input type="hidden" name="memberId" id="memberId">
 		</form>
+
+		<!-- 		掲示板退出ポップアップウインドウ -->
+		 <div class="modal js-modal" id="boardPop">
+		     <div class="modal__bg js-modal-close"></div>
+		     <div class="modal__content">
+			<h2>本当に退出してもよろしいですか？</h2>
+				<input type="button" value="キャンセル" class="js-modal-close modal_cancel"  onclick="popUpClose()">
+				<input type="submit" value="OK"  id="" class="modal_ok" id="modal_ok" onclick="leaveBoard()">
+				<input type="hidden"  name="action" id="deleteAction" value="" class="notice">
+	      		<input type="hidden" id="deleteHidden" name="tempId" value="" >
+		     </div>
+		 </div>
+
+		 <!-- 	記事投稿警告ポップアップウインドウ -->
+		 <div class="modal js-modal" id="postPop">
+		     <div class="modal__bg js-modal-close"></div>
+		     <div class="modal__content">
+		     <h2 style="width:calc(100% - 220px);">警告</h2>
+			<h2>タイトルがありませんが投稿してよろしいですか？</h2>
+				<input type="button" value="キャンセル" class="js-modal-close modal_cancel"  onclick="popUpClose()">
+				<input type="submit" value="はい"  id="" class="modal_ok"  onclick="postFormSubmit()">
+				<input type="hidden"  name="action" id="deleteAction" value="" class="notice">
+	      		<input type="hidden" id="deleteHidden" name="tempId" value="" >
+		     </div>
+		 </div>
 
 	</div>
 
@@ -363,27 +388,34 @@ jQuery(function($){
 
 
 //フォームのサブミット二重処理防止
-$('.submit').on('click', function () {
-	  $(this).css('pointer-events','none');
+ $('.submit').on('click', function () {
+	 if($(this).attr("id")!=="postSubmit"){
+		 $(this).css('pointer-events','none');
+	 }
 	});
 
 //記事投稿フォームクリック時、空白じゃないか判定
-/* function postFormCheck() {
+ function postFormCheck() {
 	var flag = 0;
 	//タイトルか内容が空白の場合、警告表示
-    if( document.postForm.postTitle.value === "" || document.postForm.postContent.value === "" ){
+    if( document.postForm.postTitle.value === "" ){
         flag = 1;
-        //document.getElementById( 'errortext' ).style.display = "table"; //表示
+        postFormPopUp();
+        //document.getElementById( 'errortext' ).style.display = "table";
     }else{
-        //document.getElementById( 'errortext' ).style.display = "none"; //非表示
+        //document.getElementById( 'errortext' ).style.display = "none";
     }
-    alert(flag);
     if(flag == 1) {
     	return false;  //送信しない
     } else {
     	return true;   //送信実行
     }
-} */
+}
+//記事投稿時、警告ポップアップで「はい」押下時、投稿フォームをサブミット
+ function postFormSubmit(){
+ 	document.postForm.submit();
+ }
+
 
 //記事をクリック時
 $('.post').click(function(event){
