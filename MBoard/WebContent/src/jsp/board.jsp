@@ -122,8 +122,8 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 					<div class="board-header">
 						<div class="board-name-area">
 							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon"> --%>
-							<img src="<%=request.getContextPath()%><%= bib[0].getBoardImgPath() %>" >
-							<div id="boardName" class="board-name"><%= bib[0].getBoardCategory() %></div>
+							<%-- <img src="<%=request.getContextPath()%><%= bib[0].getBoardImgPath() %>" > --%>
+							<div id="boardName" class="board-name">選択中の掲示板<%-- <%= bib[0].getBoardCategory() %> --%></div>
 							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
@@ -141,7 +141,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
 									<input type="hidden" name="formName" value="makePost" >
-									<input type="submit" value="送信" class="submit">
+									<input type="submit" value="投稿" class="submit">
 								</div>
 							</div>
 						</form>
@@ -256,7 +256,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
 						<input type="text" placeholder="検索" class="popup-board-search">
-						<div class="popup-board-add" onclick="createBoard()">新規追加</div>
+						<div class="popup-board-add" onclick="createBoard()">新規作成</div>
 					</div>
 					<div class="popup-board-close">
 						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
@@ -352,7 +352,7 @@ jQuery(function($){
 		//インデックス番号をint型にする
 		var i= parseInt($(this).index());
 		//掲示板の名前を上に表示
-		name.textContent=boardName[i];
+		//name.textContent=boardName[i];
 		//表示中の掲示板のIDを格納
 		selectBoardId=boardId[i];
 		//掲示板IDを記事作成フォームのhiddenのvalueに代入

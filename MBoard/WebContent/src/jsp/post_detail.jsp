@@ -107,7 +107,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 					<div class="board-header">
 						<div class="board-name-area">
 							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon"> --%>
-							<div class="board-name"><%=boardCategory%></div>
+							<div class="board-name">選択中の掲示板<%-- <%=boardCategory%> --%></div>
 							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
@@ -127,7 +127,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 									<input type="hidden" name="postId" value="<%out.print(detailComment.getCommentId());%>" >
 									<%}%>
 									<input type="hidden" name="formName" value="makeComment" >
-									<input type="submit" value="送信" class="submit">
+									<input type="submit" value="投稿" class="submit">
 								</div>
 							</div>
 						</form>
@@ -332,7 +332,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
 						<input type="text" placeholder="検索" class="popup-board-search">
-						<div class="popup-board-add" onclick="createBoard()">新規追加</div>
+						<div class="popup-board-add" onclick="createBoard()">新規作成</div>
 					</div>
 					<div class="popup-board-close">
 						<img src="<%=request.getContextPath()%>/src/img/mb_f_close.png">
