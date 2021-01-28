@@ -50,7 +50,7 @@
 
 		<div class="main">
 			<div class="addresandgroup">
-				<h1>アドレス帳・グループ</h1>
+				<h1>アドレス帳・グループ一覧</h1>
 
 				<div class="tabs">
 					<input id="address" type="radio" name="tab_item" checked>
@@ -60,7 +60,7 @@
 
 					<div class="tab_content" id="address_content">
 						<div class="tab_content_description">
-							<input type="text" id="search-text" class="serch" name="serch">
+							<input type="text" id="search-text" class="serch" name="serch" placeholder=" 検索したい名前を入力">
 
 							<div class="address_area">
 								<p class="address">アドレス一覧</p>
@@ -99,7 +99,11 @@
 								<div class="box">
 									<% for (int i = 0; i < lists.size(); i++) { %>
 									<div class="group_tab">
-										<label for="inbox<%=i%>"><%=gn.get(i).getGroupName()%></label><input type="checkbox" id="inbox<%=i%>" class="on-off">
+
+										<label for="inbox<%=i%>"><%=gn.get(i).getGroupName()%>
+											<div class="arrowOff"></div>
+											<div class="arrowOn"></div>
+										</label><input type="checkbox" id="inbox<%=i%>" name="check" class="on-off">
 										<div class="dropdown">
 											<% for (int j = 0; j < lists.get(i).size(); j++) { %>
 											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>','postIconForm')">
@@ -156,5 +160,22 @@
 	<script src="<%=request.getContextPath()%>/src/js/addressbook.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/nav.js"></script>
 	<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
+
+	<script>
+	$(function(){
+    	$('[name="check"]').change(function(){
+        	if( $(this).prop('checked') ){
+            	alert('チェックを入れました');
+            	document.getElementsByClassName("arrowOn").style.display = "block";
+             	document.getElementsByClassName("arrowOff").style.display = "none";
+        	}else{
+    	        alert('チェックを外しました');
+    	        document.getElementsByClassName("arrowOn").style.display = "none";
+            	document.getElementsByClassName("arrowOff").style.display = "block";
+	        }
+	    });
+	});
+	</script>
+
 </body>
 </html>

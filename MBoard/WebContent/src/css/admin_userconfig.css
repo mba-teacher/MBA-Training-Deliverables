@@ -171,3 +171,12 @@ span2{
 	left:20px;
 
 }
+
+/*--------↓検索用--------*/
+#noResult {
+	display:none;
+}
+
+.search-result {
+	display: none;
+}

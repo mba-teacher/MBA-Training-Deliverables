@@ -158,6 +158,7 @@ input[name="tab_item"] {
 }
 
 .group_tab{
+	position:  relative;
 	padding:5px 20px;
 	border-radius:8px
 }
@@ -177,10 +178,10 @@ input[name="tab_item"] {
 .box input[type="checkbox"].on-off +div{
 	display: none;
 }
-
 .box input[type="checkbox"].on-off:checked +div{
 	display: block;
 }
+
 
 
 
@@ -207,4 +208,29 @@ input[name="tab_item"] {
 	color:#ff0000;
     text-align:center;
     font-size:22px;
+}
+
+/* ↓三角矢印 */
+
+.arrowOn{
+  display: none;
+  position: absolute;
+  bottom:30px;
+  left:200px;
+  width: 15px;
+  height: 15px;
+  border: 2px solid;
+  border-color:  transparent transparent #565656 #565656;
+  transform: rotate(-45deg);
+}
+.arrowOff{
+  display: block;
+  position: absolute;
+  bottom:20px;
+  left:200px;
+  width: 15px;
+  height: 15px;
+  border: 2px solid;
+  border-color: #565656 #565656 transparent transparent;
+  transform: rotate(-45deg);
 }

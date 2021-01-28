@@ -63,12 +63,13 @@ $(function() {
 			}
 			//検索対象に該当した場合
 			if (searchResult.length > 0) {
-				document.getElementById("search-result").style.display = "block";  //検索結果表示
+				document.getElementById("noResult").style.display = "none";        //該当なし非表示
 			}
 			//該当なしの場合
 			else {
-				document.getElementById("search-result").style.display = "none";   //検索結果非表示
+				document.getElementById("noResult").style.display = "block";   //該当なし表示
 			}
+			document.getElementById("search-result").style.display = "block";  //検索結果表示
 
 		}else{
 			//初期の状態に戻す

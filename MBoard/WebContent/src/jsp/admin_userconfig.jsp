@@ -53,7 +53,12 @@
 			<%-- 検索後の結果をここに表示する --%>
 			<div class="search-result"id="search-result">
 				<div id="search-result__list"></div>
+
+	    		<div id="noResult">
+					<p id="none">該当しませんでした</p>
+				</div>
 	    	</div>
+
 		</div>
 
 		<!-- <div class="target-area"id="target-area"> -->
