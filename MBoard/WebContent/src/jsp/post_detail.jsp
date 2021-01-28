@@ -34,12 +34,16 @@
 <% HashMap<Integer, Boolean> userRead= (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
 <!-- コメントIDをキーにして、そのコメント数を取得する連想配列を取得 -->
 <% HashMap<Integer, Integer> commentCount= (HashMap<Integer, Integer>)session.getAttribute("commentCount"); %>
-<%-- ログインユーザーの参加中の示板情報をリスト配列で取得 --%>
+<%-- ログインユーザーの参加中の掲示板情報をリスト配列で取得 --%>
 <% BoardInfoBean[] bib = (BoardInfoBean[])session.getAttribute("boardInfoBean"); %>
 <%-- ログインユーザーの参加可能な掲示板情報をリスト配列で取得 --%>
 <% ArrayList<BoardInfoBean> permissionBoardList = (ArrayList<BoardInfoBean>)session.getAttribute("permissionBoard"); %>
 <%-- 掲示板IDをキーにして参加中か参加可能か判別する連想配列を取得 --%>
 <% HashMap<Integer, Boolean> joinJudge = (HashMap<Integer, Boolean>)session.getAttribute("joinJudge"); %>
+<%-- 選択中の掲示板のIDを取得 --%>
+<% int boardId = (int)session.getAttribute("boardId"); %>
+<%-- 選択中の掲示板の名前を取得 --%>
+<% String boardCategory=""; %>
 <script>
 //ログインユーザーのID
 var userId='<%out.print(userInfo.getUserID());%>';
@@ -83,7 +87,12 @@ var userId='<%out.print(userInfo.getUserID());%>';
 						<!--切り替え可能な掲示板タブ-->
 						<ul id="tabGroup" class="tab-group">
 							<% for (int i = 0; i < bib.length; i++ ) { %>
-								<li class="tab">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<% if(bib[i].getBoardId()==boardId){ %>
+									<% boardCategory=bib[i].getBoardCategory(); %>
+									<li class="tab color<%=bib[i].getBoardColor()%>  is-active " name="<%=bib[i].getBoardId()%>">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<% }else{ %>
+									<li class="tab color<%=bib[i].getBoardColor()%> " name="<%=bib[i].getBoardId()%>">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<% } %>
 							<% } %>
 						</ul>
 					</div>
@@ -98,8 +107,8 @@ var userId='<%out.print(userInfo.getUserID());%>';
 					<div class="board-header">
 						<div class="board-name-area">
 							<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="board-icon"> --%>
-							<div class="board-name">会話詳細</div>
-							<!-- <img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu"> -->
+							<div class="board-name"><%=boardCategory%></div>
+							<img src="<%=request.getContextPath()%>/src/img/mb_2_syousai.png" class="board-menu">
 						</div>
 					</div>
 
@@ -108,11 +117,11 @@ var userId='<%out.print(userInfo.getUserID());%>';
 							<div class="post-detail">
 								<textarea id="post-form-content" name="postContent" placeholder="返信内容"  wrap="hand"></textarea>
 								<div class="post-option">
-									<div class="post-option-icon"><%--
- 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<!--<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
+									<div class="post-option-icon">
+ 										<img src="<%=request.getContextPath()%>/src/img/mb_2_template.png">
+										<%--<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
 										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png">
-										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> --> --%>
+										<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png"> --%>
 									</div>
 									<%if(detailType.equals("comment")){%>
 									<input type="hidden" name="postId" value="<%out.print(detailComment.getCommentId());%>" >
@@ -149,7 +158,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 											<% if((boolean)session.getAttribute("postUserRead")){ %>
 											確認済
 											<% }else{ %>
-											未確認
+
 											<% } %>
 											</div>
 										</div>
@@ -185,7 +194,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 											<% if((boolean)session.getAttribute("postUserRead")){ %>
 											確認済
 											<% }else{ %>
-											未確認
+
 											<% } %>
 											</div>
 										</div>
@@ -224,7 +233,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 											<% if(userRead.get(commentId)){ %>
 											確認済
 											<% }else{ %>
-											未確認
+
 											<% } %>
 											</div>
 										</div>
@@ -269,7 +278,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 											<% if(userRead.get(commentChainId)){ %>
 											確認済
 											<% }else{ %>
-											未確認
+
 											<% } %>
 											</div>
 										</div>
@@ -333,7 +342,8 @@ var userId='<%out.print(userInfo.getUserID());%>';
 
 					<%for(int i=0;i<permissionBoardList.size();i++){ %>
 					<div class="popup-board-item">
-						<img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png">
+						<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png"> --%>
+						<img src="<%=request.getContextPath()%><%= permissionBoardList.get(i).getBoardImgPath() %>" >
 						<p class="popup-board-name"><%= permissionBoardList.get(i).getBoardCategory() %></p>
 						<%int id=permissionBoardList.get(i).getBoardId(); %>
 						<%if(joinJudge.get(id)){ %>
@@ -351,9 +361,9 @@ var userId='<%out.print(userInfo.getUserID());%>';
 		<div class="popup-board-property">
 			<div class="link-hide popup-property-bg"></div>
 			<div class="popup-property-area">
-				<div class="property-item">掲示板詳細</div>
+				<div class="property-item" onclick="boardDetail()">掲示板詳細</div>
 				<div class="property-item">通知設定</div>
-				<div class="property-item">掲示板から退出</div>
+				<div class="property-item" onclick="leaveBoard()">掲示板から退出</div>
 			</div>
 		</div>
 
@@ -363,6 +373,8 @@ var userId='<%out.print(userInfo.getUserID());%>';
 		<form action="postDetail" method="post" id="hiddenForm">
 			<input type="hidden" name="formName" id="formNameHidden">
 			<input type="hidden" name="postId" id="postIdHidden">
+			<input type="hidden" name="boardId" id="boardIdHidden">
+			<input type="hidden" name="pageType" id="pageType">
 			<input type="hidden" name="memberId" id="memberId">
 		</form>
 
@@ -391,6 +403,17 @@ $('.post').click(function(event){
 	}
 });
 
+//掲示板タブクリック時
+$('.tab').click(function(event){
+	var target = $(event.target);
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" );
+	formNameHidden.value="selectBorad";
+	boardIdHidden.value=target.attr('name');
+	hiddenForm.submit();
+});
+
 //自分のアイコンクリック時、サーブレット経由でマイページへ遷移
 function myPage(){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
@@ -412,6 +435,27 @@ function addressBook(){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var formNameHidden = document.getElementById( "formNameHidden" ) ;
 	formNameHidden.value="addressBook";
+	hiddenForm.submit();
+}
+
+//掲示板詳細をクリック時、サーブレット経由で掲示板詳細画面へ遷移
+function boardDetail(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" );
+	formNameHidden.value="boardDetail";
+	boardIdHidden.value='<%out.print(boardId);%>';
+	hiddenForm.submit();
+}
+
+//「掲示板から退出」テキスト押下時
+function leaveBoard(){
+	//target = $(event.target);
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var boardIdHidden = document.getElementById( "boardIdHidden" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	boardIdHidden.value='<%out.print(boardId);%>';
+	formNameHidden.value="leaveBoard";
 	hiddenForm.submit();
 }
 
@@ -464,7 +508,7 @@ function readClick(img){
 		i--;
 		readCount.textContent=""+i;
 		userRead.className="false";
-		userRead.textContent="未確認";
+		userRead.textContent="";
 		//押されたボタンの記事IDをhiddenでわたすメソッド呼び出し
 		//サーブレット側でdeleteReadを受け取ると該当の記事のログインユーザーの確認済みを削除
 	 	readAction(img,"deleteRead");

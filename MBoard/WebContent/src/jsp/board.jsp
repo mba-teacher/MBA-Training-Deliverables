@@ -33,6 +33,15 @@
 <% HashMap<Integer, Integer> commentCount = (HashMap<Integer, Integer>)session.getAttribute("comentCount"); %>
 <!-- コメントIDをキーにして、そのコメント数を取得する連想配列を取得 -->
 <% HashMap<Integer, Boolean> userRead = (HashMap<Integer, Boolean>)session.getAttribute("userRead"); %>
+<%-- 選択中の掲示板のIDを取得 --%>
+<% int boardId = (int)session.getAttribute("boardId"); %>
+<%-- 選択中の掲示板の値が0の場合一番上の掲示板を代入 --%>
+<%if(boardId==0){
+	boardId=bib[0].getBoardId();
+}
+%>
+<%-- 選択中の掲示板の番号を取得 --%>
+<% int boardNum = 0; %>
 <script>
 //ログインユーザーのID
 var userId='<%out.print(myb.getUserID());%>';
@@ -46,7 +55,8 @@ boardId.push('<%out.print(bib[i].getBoardId());%>');
 boardName.push('<%out.print(bib[i].getBoardCategory());%>');
 <% } %>
 //選択中の掲示板のID
-var selectBoardId=boardId[0];
+var selectBoardId='<%out.print(boardId);%>';
+
 //定型文の内容を格納する配列
 var templateContent=[];
 //DBから取得した定型文情報をそれぞれの配列に格納
@@ -64,7 +74,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 
 			<img src="<%=request.getContextPath()%><%= myb.getProfileImgPath() %>" class="nav-icon" onclick="myPage()" id="my-icon">
 
-			<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon">
+			<img src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon" onclick="board()">
 
 			<img src="<%=request.getContextPath()%>/src/img/mb_0_address.png" class="nav-icon" onclick="addressBook()">
 
@@ -92,7 +102,12 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<!--切り替え可能な掲示板タブ-->
 						<ul id="tabGroup" class="tab-group">
 							<% for (int i = 0; i < bib.length; i++ ) { %>
-								<li class="tab color<%=bib[i].getBoardColor()%>">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<% if(bib[i].getBoardId()==boardId){ %>
+									<%  boardNum = i; %>
+									<li class="tab color<%=bib[i].getBoardColor()%>  is-active ">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<% }else{ %>
+									<li class="tab color<%=bib[i].getBoardColor()%> ">掲示板名:<%= bib[i].getBoardCategory() %></li>
+								<% } %>
 							<% } %>
 						</ul>
 
@@ -121,7 +136,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 								<div class="post-option">
 									<div class="post-option-icon">
 										<div class="template-icon">
-											<img src="<%=request.getContextPath()%>/src/img/mb_g_letteredit.png" class="template-menu" >
+											<img src="<%=request.getContextPath()%>/src/img/mb_2_template.png" class="template-menu">
 										</div>
 									</div>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
@@ -137,7 +152,12 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<!--掲示板タブを切り替えて表示する記事一覧-->
 						<div id="panelGroup" class="panel-group">
 						<% for (int i = 0; i < pibList.size(); i++ ) { %>
-								<div class="panel">
+								<% if(i==boardNum){ %>
+									<div class="panel is-show">
+								<% }else{ %>
+									<div class="panel">
+								<% } %>
+
 								<%if(pibList.get(i)==null){ %>
 								 <p> まだ記事がありません</p>
 								<%}else{%>
@@ -165,7 +185,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 											<% if(userRead.get(pibList.get(i)[x].getPostId())){ %>
 											確認済
 											<% }else{ %>
-											未確認
+
 											<% } %>
 											</div>
 										</div>
@@ -306,8 +326,8 @@ var panelGroup = document.getElementById( "panelGroup" ) ;
 var tabFirstLi = ulElement.firstElementChild ;
 var panelFirst = panelGroup.firstElementChild ;
 //一番上の掲示板タブを表示させる
-tabFirstLi.classList.add("is-active");
-panelFirst.className="panel is-show";
+//tabFirstLi.classList.add("is-active");
+//panelFirst.className="panel is-show";
 
 
 
@@ -372,6 +392,8 @@ $('.post').click(function(event){
 		var hiddenForm = document.getElementById( "hiddenForm" ) ;
 		var postIdHidden = document.getElementById( "postIdHidden" ) ;
 		var formNameHidden = document.getElementById( "formNameHidden" ) ;
+		var boardIdHidden = document.getElementById( "boardIdHidden" );
+		boardIdHidden.value=selectBoardId;
 		postIdHidden.value=$(this).attr('name');
 		formNameHidden.value="postDetail";
 		hiddenForm.submit();
@@ -383,6 +405,14 @@ function myPage(){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var formNameHidden = document.getElementById( "formNameHidden" ) ;
 	formNameHidden.value="myPage";
+	hiddenForm.submit();
+}
+
+//固定画面の掲示板アイコンクリック時、サーブレット経由で掲示板本体画面へ遷移
+function board(){
+	var hiddenForm = document.getElementById( "hiddenForm" ) ;
+	var formNameHidden = document.getElementById( "formNameHidden" ) ;
+	formNameHidden.value="board";
 	hiddenForm.submit();
 }
 
@@ -408,7 +438,7 @@ function createBoard(){
 function boardDetail(){
 	var hiddenForm = document.getElementById( "hiddenForm" ) ;
 	var formNameHidden = document.getElementById( "formNameHidden" ) ;
-	var boardIdHidden = document.getElementById( "boardIdHidden" )
+	var boardIdHidden = document.getElementById( "boardIdHidden" );
 	formNameHidden.value="boardDetail";
 	boardIdHidden.value=selectBoardId;
 	hiddenForm.submit();
@@ -490,7 +520,7 @@ function readClick(id){
 		i--;
 		readCount.textContent=""+i;
 		userRead.className="false";
-		userRead.textContent="未確認";
+		userRead.textContent="";
 		//押されたボタンの記事IDをhiddenでわたすメソッド呼び出し
 		//サーブレット側でdeleteReadを受け取ると該当の記事のログインユーザーの確認済みを削除
 	 	readAction(id,"deleteRead");

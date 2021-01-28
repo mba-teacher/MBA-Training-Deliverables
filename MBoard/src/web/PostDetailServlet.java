@@ -261,6 +261,18 @@ public class PostDetailServlet extends HttpServlet {
 			//掲示板詳細サーブレットに遷移
 			rd = req.getRequestDispatcher("/member");
 			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("joinBoard")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("leaveBoard")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("selectBorad")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
 		}else {
 			//記事詳細画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/post_detail.jsp");
@@ -272,6 +284,7 @@ public class PostDetailServlet extends HttpServlet {
 
 
 //--------------------------------------------------------------------------------
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 文字化け防止
@@ -512,13 +525,23 @@ public class PostDetailServlet extends HttpServlet {
 			//掲示板詳細サーブレットに遷移
 			rd = req.getRequestDispatcher("/member");
 			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("joinBoard")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("leaveBoard")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
+		}else if(formName!=null&&formName.equals("selectBorad")) {
+			//掲示板詳細サーブレットに遷移
+			rd = req.getRequestDispatcher("/board");
+			rd.forward(req, resp);
 		}else {
 			//記事詳細画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/post_detail.jsp");
 			rd.forward(req, resp);
 		}
 	}
-
-
 
 }

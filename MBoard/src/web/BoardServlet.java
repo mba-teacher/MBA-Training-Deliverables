@@ -98,6 +98,9 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		//--------------掲示板本体画面に必要なDB情報を取得し、セッションに格納--------------
+		//選択中の掲示板を一番上に設定
+		session.setAttribute("boardId",0);
+
 		//全ユーザー情報をDBから取得
 		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
 		userlist.addAll(dao.GetAllMembers());
@@ -186,15 +189,10 @@ public class BoardServlet extends HttpServlet {
 		if(formName!=null&&formName.equals("postDetail")) {
 			String postId = req.getParameter("postId");
 			var intPostId=Integer.parseInt(postId);//int変換
-			PostInfoBean postBean=new PostInfoBean();
-			outside:for(int a=0;a<PostInfoList.size();a++) {
-				for(int b=0;b<PostInfoList.get(a).length;b++) {
-					if(PostInfoList.get(a)[b].getPostId()==intPostId) {
-						postBean=PostInfoList.get(a)[b];
-						break outside;
-					}
-				}
-			}
+			PostInfoBean postBean=dao.GetPost(intPostId);
+			//選択中の掲示板のIDをセッションに格納
+			int boardId= Integer.parseInt(req.getParameter("boardId"));
+			session.setAttribute("boardId",boardId);
 			//記事IDのbeanをセッションに格納
 			session.setAttribute("postBean",postBean);
 			//詳細画面が記事かコメントか判別するをセッションに記事(post)を代入
@@ -227,6 +225,10 @@ public class BoardServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/member");
 			rd.forward(req, resp);
 		}else{
+			if(formName!=null&&formName.equals("selectBorad")) {
+				int selectBoardId= Integer.parseInt(req.getParameter("boardId"));
+				session.setAttribute("boardId",selectBoardId);
+			}
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);
@@ -237,7 +239,6 @@ public class BoardServlet extends HttpServlet {
 
 
 //------------------------------------------------------------------------------------------
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 文字化け防止
@@ -311,6 +312,9 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		//--------------掲示板本体画面に必要なDB情報を取得し、セッションに格納--------------
+		//選択中の掲示板を一番上に設定
+		session.setAttribute("boardId",0);
+
 		//全ユーザー情報をDBから取得
 		ArrayList<UserInfoBean> userlist = new ArrayList<UserInfoBean>();
 		userlist.addAll(dao.GetAllMembers());
@@ -399,15 +403,10 @@ public class BoardServlet extends HttpServlet {
 		if(formName!=null&&formName.equals("postDetail")) {
 			String postId = req.getParameter("postId");
 			var intPostId=Integer.parseInt(postId);//int変換
-			PostInfoBean postBean=new PostInfoBean();
-			outside:for(int a=0;a<PostInfoList.size();a++) {
-				for(int b=0;b<PostInfoList.get(a).length;b++) {
-					if(PostInfoList.get(a)[b].getPostId()==intPostId) {
-						postBean=PostInfoList.get(a)[b];
-						break outside;
-					}
-				}
-			}
+			PostInfoBean postBean=dao.GetPost(intPostId);
+			//選択中の掲示板のIDをセッションに格納
+			int boardId= Integer.parseInt(req.getParameter("boardId"));
+			session.setAttribute("boardId",boardId);
 			//記事IDのbeanをセッションに格納
 			session.setAttribute("postBean",postBean);
 			//詳細画面が記事かコメントか判別するをセッションに記事(post)を代入
@@ -440,11 +439,14 @@ public class BoardServlet extends HttpServlet {
 			rd = req.getRequestDispatcher("/member");
 			rd.forward(req, resp);
 		}else{
+			if(formName!=null&&formName.equals("selectBorad")) {
+				int selectBoardId= Integer.parseInt(req.getParameter("boardId"));
+				session.setAttribute("boardId",selectBoardId);
+			}
 			//掲示板本体画面に遷移
 			rd = req.getRequestDispatcher("/src/jsp/board.jsp");
 			rd.forward(req, resp);
 		}
 
 	}
-
 }
