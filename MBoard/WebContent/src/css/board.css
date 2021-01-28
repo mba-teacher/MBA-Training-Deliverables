@@ -601,7 +601,7 @@ textarea{
 }
 
 
-/* 						↓掲示板削除ポップアップ						*/
+/* 						↓ポップアップ						*/
 .modal{
     display: none;
     position:relative;

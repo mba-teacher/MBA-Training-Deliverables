@@ -69,7 +69,7 @@
 					<% }else if(editType.equals("comment")){%>
 						<p class="page-title">コメント編集</p>
 					<% }%>
-					<form action="articleEdit" method="post">
+					<form action="articleEdit" method="post" id="form">
 
 						<div class="form">
 							<div class="post-titlebar">
@@ -77,7 +77,11 @@
 									<input class="post-form" name="post" placeholder="なんでも投稿できます" value="<%out.print(post.getPostTitle());%>">
 									<!-- <select class="post-forboard"></select> -->
 									<p class="post-date"><%=post.getPostDate()%></p>
-								<% } %>
+								<% }else if(editType.equals("comment")){ %>
+								<input class="post-form" name="post" value="コメント内容" readonly>
+									<!-- <select class="post-forboard"></select> -->
+									<p class="post-date"><%=comment.getCommentDate()%></p>
+								<%} %>
 							</div>
 							<div class="post-detail">
 								<% if(editType.equals("post")){%>
@@ -97,7 +101,7 @@
 						</div>
 
 						<div class="submit-area">
-							<input type="submit" name="delete" value="削除" class="delete">
+							<input type="submit" name="delete" id="deleteButton" value="削除" class="delete" onclick="popUp()">
 							<%-- <a href="<%=request.getContextPath()%>/postDetail"> --%>
 							<input type="button" name="cancel" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/postDetail'">
 							<%--</a> --%>
@@ -135,6 +139,46 @@
 		</div>
 	</div>
 
+			<!-- 		掲示板退出ポップアップウインドウ -->
+		 <div class="modal js-modal" id="deletePop">
+		     <div class="modal__bg js-modal-close"></div>
+		     <div class="modal__content">
+			<h2>記事を削除してよろしいですか？</h2>
+				<input type="button" value="キャンセル" class="js-modal-close modal_cancel"  onclick="popUpClose()">
+				<input type="button" value="はい"  id="" class="modal_ok" id="modal_ok" onclick="deleteSubmit()">
+				<input type="hidden"  name="action" id="deleteAction" value="" class="notice">
+	      		<input type="hidden" id="deleteHidden" name="tempId" value="" >
+		     </div>
+		 </div>
+
+	<script >
+
+	//掲示板退出ポップアップ表示
+	//掲示板詳細プロパティの「掲示板を退出」押下時に呼び出し
+	function popUp() {
+		$('#deletePop').fadeIn();
+	}
+	function popUpClose() {
+		$('.js-modal').fadeOut();
+	}
+	$(function() {
+		$('.js-modal-close').on('click', function() {
+
+			$('.js-modal').fadeOut();
+			return false;
+		});
+	});
+
+	$('#deleteButton').submit(function(){
+	    return false;
+	})
+
+	//削除ポップアップで「はい」押下時、記事削除
+	function deleteSubmit() {
+		document.getElementById( 'deleteButton' ).submit();
+	}
+
+	</script>
 	<script src="src/js/nav.js"></script>
 </body>
 </html>

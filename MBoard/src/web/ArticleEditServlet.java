@@ -32,6 +32,7 @@ public class ArticleEditServlet extends HttpServlet {
 
 		//記事かコメントのIDを取得
 		String detailId = req.getParameter("postId");
+		System.out.println(req.getParameter("delete"));
 		//記事かコメントの情報を取得しセッション
 		if(req.getParameter("delete")==null&&req.getParameter("save")==null) {
 			int id=Integer.parseInt(detailId);
@@ -66,6 +67,7 @@ public class ArticleEditServlet extends HttpServlet {
 				PostInfoBean editPost = (PostInfoBean)session.getAttribute("editPost");
 				editPost.setPostContents(postContent);
 				dao.UpdatePost(editPost);
+				session.setAttribute("postBean",editPost);
 			}else if(editType.equals("comment")) {
 				CommentInfoBean editComment=(CommentInfoBean)session.getAttribute("editComment");
 				editComment.setCommentContents(postContent);
