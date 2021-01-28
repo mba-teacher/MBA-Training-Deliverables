@@ -6,38 +6,42 @@ a:hover{opacity:0.8;}
 body{
 	position:relative;
 	width:100%;
+	margin:0;
 }
 
 
 .name{
-
 	margin:3% 10%;
 }
 
-.back{
-    position:absolute;
-    margin-left:93%;
-    transform: translateX(-100%);
+/* クリック時の枠を消す */
+input{
+	outline:none;
 }
 
+
+/* 戻るボタン */
 .backbtn{
 	font-size:1.5rem;
-	color:#000;
-	border:solid 2px #000;
+	color:#FF9100;
+	border:solid 2px #FF9100;
+	background:#fff;
 	padding:5px 10px;
 	border-radius:8px;
 	text-align:center;
 	white-space: nowrap; /*改行しない*/
-
+	position:absolute;
+    margin-left:93%;
+    transform: translateX(-100%);
 }
 
 
 .c_box{
 	font-size:20px;
 	width:100%;
-	padding:20px 60px;
+	padding:20px 80px;
 	display: flex;
-    justify-content: space-around;
+    justify-content:flex-start;
    align-items: center;
 box-sizing:border-box;
 }
@@ -54,7 +58,6 @@ input[type=checkbox] {
     padding: 5px 30px;
     position: relative;
     width:300px;
-    /*background:#efb398;*/
 }
 .checkbox01::before {
     background: #fff;
@@ -87,22 +90,23 @@ input[type=checkbox]:checked + .checkbox01::after {
 }
 
 
-.ok{
-    position:absolute;
-    margin-top:3%;
-    margin-left:93%;
-    transform: translateX(-100%);
-}
 
+
+/* 決定ボタン */
 .okbtn{
 	font-size:1.5rem;
 	font-weight:600;
 	color:#fff;
 	background-color:#FF9100;
 	padding:10px 15px;
+	border:0px;
 	border-radius:8px;
 	text-align:center;
 	white-space: nowrap; /*改行しない*/
+    position:absolute;
+    margin-top:3%;
+    margin-left:93%;
+    transform: translateX(-100%);
 }
 
 
