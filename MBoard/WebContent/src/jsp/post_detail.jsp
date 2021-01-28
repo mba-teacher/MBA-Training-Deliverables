@@ -379,7 +379,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 		</form>
 
 		<!-- 		ポップアップウインドウ -->
-		 <div class="modal js-modal">
+		 <div class="modal js-modal" id="boardPop">
 		     <div class="modal__bg js-modal-close"></div>
 		     <div class="modal__content">
 			<h2>本当に退出してもよろしいですか？</h2>
