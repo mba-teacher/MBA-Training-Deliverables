@@ -71,7 +71,8 @@ public class ArticleEditServlet extends HttpServlet {
 				editComment.setCommentContents(postContent);
 				dao.UpdateComment(editComment);
 			}
-			rd = req.getRequestDispatcher("/board");
+			//掲示板記事詳細へ遷移
+			rd = req.getRequestDispatcher("/postDetail");
 			rd.forward(req, resp);
 		}else {
 			rd = req.getRequestDispatcher("/src/jsp/article_edit.jsp");

@@ -56,23 +56,29 @@
 		<div class="main">
 
 			<div class="mypage_content">
-
+				<% if(editType.equals("comment")){%>
+					<h1 class="big-title">コメント編集</h1>
+				<% } else {%>
+					<h1 class="big-title">記事編集</h1>
+				<% }%>
 				<div class="article-edit-area">
 
 
 					<% if(editType.equals("post")){%>
-						<h1 class="page-title">記事編集</h1>
+						<p class="page-title">記事編集</p>
 					<% }else if(editType.equals("comment")){%>
-						<h1 class="page-title">コメント編集</h1>
+						<p class="page-title">コメント編集</p>
 					<% }%>
 					<form action="articleEdit" method="post">
 
 						<div class="form">
-							<% if(editType.equals("post")){%>
-								<input class="post-form" name="post" placeholder="なんでも投稿できます" value="<%out.print(post.getPostTitle());%>">
-							<% }else if(editType.equals("comment")){%>
-								<%-- <input class="post-form" name="post" placeholder="なんでも投稿できます" value="<%out.print(comment.getCommentId());%>"> --%>
-							<% }%>
+							<div class="post-titlebar">
+								<% if(editType.equals("post")){%>
+									<input class="post-form" name="post" placeholder="なんでも投稿できます" value="<%out.print(post.getPostTitle());%>">
+									<!-- <select class="post-forboard"></select> -->
+									<p class="post-date"><%=post.getPostDate()%></p>
+								<% } %>
+							</div>
 							<div class="post-detail">
 								<% if(editType.equals("post")){%>
 									<textarea class="post-form-content" name="post-content" placeholder="編集できます"><%= post.getPostContents().replace("<br>", "\n") %></textarea>
@@ -92,9 +98,9 @@
 
 						<div class="submit-area">
 							<input type="submit" name="delete" value="削除" class="delete">
-							<a href="<%=request.getContextPath()%>/postDetail">
-							<input type="button" name="cancel" value="キャンセル" class="cancel">
-							</a>
+							<%-- <a href="<%=request.getContextPath()%>/postDetail"> --%>
+							<input type="button" name="cancel" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/postDetail'">
+							<%--</a> --%>
 							<input type="submit" name="save" value="保存" class="save">
 						</div>
 
