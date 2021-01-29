@@ -9,6 +9,25 @@ h1 {
 	padding:0px 7%;
 }
 
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* スクロールの背景の設定 */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+ /* box-shadow: 0 0 4px #aaa inset;*/
+}
+
+/* スクロールのつまみ部分の設定 */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background:#FF9100;
+}
+
+
 #group{
 	position:relative;
 	left: 10%;
