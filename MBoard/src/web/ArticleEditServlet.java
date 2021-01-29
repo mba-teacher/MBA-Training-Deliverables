@@ -32,9 +32,8 @@ public class ArticleEditServlet extends HttpServlet {
 
 		//記事かコメントのIDを取得
 		String detailId = req.getParameter("postId");
-		System.out.println(req.getParameter("delete"));
 		//記事かコメントの情報を取得しセッション
-		if(req.getParameter("delete")==null&&req.getParameter("save")==null) {
+		if(req.getParameter("key")==null) {
 			int id=Integer.parseInt(detailId);
 			if(id<0) {
 				id*=-1;
@@ -46,9 +45,8 @@ public class ArticleEditServlet extends HttpServlet {
 			}
 		}
 
-
 		//編集or削除をDBで更新処理
-		if(req.getParameter("delete")!=null) {
+		if(req.getParameter("key")!=null && req.getParameter("key").equals("delete")) {
 			String editType= (String)session.getAttribute("editType");
 			if(editType.equals("post")) {
 				PostInfoBean editPost = (PostInfoBean)session.getAttribute("editPost");
@@ -59,7 +57,8 @@ public class ArticleEditServlet extends HttpServlet {
 			}
 			rd = req.getRequestDispatcher("/board");
 			rd.forward(req, resp);
-		}else if(req.getParameter("save")!=null){
+		}else if(req.getParameter("key")!=null && req.getParameter("key").equals("save")){
+			System.out.println(req.getParameter("key"));
 			String editType= (String)session.getAttribute("editType");
 			String postContent = req.getParameter("post-content");
 			postContent=postContent.replace("\r\n", "<br>");

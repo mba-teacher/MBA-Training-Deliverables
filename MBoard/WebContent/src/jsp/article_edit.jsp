@@ -69,7 +69,7 @@
 					<% }else if(editType.equals("comment")){%>
 						<p class="page-title">コメント編集</p>
 					<% }%>
-					<form action="articleEdit" method="post" id="form">
+					<form action="articleEdit" method="post" name="form" onsubmit="return check_data()">
 
 						<div class="form">
 							<div class="post-titlebar">
@@ -101,11 +101,12 @@
 						</div>
 
 						<div class="submit-area">
-							<input type="submit" name="delete" id="deleteButton" value="削除" class="delete" onclick="popUp()">
+							<input type="submit" name="delete" id="deleteButton" value="削除" class="delete" onclick="form.key.value='pop'">
 							<%-- <a href="<%=request.getContextPath()%>/postDetail"> --%>
 							<input type="button" name="cancel" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/postDetail'">
 							<%--</a> --%>
-							<input type="submit" name="save" value="保存" class="save">
+							<input type="submit" name="save" value="保存" class="save" onclick="form.key.value='save'">
+							<input name="key" type="hidden" value="" />
 						</div>
 
 					</form>
@@ -156,26 +157,33 @@
 	//掲示板退出ポップアップ表示
 	//掲示板詳細プロパティの「掲示板を退出」押下時に呼び出し
 	function popUp() {
+		pop=true;
 		$('#deletePop').fadeIn();
 	}
 	function popUpClose() {
+		pop=false;
 		$('.js-modal').fadeOut();
 	}
 	$(function() {
 		$('.js-modal-close').on('click', function() {
-
 			$('.js-modal').fadeOut();
 			return false;
 		});
 	});
 
-	$('#deleteButton').submit(function(){
-	    return false;
-	})
+	function check_data() {
+	    if (form.key.value === 'pop') {
+	    	popUp();
+	    	return false;
+	    }else{
+	    	return true;
+	    }
+	}
 
 	//削除ポップアップで「はい」押下時、記事削除
 	function deleteSubmit() {
-		document.getElementById( 'deleteButton' ).submit();
+		form.key.value='delete';
+		form.submit();
 	}
 
 	</script>
