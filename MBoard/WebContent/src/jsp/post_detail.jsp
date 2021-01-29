@@ -349,7 +349,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 						<%if(joinJudge.get(id)){ %>
 							<div class="board-join">参加中</div>
 						<%}else{ %>
-							<div class="board-leave" onclick="joinBoard('<%out.print(id);%>')">参加する</div>
+							<div class="board-leave" onclick="joinBoard('<%out.print(id);%>')">参加</div>
 						<%} %>
 					</div>
 					<%} %>
