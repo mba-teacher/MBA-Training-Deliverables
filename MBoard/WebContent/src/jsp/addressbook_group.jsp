@@ -51,6 +51,10 @@
 		<div class="main">
 			<div class="addresandgroup">
 				<h1>アドレス帳・グループ一覧</h1>
+				<!-- <div>
+        			<span id="arrowOff" onclick="chenges1()"></span>
+        			<span id="arrowOn" onclick="chenges2()"></span>
+    			</div> -->
 
 				<div class="tabs">
 					<input id="address" type="radio" name="tab_item" checked>
@@ -98,12 +102,13 @@
 								<p class="address">グループ一覧</p>
 								<div class="box">
 									<% for (int i = 0; i < lists.size(); i++) { %>
-									<div class="group_tab">
-
+										<div class="group_tab">
 										<label for="inbox<%=i%>"><%=gn.get(i).getGroupName()%>
-											<div class="arrowOff"></div>
-											<div class="arrowOn"></div>
-										</label><input type="checkbox" id="inbox<%=i%>" name="check" class="on-off">
+
+											<span id="arrowOff"></span>
+									        <span id="arrowOn"></span>
+
+										</label><input type="checkbox" id="inbox<%=i%>" name="check" class="on-off" onclick="chenges()">
 										<div class="dropdown">
 											<% for (int j = 0; j < lists.get(i).size(); j++) { %>
 											<a class="user_information_area" href="javascript:setAndSubmit('<%=lists.get(i).get(j).getUserID()%>','postIconForm')">
@@ -162,9 +167,35 @@
 	<script src="<%=request.getContextPath()%>/src/js/method.js"></script>
 
 	<script>
-	$(function(){
+
+	function chenges1(){
+		const onSan = document.getElementById("arrowOn");
+        const offSan = document.getElementById("arrowOff");
+        onSan.style.display = "block";
+        offSan.style.display = "none";
+    }
+        function chenges2(){
+		const onSan = document.getElementById("arrowOn");
+        const offSan = document.getElementById("arrowOff");
+        onSan.style.display = "none";
+        offSan.style.display = "block";
+	 }
+     function chenges(){
+    	const onSan = document.getElementById("arrowOn");
+        const offSan = document.getElementById("arrowOff");
+        if(offSan.style.display=="block"){
+        	onSan.style.display = "block";
+            offSan.style.display = "none";
+        }else if(oSan.style.display=="block"){
+        	onSan.style.display = "none";
+            offSan.style.display = "block";
+        }
+
+     }
+
+	/* $(function(){
     	$('[name="check"]').change(function(){
-        	if( $(this).prop('checked') ){
+        	if( $('[name="check"]').prop('checked') ){
             	alert('チェックを入れました');
             	document.getElementsByClassName("arrowOn").style.display = "block";
              	document.getElementsByClassName("arrowOff").style.display = "none";
@@ -174,7 +205,7 @@
             	document.getElementsByClassName("arrowOff").style.display = "block";
 	        }
 	    });
-	});
+	}); */
 	</script>
 
 </body>

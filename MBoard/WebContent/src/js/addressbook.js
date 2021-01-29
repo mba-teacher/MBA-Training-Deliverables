@@ -71,7 +71,7 @@
     $('#search-text').on('input', searchWord);
 
 
-    $('[name="check"]').change(function(){
+/*    $('[name="check"]').change(function(){
         if( $(this).prop('checked') ){
         alert('チェックを入れました');
             document.getElementByClass("arrowOn").style.display = "block";
@@ -81,7 +81,7 @@
         	document.getElementByClass("arrowOn").style.display = "none";
         	document.getElementByClass("arrowOff").style.display = "block";
         }
-    });
+    });*/
 
   });
 

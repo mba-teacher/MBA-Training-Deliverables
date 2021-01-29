@@ -212,7 +212,7 @@ input[name="tab_item"] {
 
 /* ↓三角矢印 */
 
-.arrowOn{
+#arrowOn{
   display: none;
   position: absolute;
   bottom:30px;
@@ -223,7 +223,7 @@ input[name="tab_item"] {
   border-color:  transparent transparent #565656 #565656;
   transform: rotate(-45deg);
 }
-.arrowOff{
+#arrowOff{
   display: block;
   position: absolute;
   bottom:20px;
