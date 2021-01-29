@@ -16,17 +16,18 @@
 
 	<input type="button" class="backbtn js-modal-open" value="戻る">
 
-	<div class="name">
-		<h1>ユーザーグループ設定</h1>
-		<p>追加するグループを選択してください。</p>
-	</div>
 
 	<%-- 配列を定義し、セッションで持って来たDB情報を挿入 --%>
 	<% ArrayList<GroupInfoBean> grouplist = new ArrayList<GroupInfoBean>(); %>
 	<% ArrayList<GroupMemberInfoBean> memberGrouplist = new ArrayList<GroupMemberInfoBean>(); %>
-	<% int userId= (int)session.getAttribute("userId"); %>
+	<% UserInfoBean userInfo= (UserInfoBean)session.getAttribute("userInfo"); %>
 	<% grouplist.addAll((ArrayList<GroupInfoBean>) session.getAttribute("groupList")); %>
 	<% memberGrouplist.addAll((ArrayList<GroupMemberInfoBean>) session.getAttribute("memberGroupList")); %>
+
+	<div class="name">
+		<h1><%=userInfo.getUserName() %>:ユーザーグループ設定</h1>
+		<p>追加するグループを選択してください。</p>
+	</div>
 
 	<form action="http://localhost:8080/MBoard/GroupUser" method="post">
 
@@ -64,7 +65,7 @@
 	</div>
 
 	<%-- 決定ボタンを押した時、対象ユーザーのIDを送付 --%>
-	<input type='hidden' name='userId' id='input' value='<%=userId %>'>
+	<input type='hidden' name='userId' id='input' value='<%=userInfo.getUserID() %>'>
 	<input type="submit" class="okbtn" name="goto" value="決定">
 
 	<%-- ここからポップアップ --%>

@@ -19,21 +19,21 @@
 		<div class="inputForm">
 			<!-- バリデーションチェックはJSで実装中 -->
 			<p class="title">ユーザー名<span class="requierdItem">*</span><span class="alertarea"></span>
-			<input type="text" name="Login_ID" placeholder="例：mba-taro" maxlength="25" class="id">
+			<input type="text" name="Login_ID" placeholder=" ユーザー名" maxlength="25" class="id">
 			<!-- 簡易で 25文字以内 に設定 -->
 			</p>
 
 			<p class="title">仮パスワード<span class="requierdItem">*</span><span class="alertarea"></span>
-			<input type="text" name="Login_Pass" placeholder="例：123abcDE" maxlength="25" class="password">
+			<input type="text" name="Login_Pass" placeholder=" 仮パスワード" maxlength="25" class="password">
 			<!-- 簡易で 25文字以内 に設定 -->
 			</p>
 
 			<p class="title">メールアドレス<span class="requierdItem">*</span><span class="alertarea"></span>
-			<input type="text" name="Email_Address" placeholder="例：taro_mba@mba-international.jp" class="email">
+			<input type="text" name="Email_Address" placeholder=" メールアドレス" class="email">
 			</p>
 
 			<p class="title">LINE WORKS ID<span class="requierdItem">*</span><span class="alertarea"></span>
-			<input type="text" name="Line_Works_ID" placeholder="例：mba_taro" maxlength="25" class="id">
+			<input type="text" name="Line_Works_ID" placeholder=" LINE WORKS ID" maxlength="25" class="id">
 			<!-- 簡易で 25文字以内 に設定 -->
 			</p>
 

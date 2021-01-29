@@ -123,7 +123,7 @@
 					<div class="tab_content" id="profile_content">
 						<div class="tab_content_description">
 							<div class="profile_area">
-							<p class="c-txtsp">プロフィール内容</p>
+								<p class="c-txtsp">プロフィール内容</p>
 							</div>
 						</div>
 					</div>

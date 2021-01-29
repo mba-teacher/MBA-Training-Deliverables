@@ -71,10 +71,10 @@
 				</div>
 
 				<div class="tabs">
-					<input id="post" type="radio" name="tab_item" checked>
-						<label class="tab_item" for="post">投稿した記事</label>
 					<input id="profile"type="radio" name="tab_item">
 						<label class="tab_item" for="profile">プロフィール</label>
+					<input id="post" type="radio" name="tab_item" checked>
+						<label class="tab_item" for="post">投稿した記事</label>
 
 					<div class="tab_content" id="post_content">
 					<!-- tab_content -->
@@ -122,7 +122,9 @@
 
 					<div class="tab_content" id="profile_content">
 						<div class="tab_content_description">
-							<p class="c-txtsp">プロフィール内容</p>
+							<div class="profile_area">
+								<p class="c-txtsp">プロフィール内容</p>
+							</div>
 						</div>
 					</div>
 				</div>

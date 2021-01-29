@@ -21,7 +21,7 @@
 				<input type="password" name="pass" placeholder="パスワード" class="password">
 				<!--<span class="alert">パスワードが間違っています。もう一度お試しください。</span>-->
 				<input type="submit" name="submit" value="サインイン" class="signin">
-				<a href="" class="reset">パスワードを忘れた場合</a>
+				<a href="" class="reset">ID・パスワードを忘れた場合</a>
 				</p>
 		</form>
 	</div>
