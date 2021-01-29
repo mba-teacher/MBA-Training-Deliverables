@@ -165,8 +165,13 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 								<% int postId =pibList.get(i)[x].getPostId();%>
 								<% int postUserId =pibList.get(i)[x].getPostUserId();%>
 								<div class="post" name='<%out.print(postId);%>'>
-								<img src="<%=request.getContextPath()%><%= userIdHash.get(postUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(postUserId);%>')">
-								<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">--%>
+									<% if (userIdHash.get(postUserId).getProfileImgPath() == null || userIdHash.get(postUserId).getProfileImgPath().isEmpty()) { %>
+										<%-- 画像がないときの仮画像 --%>
+										<img src="<%=request.getContextPath()%>/src/img/noimage.jpg" class="post-icon" onclick="memberPage('<%out.print(postUserId);%>')">
+										<% } else { %>
+										<img src="<%=request.getContextPath()%><%= userIdHash.get(postUserId).getProfileImgPath() %>" class="post-icon" onclick="memberPage('<%out.print(postUserId);%>')">
+										<% } %>
+										<%-- <img src="<%=request.getContextPath()%>/src/img/mb_e_plus.png" class="post-icon">--%>
 								<div class="post-board-name"><%= pibList.get(i)[x].getPostTitle() %></div>
 								<div class="post-user-name"> <%=userIdHash.get(postUserId).getUserName() %></div>
 								<div id="aaaaaaa" class="post-date"><%= pibList.get(i)[x].getPostDate() %></div>
@@ -273,7 +278,7 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 						<%if(joinJudge.get(id)){ %>
 							<div class="board-join">参加中</div>
 						<%}else{ %>
-							<div class="board-leave" onclick="joinBoard('<%out.print(id);%>')">参加する</div>
+							<div class="board-leave" onclick="joinBoard('<%out.print(id);%>')">参加</div>
 						<%} %>
 					</div>
 					<%} %>
