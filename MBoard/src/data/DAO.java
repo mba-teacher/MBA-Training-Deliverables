@@ -274,6 +274,7 @@ public class DAO {
 		//戻り値として返すようの配列を定義
 		BoardInfoBean[] bib= null;
 		try {
+			if(result!=null) {
 			if(result.next()) {
 				result.last();
 				bib = new BoardInfoBean[result.getRow()];
@@ -292,6 +293,7 @@ public class DAO {
 			}
 			result.close();
 			stmt.close();
+			}
 			//下記catchはエラーハンドリング用
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -42,6 +42,7 @@ public class LoginServlet extends HttpServlet {
 
 			//ログインユーザーが所属する掲示板情報をDBから取得
 			//セッションに格納
+			System.out.println(dao.GetMyBoards(uib.getUserID()));
 			BoardInfoBean[] boardInfo = dao.GetMyBoards(uib.getUserID());
 			session.setAttribute("boardInfoBean", boardInfo);
 

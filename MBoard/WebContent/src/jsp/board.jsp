@@ -36,7 +36,7 @@
 <%-- 選択中の掲示板のIDを取得 --%>
 <% int boardId = (int)session.getAttribute("boardId"); %>
 <%-- 選択中の掲示板の値が0の場合一番上の掲示板を代入 --%>
-<%if(boardId==0){
+<%if(bib!=null&&boardId==0){
 	boardId=bib[0].getBoardId();
 }
 %>
@@ -50,9 +50,11 @@ var boardName=[];
 //掲示板のIDを格納する配列
 var boardId=[];
 //DBから取得した情報をそれぞれの配列に格納
+<% if(bib!=null){ %>
 <% for (int i = 0; i < bib.length; i++ ) { %>
 boardId.push('<%out.print(bib[i].getBoardId());%>');
 boardName.push('<%out.print(bib[i].getBoardCategory());%>');
+<% } %>
 <% } %>
 //選択中の掲示板のID
 var selectBoardId='<%out.print(boardId);%>';
@@ -101,13 +103,17 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 					<div class="board-list">
 						<!--切り替え可能な掲示板タブ-->
 						<ul id="tabGroup" class="tab-group">
-							<% for (int i = 0; i < bib.length; i++ ) { %>
-								<% if(bib[i].getBoardId()==boardId){ %>
-									<%  boardNum = i; %>
-									<li class="tab color<%=bib[i].getBoardColor()%>  is-active ">掲示板名:<%= bib[i].getBoardCategory() %></li>
-								<% }else{ %>
-									<li class="tab color<%=bib[i].getBoardColor()%> ">掲示板名:<%= bib[i].getBoardCategory() %></li>
+							<% if ( bib!=null) { %>
+								<% for (int i = 0; i < bib.length; i++ ) { %>
+									<% if(bib[i].getBoardId()==boardId){ %>
+										<%  boardNum = i; %>
+										<li class="tab color<%=bib[i].getBoardColor()%>  is-active ">掲示板名:<%= bib[i].getBoardCategory() %></li>
+									<% }else{ %>
+										<li class="tab color<%=bib[i].getBoardColor()%> ">掲示板名:<%= bib[i].getBoardCategory() %></li>
+									<% } %>
 								<% } %>
+							<% } else{%>
+								<br><p>参加中の掲示板がありません</p>
 							<% } %>
 						</ul>
 
@@ -139,7 +145,9 @@ templateContent.push('<%out.print(TemplateList.get(i).getTempleContents());%>');
 											<img src="<%=request.getContextPath()%>/src/img/mb_2_template.png" class="template-menu">
 										</div>
 									</div>
+									<% if ( bib!=null) { %>
 									<input type="hidden" value='<%out.print(bib[0].getBoardId());%>' id="boardNameHidden" name="boardId">
+									<% }%>
 									<input type="hidden" name="formName" value="makePost" >
 									<input type="submit" value="投稿"  class="submit" id="postSubmit" >
 								</div>
