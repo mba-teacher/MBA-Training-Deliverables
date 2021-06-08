@@ -127,12 +127,16 @@ public class BoardServlet extends HttpServlet {
 
 		//ログインユーザーが参加中の掲示板情報をDBから取得
 		BoardInfoBean[] boardInfo=dao.GetMyBoards(userInfo.getUserID());
+		//参加中の掲示板がない場合すきっぷ
+
 		//セッションに格納
 		session.setAttribute("boardInfoBean",boardInfo);
 		//参加中の掲示板のIDをキーに、参加中か参加可能か判別する連想配列の値をtrue(参加中)にする
-		for(int i=0;i<boardInfo.length;i++) {
-			int id=boardInfo[i].getBoardId();
-			joinJudge.put(id, true);
+		if(boardInfo!=null) {
+			for(int i=0;i<boardInfo.length;i++) {
+				int id=boardInfo[i].getBoardId();
+				joinJudge.put(id, true);
+			}
 		}
 		//掲示板IDをキーにして参加中か参加可能か判別する連想配列をセッションに格納
 		session.setAttribute("joinJudge",joinJudge);
@@ -140,11 +144,14 @@ public class BoardServlet extends HttpServlet {
 		//所属する掲示板ごとに、記事一覧の配列をいれるリスト(リストと通常配列の二次元配列)
 		ArrayList<PostInfoBean[]> PostInfoList=new ArrayList<PostInfoBean[]>();
 		//掲示板ごとに、記事一覧の配列をDBから取得
+		if(boardInfo!=null) {
 		for(int i=0;i<boardInfo.length;i++) {
 			PostInfoList.add(dao.GetBoardPosts(boardInfo[i].getBoardId()));
 		}
+		}
 		//セッションに格納
 		session.setAttribute("postInfoBeanList",PostInfoList);
+
 
 		//ログインユーザーの定型文情報を取得
 		ArrayList<TemplateInfoBean> TemplateInfoList=new ArrayList<TemplateInfoBean>();
