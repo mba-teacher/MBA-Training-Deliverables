@@ -34,7 +34,7 @@
 			<form name="nav-trans" method="post">
 
 			<input type="image" src="<%=request.getContextPath()%><%= uib.getProfileImgPath() %>" class="nav-icon"
-			formaction="<%=request.getContextPath()%>/mypage" id="my-icon">
+			formaction="<%=request.getContextPath()%>/mypage" id="my-icon" value="マイページ">
 
 			<input type="image" src="<%=request.getContextPath()%>/src/img/mb_0_boad.png" class="nav-icon"
 			formaction="<%=request.getContextPath()%>/board">

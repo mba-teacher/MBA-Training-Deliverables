@@ -67,8 +67,11 @@
 								<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 								<!--  -->
 							</div>
-							<input type="file" name="profile-icon"  accept="image/*" id="profile-icon" value="参照" onchange="previewImage(this)" >
-							<label for="profile-icon" class="browse-button">参照</label>
+							<%-- アイコンの変更が実装できなかったのでdisabledしています --%>
+							<input type="file" name="profile-icon"  accept="image/*" id="profile-icon" value="参照"
+							 onchange="previewImage(this)" disabled>
+							 <%-- ボタンを動かさないためid：disableを追加しています --%>
+							<label for="profile-icon" class="browse-button" id="disable">参照</label>
 						</div>
 
 						<div>
