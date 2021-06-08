@@ -55,7 +55,8 @@
 			<div class="mypage_content">
 				<div class="create-area">
 					<h1 class="page-title">プロフィール編集</h1>
-					<form action="<%=request.getContextPath()%>/profileEdit" method="post" name="profileForm" enctype="multipart/form-data"  onsubmit="return formCheck()">
+					<%-- アイコンの編集機能を使う場合はformに追加→ enctype="multipart/form-data" --%>
+					<form action="<%=request.getContextPath()%>/profileEdit" method="post" name="profileForm" onsubmit="return formCheck()">
 						<p>プロフィール画像</p>
 						<div class="create-icon-area">
 							<div class="create-icon">

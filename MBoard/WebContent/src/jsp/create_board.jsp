@@ -53,13 +53,17 @@
 			<div class="mypage_content">
 				<div class="create-area">
 				<h1 class="page-title">掲示板作成</h1>
-					<form action="<%=request.getContextPath()%>/createBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
+					<%-- アイコンの編集機能を使う場合はformに追加→ enctype="multipart/form-data" --%>
+					<form action="<%=request.getContextPath()%>/createBoardAfter" method="post" name="boardForm" onsubmit="return formCheck()">
 						<div class="create-icon-area">
 							<div class="create-icon">
 							<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 							</div>
-							<input type="file" name="board-icon" id="board-icon" value="参照" onchange="previewImage(this)">
-							<label for="board-icon" class="browse-button">参照</label>
+							<%-- アイコンの変更が実装できなかったのでdisabledしています --%>
+							<input type="file" name="board-icon" id="board-icon" value="参照"
+							 onchange="previewImage(this)" disabled>
+							 <%-- ボタンを動かさないためid：disableを追加しています --%>
+							<label for="board-icon" class="browse-button" id="disable">参照</label>
 						</div>
 						<div class="board-name-area">
 							<p>掲示板名<span class="requierdItem">*</span></p>
@@ -118,7 +122,7 @@
 						<textarea class="create-detail" name="Board_Content" placeholder="例：日報の提出用の掲示板です。"></textarea>
 						<input type="hidden" name="pageType" value="create">
 						<div class="submit-area">
-							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/src/jsp/board.jsp'">
+							<input type="button" name="" value="キャンセル" class="cancel" onclick="location.href='<%=request.getContextPath()%>/board'">
 							<input type="submit" name="" value="作成" class="submit">
 						</div>
 					</form>

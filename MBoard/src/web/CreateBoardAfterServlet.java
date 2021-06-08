@@ -4,20 +4,19 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import data.BoardInfoBean;
 import data.DAO;
 
 //Create_Board.jspから送られたフォームデータをDBに追加するServlet
 @WebServlet(urlPatterns = {"/createBoardAfter", "/editBoardAfter"})
-@MultipartConfig(location="C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img/board")
+//アイコン更新部分はコメントアウト
+//@MultipartConfig(location="C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img/board")
 public class CreateBoardAfterServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,10 +26,16 @@ public class CreateBoardAfterServlet extends HttpServlet {
 			url = "http://localhost:8080/MBoard/src/jsp/login.jsp";
 		} else {
 			DAO d = new DAO();
+
+			//アイコン更新部分はコメントアウト
 			//画像を格納するパス
-			String ImgPath = "C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\board";
+			//String ImgPath = "C:\\Users\\MBA\\Documents\\MBA-Training-Deliverables\\MBoard\\WebContent\\src\\img\\board";
+
 			//掲示板名（画像の名前を掲示板名と同一にする）
 			String Name = req.getParameter("Board_Category");
+
+			/*
+			 * アイコン更新部分はコメントアウト
 			Part part = req.getPart("board-icon");
 			String filePath = null;
 			if(part.getSize() > 0) {
@@ -38,13 +43,20 @@ public class CreateBoardAfterServlet extends HttpServlet {
 				part.write(filePath);
 				part.delete();
 			}
+			*/
 
 			//フォームから掲示板情報を受け取るBoardInfoBean
+			/*
+			 * アイコンの設定ができないためパスの設定をnullにしておく
+			 * "/src/img/board/" + Name + ".jpg"
+			 */
 			BoardInfoBean bib = new BoardInfoBean(
 					0, Name,
 					Integer.parseInt(req.getParameter("Board_Color")),
-					"/src/img/board/" + Name + ".jpg",
+					null,
 					req.getParameter("Board_Content"));
+
+			System.out.println("Beanに入った");
 
 			//フォームからアクセス制限を受けとる
 			//ArrayList<String> list = new ArrayList<String>();
@@ -59,7 +71,7 @@ public class CreateBoardAfterServlet extends HttpServlet {
 				d.CreateBoard(bib, userId);
 				//System.out.println("Cerate board.");
 				//urlの指定
-				url = "src/jsp/board.jsp#board-list-link";
+				url = "/board";
 			}
 			else if (req.getParameter("pageType").equals("edit")) {
 				//ボードIDを設定

@@ -78,6 +78,11 @@
 	opacity: 0.75;
 }
 
+/* ボタンを動かさせないために隠す */
+#disable {
+	display: none;
+}
+
 /*-----------↓頭文字表示用-------------*/
 .create-icon .initial {
 	font-size: 50px;

@@ -19,10 +19,6 @@ input[type="text"] {
 	display: block;
 }
 
-/* 動かさないため見えなくする */
-#disable {
-	display: none;
-}
 
 /*-----------↓バリデーションチェック用CSS-------------*/
 .alertarea {
