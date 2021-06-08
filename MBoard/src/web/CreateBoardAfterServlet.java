@@ -56,8 +56,6 @@ public class CreateBoardAfterServlet extends HttpServlet {
 					null,
 					req.getParameter("Board_Content"));
 
-			System.out.println("Beanに入った");
-
 			//フォームからアクセス制限を受けとる
 			//ArrayList<String> list = new ArrayList<String>();
 			String[] str = req.getParameterValues("accessList");

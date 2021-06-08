@@ -56,14 +56,18 @@
 			<div class="mypage_content">
 				<div class="create-area">
 				<h1 class="page-title">掲示板修正</h1>
-					<form action="editBoardAfter" method="post" name="boardForm" enctype="multipart/form-data" onsubmit="return formCheck()">
+					<%-- アイコンの編集機能を使う場合はformに追加→ enctype="multipart/form-data" --%>
+					<form action="editBoardAfter" method="post" name="boardForm" onsubmit="return formCheck()">
 						<div class="create-icon-area">
 							<div class="create-icon">
 							<img id="before" src="<%=request.getContextPath()%><%=bib.getBoardImgPath()%>">
 							<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
 							</div>
-							<input type="file" name="board-icon" id="board-icon" value="参照" onchange="previewImage(this)">
-							<label for="board-icon" class="browse-button">参照</label>
+							<%-- アイコンの変更が実装できなかったのでdisabledしています --%>
+							<input type="file" name="board-icon" id="board-icon" value="参照"
+							 onchange="previewImage(this)" disabled>
+							 <%-- ボタンを動かさないためid：disableを追加しています --%>
+							<label for="board-icon" class="browse-button" id="disable">参照</label>
 						</div>
 						<div class="board-name-area">
 							<p>掲示板名<span class="requierdItem">*</span></p>
