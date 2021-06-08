@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import data.DAO;
 import data.TemplateInfoBean;
+import data.UserInfoBean;
 
 @WebServlet("/template")
 public class TemplateServlet extends HttpServlet {
@@ -40,8 +41,9 @@ public class TemplateServlet extends HttpServlet {
 		String tempName = req.getParameter("tempName");
 		String tempContent = req.getParameter("tempContent");
 
-		//セッションからログイン中のユーザーIDをいれる(現状はデバック用に10を格納)
-		int userId=11;
+		//DBから取得したログインユーザー情報をセッションに格納
+		UserInfoBean userInfo=(UserInfoBean)session.getAttribute("userInfoBean");
+		int userId=userInfo.getUserID();
 
 		//更新メッセージ用のセッションを定義
 		session.setAttribute("notice", "");
