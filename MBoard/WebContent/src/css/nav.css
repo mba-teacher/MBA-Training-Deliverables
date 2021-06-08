@@ -67,6 +67,20 @@ body {
 	bottom:0px;
 }
 
+/*----------未実装のため外部ボタン非表示----------*/
+#link-show{
+	display:none;
+}
+
+/*----------未実装のため通知ボタン非表示----------*/
+#alarm-show{
+	display:none;
+}
+
+#config_img{
+	display:none;
+}
+
 
 
 

@@ -46,7 +46,7 @@
 
 			<div class="nav-bottom">
 				<%-- 通知のポップアップを出すだけなので遷移先なし --%>
-				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon">
+				<img src="<%=request.getContextPath()%>/src/img/mb_0_notice.png" class="nav-icon" id="alarm-show">
 				<%-- その他のポップアップを出すだけなので遷移先なし --%>
 				<img src="<%=request.getContextPath()%>/src/img/mb_0_other.png" class="nav-icon" id="link-botoom-show">
 			</div>
@@ -112,8 +112,10 @@
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png" id="config_img">
+					<a href="<%=request.getContextPath()%>/logout">
+						<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+					</a>
 				</div>
 			</div>
 		</div>

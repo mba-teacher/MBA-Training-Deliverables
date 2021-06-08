@@ -1292,10 +1292,12 @@ public class DAO {
 			//InsertTemplateメソッド用にbeanを作成
 			TemplateInfoBean bean =new TemplateInfoBean();
 			bean.setTempleUserId(result.getInt("User_ID"));
-			bean.setTempleName("定型文1");
+			bean.setTempleName("定型文");
 			bean.setTempleContents("定型文内容");
-			//ユーザー作成時に、そのユーザーの定型文を一つ追加する
-			InsertTemplate(bean);
+			//ユーザー作成時に、そのユーザーの定型文を追加する
+			for(int i=0;i<10;i++) {
+				InsertTemplate(bean);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

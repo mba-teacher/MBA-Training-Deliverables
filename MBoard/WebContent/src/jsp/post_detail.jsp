@@ -81,7 +81,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 				<div class="board-list-area">
 					<div class="board-list-header">
 						<div class="header-title">参加掲示板</div>
-						<input type="text" class="">
+						<!-- <input type="text" class=""> -->
 					</div>
 					<div class="board-list">
 						<!--切り替え可能な掲示板タブ-->
@@ -319,8 +319,10 @@ var userId='<%out.print(userInfo.getUserID());%>';
 			<div class="link-hide popup-bg"></div>
 			<div class="popup-content">
 				<div class="popup-icon">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png">
-					<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+					<img src="<%=request.getContextPath()%>/src/img/mb_0_config.png" id="config_img">
+					<a href="<%=request.getContextPath()%>/logout">
+						<img src="<%=request.getContextPath()%>/src/img/mb_0_signout.png">
+					</a>
 				</div>
 			</div>
 		</div>
@@ -331,7 +333,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 				<div class="popup-board-header">
 					<div class="popup-board-title">掲示板一覧</div>
 					<div class="popup-board-header-items">
-						<input type="text" placeholder="検索" class="popup-board-search">
+						<!-- <input type="text" placeholder="検索" class="popup-board-search"> -->
 						<div class="popup-board-add" onclick="createBoard()">新規作成</div>
 					</div>
 					<div class="popup-board-close">
@@ -362,7 +364,7 @@ var userId='<%out.print(userInfo.getUserID());%>';
 			<div class="link-hide popup-property-bg"></div>
 			<div class="popup-property-area">
 				<div class="property-item" onclick="boardDetail()">掲示板詳細</div>
-				<div class="property-item">通知設定</div>
+				<!-- <div class="property-item">通知設定</div> -->
 				<div class="property-item" onclick="popUp()">掲示板から退出</div>
 			</div>
 		</div>
